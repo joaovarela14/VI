@@ -49,6 +49,10 @@ const en = {
     workLocations,
     sleepQuality,
     conditions: mentalHealthConditions,
+    mentalHealthAccess: {
+      yes: 'Has mental health resources',
+      no: 'No mental health resources',
+    },
     allLocations: 'All locations',
   },
   hero: {
@@ -194,6 +198,29 @@ const en = {
          virtualMeetings ?? 0
        )}</strong></div>`,
   },
+  workLifeBalanceLine: {
+    title: 'Work-life balance by experience',
+    description:
+      'Compare average work-life balance ratings between people with and without access to mental health resources. Switch the X axis to view the trend by age or years of experience.',
+    toggleLabel: 'Select horizontal axis',
+    xOptions: {
+      age: 'Age',
+      experience: 'Years of experience',
+    },
+    yAxisLabel: 'Average work-life balance',
+    legendTitle: 'Mental health access',
+    legend: {
+      yes: 'Has mental health resources',
+      no: 'No mental health resources',
+    },
+    empty: 'No work-life balance information is available for the selected settings.',
+    ariaLabel: 'Line chart showing average work-life balance by age or experience split by mental health access',
+    tooltip: ({ accessLabel, xLabel, xValue, average, count }) =>
+      `<div class="chart-tooltip__title">${accessLabel}</div>
+       <div class="chart-tooltip__meta">${xLabel}: <strong>${integerFormatter.format(xValue ?? 0)}</strong></div>
+       <div class="chart-tooltip__meta">Average work-life balance: <strong>${decimalFormatter.format(average ?? 0)}</strong></div>
+       <div class="chart-tooltip__meta">Responses: <strong>${integerFormatter.format(count ?? 0)}</strong></div>`,
+  },
   industryRadar: {
     title: 'Role mix within a sector',
     description:
@@ -212,6 +239,11 @@ const en = {
        <div class="chart-tooltip__meta">Approx. role count: <strong>${formatCount(count)}</strong></div>`,
   },
   deepDive: {
+    workLife: {
+      heading: 'Work-life balance and support access',
+      intro:
+        'See how access to mental health resources relates to perceived work-life balance across different ages or experience levels.',
+    },
     meeting: {
       heading: 'Meeting load vs. stress',
       intro:

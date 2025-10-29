@@ -5,6 +5,7 @@ import MentalHealthByRegionChart from './components/MentalHealthByRegionChart'
 import HoursVsSleepScatter from './components/HoursVsSleepScatter'
 import MultiDimensionScatter from './components/MultiDimensionScatter'
 import IndustryRadar from './components/IndustryRadar'
+import WorkLifeBalanceLineChart from './components/WorkLifeBalanceLineChart'
 import en from './i18n/en'
 import pt from './i18n/pt'
 import './App.css'
@@ -217,6 +218,14 @@ function App() {
           </>
         ) : (
           <>
+            <section className="section">
+              <h2>{copy.deepDive.workLife.heading}</h2>
+              <p className="section__intro">{copy.deepDive.workLife.intro}</p>
+              <div className="chart-grid chart-grid--single">
+                <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} />
+              </div>
+            </section>
+
             <section className="section">
               <h2>{copy.deepDive.meeting.heading}</h2>
               <p className="section__intro">{copy.deepDive.meeting.intro}</p>

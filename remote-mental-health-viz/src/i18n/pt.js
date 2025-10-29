@@ -49,6 +49,10 @@ const pt = {
     workLocations,
     sleepQuality,
     conditions: mentalHealthConditions,
+    mentalHealthAccess: {
+      yes: 'Com apoio de saúde mental',
+      no: 'Sem apoio de saúde mental',
+    },
     allLocations: 'Todas as localizações',
   },
   hero: {
@@ -198,6 +202,29 @@ const pt = {
          virtualMeetings ?? 0
        )}</strong></div>`,
   },
+  workLifeBalanceLine: {
+    title: 'Equilíbrio trabalho-vida por experiência',
+    description:
+      'Compare a classificação média de equilíbrio trabalho-vida entre pessoas com e sem acesso a recursos de saúde mental. Altere o eixo X para observar a tendência por idade ou anos de experiência.',
+    toggleLabel: 'Selecionar eixo horizontal',
+    xOptions: {
+      age: 'Idade',
+      experience: 'Anos de experiência',
+    },
+    yAxisLabel: 'Equilíbrio trabalho-vida médio',
+    legendTitle: 'Acesso a saúde mental',
+    legend: {
+      yes: 'Com apoio de saúde mental',
+      no: 'Sem apoio de saúde mental',
+    },
+    empty: 'Não existem dados de equilíbrio trabalho-vida para apresentar nestas definições.',
+    ariaLabel: 'Gráfico de linhas que mostra equilíbrio trabalho-vida médio por idade ou experiência dividido por acesso a saúde mental',
+    tooltip: ({ accessLabel, xLabel, xValue, average, count }) =>
+      `<div class="chart-tooltip__title">${accessLabel}</div>
+       <div class="chart-tooltip__meta">${xLabel}: <strong>${integerFormatter.format(xValue ?? 0)}</strong></div>
+       <div class="chart-tooltip__meta">Equilíbrio médio: <strong>${decimalFormatter.format(average ?? 0)}</strong></div>
+       <div class="chart-tooltip__meta">Respostas: <strong>${integerFormatter.format(count ?? 0)}</strong></div>`,
+  },
   industryRadar: {
     title: 'Distribuição de funções por sector',
     description:
@@ -218,6 +245,11 @@ const pt = {
        <div class="chart-tooltip__meta">Funções estimadas: <strong>${formatCount(count)}</strong></div>`,
   },
   deepDive: {
+    workLife: {
+      heading: 'Equilíbrio trabalho-vida e apoio disponível',
+      intro:
+        'Veja como o acesso a recursos de saúde mental se relaciona com o equilíbrio trabalho-vida percebido em diferentes idades ou níveis de experiência.',
+    },
     meeting: {
       heading: 'Carga de reuniões vs. stress',
       intro:
