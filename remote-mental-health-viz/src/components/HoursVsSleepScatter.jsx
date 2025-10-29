@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 
 const sleepOrder = ['Poor', 'Average', 'Good']
 
-const HoursVsSleepScatter = ({ data, theme }) => {
+const HoursVsSleepScatter = ({ data, theme, copy, common }) => {
   const svgRef = useRef(null)
 
   useEffect(() => {
@@ -50,6 +50,9 @@ const HoursVsSleepScatter = ({ data, theme }) => {
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`)
 
+    const sleepQualityLabels = common?.sleepQuality ?? {}
+    const stressLabels = copy?.legend ?? common?.stressLevels ?? {}
+
     chartGroup
       .append('g')
       .attr('transform', `translate(0,${innerHeight})`)
@@ -66,6 +69,9 @@ const HoursVsSleepScatter = ({ data, theme }) => {
     chartGroup
       .append('g')
       .call(d3.axisLeft(yScale))
+      .call((g) =>
+        g.selectAll('text').text((d) => sleepQualityLabels[d] ?? d)
+      )
       .call((g) =>
         g
           .selectAll('text')
@@ -89,9 +95,13 @@ const HoursVsSleepScatter = ({ data, theme }) => {
       .attr('stroke', gridColor)
       .attr('stroke-width', 1)
       .append('title')
-      .text(
-        (d) =>
-          `${d.employeeId}\nHours per week: ${d.hoursWorked}\nSleep quality: ${d.sleepQuality}\nStress level: ${d.stressLevel}`
+      .text((d) =>
+        copy.tooltip({
+          employeeId: d.employeeId,
+          hoursWorked: d.hoursWorked,
+          sleepQualityLabel: sleepQualityLabels[d.sleepQuality] ?? d.sleepQuality,
+          stressLevelLabel: stressLabels[d.stressLevel] ?? d.stressLevel,
+        })
       )
 
     const legend = svg
@@ -118,14 +128,14 @@ const HoursVsSleepScatter = ({ data, theme }) => {
       .attr('y', 10)
       .attr('fill', legendColor)
       .attr('font-size', 12)
-      .text((d) => d)
-  }, [data, theme])
+      .text((d) => stressLabels[d] ?? d)
+  }, [common, copy, data, theme])
 
   return (
     <div className="chart-card">
       <div className="chart-header">
-        <h3>Hours worked vs. sleep quality</h3>
-        <p>Each dot represents an employee, colored by self-reported stress level. Light jitter prevents overplotting.</p>
+        <h3>{copy.title}</h3>
+        <p>{copy.description}</p>
       </div>
       <svg ref={svgRef} role="img" aria-label="Scatter plot relating hours worked to sleep quality" />
     </div>

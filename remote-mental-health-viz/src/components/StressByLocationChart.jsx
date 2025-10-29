@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 
-const StressByLocationChart = ({ data, theme }) => {
+const StressByLocationChart = ({ data, theme, copy, common }) => {
   const svgRef = useRef(null)
 
   useEffect(() => {
@@ -27,6 +27,8 @@ const StressByLocationChart = ({ data, theme }) => {
 
     const locations = ['Remote', 'Hybrid', 'Onsite']
     const stressLevels = ['Low', 'Medium', 'High']
+    const locationLabels = common?.workLocations ?? {}
+    const stressLabels = copy?.legend ?? common?.stressLevels ?? {}
 
     const aggregated = locations.map((location) => {
       const rows = data.filter((d) => d.workLocation === location)
@@ -109,7 +111,12 @@ const StressByLocationChart = ({ data, theme }) => {
         const count = d[1] - d[0]
         const total = d.data.total
         const percent = total > 0 ? Math.round((count / total) * 100) : 0
-        return `${d.data.location} — ${level}: ${count} people (${percent}%)`
+        return copy.tooltip({
+          location: locationLabels[d.data.location] ?? d.data.location,
+          level: stressLabels[level] ?? level,
+          count,
+          percent,
+        })
       })
 
     const legend = svg
@@ -136,14 +143,14 @@ const StressByLocationChart = ({ data, theme }) => {
       .attr('y', 10)
       .attr('fill', legendColor)
       .attr('font-size', 12)
-      .text((d) => d)
-  }, [data, theme])
+      .text((d) => stressLabels[d] ?? d)
+  }, [common, copy, data, theme])
 
   return (
     <div className="chart-card">
       <div className="chart-header">
-        <h3>Stress levels by work location</h3>
-        <p>Stacked counts of employees experiencing low, medium, or high stress by workplace arrangement.</p>
+        <h3>{copy.title}</h3>
+        <p>{copy.description}</p>
       </div>
       <svg ref={svgRef} role="img" aria-label="Stacked bar chart comparing stress levels across work locations" />
     </div>

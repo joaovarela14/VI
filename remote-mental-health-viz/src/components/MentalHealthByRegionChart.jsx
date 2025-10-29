@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 
-const MentalHealthByRegionChart = ({ data, theme }) => {
+const MentalHealthByRegionChart = ({ data, theme, copy, common }) => {
   const svgRef = useRef(null)
 
   useEffect(() => {
@@ -27,6 +27,7 @@ const MentalHealthByRegionChart = ({ data, theme }) => {
 
     const regions = Array.from(new Set(data.map((d) => d.region)))
     const conditions = Array.from(new Set(data.map((d) => d.mentalHealthCondition)))
+    const conditionLabels = copy?.legend ?? common?.conditions ?? {}
 
     const aggregated = regions.map((region) => {
       const rows = data.filter((d) => d.region === region)
@@ -106,7 +107,12 @@ const MentalHealthByRegionChart = ({ data, theme }) => {
         const count = d[1] - d[0]
         const total = d.data.total
         const percent = total > 0 ? Math.round((count / total) * 100) : 0
-        return `${d.data.region} — ${condition}: ${count} people (${percent}%)`
+        return copy.tooltip({
+          region: d.data.region,
+          condition: conditionLabels[condition] ?? condition,
+          count,
+          percent,
+        })
       })
 
     const legend = svg
@@ -137,14 +143,14 @@ const MentalHealthByRegionChart = ({ data, theme }) => {
       .attr('y', 10)
       .attr('fill', legendColor)
       .attr('font-size', 12)
-      .text((d) => d)
-  }, [data, theme])
+      .text((d) => conditionLabels[d] ?? d)
+  }, [common, copy, data, theme])
 
   return (
     <div className="chart-card">
       <div className="chart-header">
-        <h3>Mental health conditions by region</h3>
-        <p>Stacked bars show how often depression, anxiety, and other reported conditions appear in each region.</p>
+        <h3>{copy.title}</h3>
+        <p>{copy.description}</p>
       </div>
       <svg ref={svgRef} role="img" aria-label="Stacked bar chart comparing mental health conditions across global regions" />
     </div>

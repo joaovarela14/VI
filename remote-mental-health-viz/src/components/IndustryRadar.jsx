@@ -2,9 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import * as d3 from 'd3'
 
 const workLocations = ['Remote', 'Hybrid', 'Onsite']
-const percentFormatter = d3.format('.0%')
 
-const IndustryRadar = ({ data, theme }) => {
+const IndustryRadar = ({ data, theme, copy, common }) => {
   const containerRef = useRef(null)
   const svgRef = useRef(null)
 
@@ -142,7 +141,7 @@ const IndustryRadar = ({ data, theme }) => {
         .attr('text-anchor', 'middle')
         .attr('fill', axisColor)
         .attr('font-size', 11)
-        .text(percentFormatter(Math.min(value, 1)))
+        .text(copy.ringLabel ? copy.ringLabel(value) : value)
     })
 
     roleAxes.forEach((role, i) => {
@@ -190,8 +189,6 @@ const IndustryRadar = ({ data, theme }) => {
       .attr('fill-opacity', 0.15)
       .attr('stroke', (d) => colorScale(d.location))
       .attr('stroke-width', 2)
-      .append('title')
-      .text((d) => `${d.location} teams in ${selectedIndustry}: role distribution radar`)
 
     const hideTooltip = () => {
       tooltip.style('opacity', 0)
@@ -202,15 +199,18 @@ const IndustryRadar = ({ data, theme }) => {
       const groupMeta = grouped.find((group) => group.location === datum.location)
       const total = groupMeta?.total ?? 0
       const count = total ? Math.round(datum.value * total) : 0
+      const locationLabel = common?.workLocations?.[datum.location] ?? datum.location
 
       tooltip
         .style('opacity', 1)
         .html(
-          `<div class="chart-tooltip__title">${roleAxes[datum.index]}</div>
-           <div class="chart-tooltip__meta">${datum.location}</div>
-           <div class="chart-tooltip__meta">Share: <strong>${percentFormatter(Math.min(datum.value, 1))}</strong></div>
-           <div class="chart-tooltip__meta">Responses in location: <strong>${total}</strong></div>
-           <div class="chart-tooltip__meta">Approx. role count: <strong>${count}</strong></div>`
+          copy.tooltip({
+            role: roleAxes[datum.index],
+            locationLabel,
+            share: datum.value,
+            total,
+            count,
+          })
         )
 
       const tooltipNode = tooltip.node()
@@ -262,7 +262,7 @@ const IndustryRadar = ({ data, theme }) => {
       .attr('fill', legendColor)
       .attr('font-size', 13)
       .attr('font-weight', 600)
-      .text('Work location')
+      .text(copy.legendTitle)
 
     const legendItem = legend
       .selectAll('g')
@@ -285,11 +285,11 @@ const IndustryRadar = ({ data, theme }) => {
       .attr('y', 11)
       .attr('fill', legendColor)
       .attr('font-size', 12)
-      .text((d) => d)
+      .text((d) => common?.workLocations?.[d] ?? d)
     return () => {
       hideTooltip()
     }
-  }, [activeLocations, grouped, hasData, roleAxes, selectedIndustry, theme])
+  }, [activeLocations, common, copy, grouped, hasData, roleAxes, selectedIndustry, theme])
 
   const noData = !selectedIndustry || !roleAxes.length || !hasData
 
@@ -298,15 +298,12 @@ const IndustryRadar = ({ data, theme }) => {
       <div className="chart-header">
         <div className="industry-radar__controls">
           <div>
-            <h3>Role mix within a sector</h3>
-            <p>
-              Pick a sector to explore how job roles are distributed across work locations. Vertices show the most common roles
-              for the selected industry.
-            </p>
+            <h3>{copy.title}</h3>
+            <p>{copy.description}</p>
           </div>
           <div className="industry-radar__filters">
             <label>
-              <span className="visually-hidden">Select sector</span>
+              <span className="visually-hidden">{copy.sectorLabel}</span>
               <select
                 className="chart-select"
                 value={selectedIndustry}
@@ -320,16 +317,16 @@ const IndustryRadar = ({ data, theme }) => {
               </select>
             </label>
             <label>
-              <span className="visually-hidden">Filter by work location</span>
+              <span className="visually-hidden">{copy.locationLabel}</span>
               <select
                 className="chart-select"
                 value={locationFilter}
                 onChange={(event) => setLocationFilter(event.target.value)}
               >
-                <option value="All">All locations</option>
+                <option value="All">{copy.optionAllLocations}</option>
                 {workLocations.map((location) => (
                   <option key={location} value={location}>
-                    {location}
+                    {common?.workLocations?.[location] ?? location}
                   </option>
                 ))}
               </select>
@@ -338,7 +335,7 @@ const IndustryRadar = ({ data, theme }) => {
         </div>
       </div>
       {noData ? (
-        <p className="chart-empty">Select a sector with available job role information to populate the radar chart.</p>
+        <p className="chart-empty">{copy.empty}</p>
       ) : (
         <svg ref={svgRef} role="img" aria-label="Radar chart comparing job role distribution within a sector by work location" />
       )}

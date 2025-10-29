@@ -4,7 +4,7 @@ import * as d3 from 'd3'
 const locationOrder = ['Remote', 'Hybrid', 'Onsite']
 const stressLevels = ['Low', 'Medium', 'High']
 
-const MultiDimensionScatter = ({ data, theme }) => {
+const MultiDimensionScatter = ({ data, theme, copy, common }) => {
   const [selectedLocation, setSelectedLocation] = useState('All')
   const containerRef = useRef(null)
   const svgRef = useRef(null)
@@ -62,19 +62,28 @@ const MultiDimensionScatter = ({ data, theme }) => {
       return
     }
 
+    const locationLabels = common?.workLocations ?? {}
+    const stressLabels = common?.stressLevels ?? {}
+
     const hideTooltip = () => {
       tooltip.style('opacity', 0)
     }
 
     const showTooltip = (event, datum) => {
       const bounds = containerNode.getBoundingClientRect()
+      const locationLabel = locationLabels[datum.workLocation] ?? datum.workLocation
+      const stressLabel = stressLabels[datum.stressLevel] ?? datum.stressLevel
+
       tooltip
         .style('opacity', 1)
         .html(
-          `<div class="chart-tooltip__title">${datum.employeeId}</div>
-           <div class="chart-tooltip__meta">${datum.workLocation} &bull; Stress: <strong>${datum.stressLevel}</strong></div>
-           <div class="chart-tooltip__meta">Hours per week: <strong>${datum.hoursWorked}</strong></div>
-           <div class="chart-tooltip__meta">Virtual meetings: <strong>${datum.virtualMeetings}</strong></div>`
+          copy.tooltip({
+            employeeId: datum.employeeId,
+            locationLabel,
+            stressLabel,
+            hoursWorked: datum.hoursWorked,
+            virtualMeetings: datum.virtualMeetings,
+          })
         )
 
       const tooltipNode = tooltip.node()
@@ -199,7 +208,7 @@ const MultiDimensionScatter = ({ data, theme }) => {
       .attr('fill', legendColor)
       .attr('font-size', 13)
       .attr('font-weight', 600)
-      .text('Work location')
+      .text(copy.legendHeading)
 
     const legendItem = legend
       .selectAll('.legend-item')
@@ -223,7 +232,7 @@ const MultiDimensionScatter = ({ data, theme }) => {
       .attr('y', 4)
       .attr('fill', legendColor)
       .attr('font-size', 12)
-      .text((d) => d)
+      .text((d) => common?.workLocations?.[d] ?? d)
 
     const sizeLegend = legend.append('g').attr('transform', `translate(0, ${activeLocations.length * 24 + 32})`)
 
@@ -232,7 +241,7 @@ const MultiDimensionScatter = ({ data, theme }) => {
       .attr('fill', legendColor)
       .attr('font-size', 13)
       .attr('font-weight', 600)
-      .text('Stress level')
+      .text(copy.sizeLegendHeading)
 
     const stressEntries = stressLevels.map((level) => ({
       level,
@@ -261,33 +270,30 @@ const MultiDimensionScatter = ({ data, theme }) => {
           .attr('y', 4)
           .attr('fill', legendColor)
           .attr('font-size', 12)
-          .text(level)
+          .text(common?.stressLevels?.[level] ?? level)
       })
     return () => {
       hideTooltip()
     }
-  }, [filteredData, theme, stressSizeScale, activeLocations])
+  }, [activeLocations, common, copy, filteredData, stressSizeScale, theme])
 
   return (
     <div ref={containerRef} className="chart-card chart-card--wide">
       <div className="chart-header">
         <div className="chart-header__top">
           <div>
-            <h3>Hours, stress, and meeting cadence</h3>
-            <p>
-              Colour encodes workplace arrangement, bubble size reflects stress levels, and the vertical axis shows virtual
-              meetings per week.
-            </p>
+            <h3>{copy.title}</h3>
+            <p>{copy.description}</p>
           </div>
           <label className="chart-controls">
-            <span className="visually-hidden">Filtrar por localização de trabalho</span>
+            <span className="visually-hidden">{copy.filterLabel}</span>
             <select
               className="chart-select"
               value={selectedLocation}
               onChange={(event) => setSelectedLocation(event.target.value)}
             >
               {locationOptions.map((option) => {
-                const label = option === 'All' ? 'All locations' : option
+                const label = copy.filterOptions[option] ?? option
                 return (
                   <option key={option} value={option}>
                     {label}
@@ -299,7 +305,7 @@ const MultiDimensionScatter = ({ data, theme }) => {
         </div>
       </div>
       {filteredData.length === 0 ? (
-        <p className="chart-empty">No responses with meeting and stress details are available.</p>
+        <p className="chart-empty">{copy.empty}</p>
       ) : (
         <svg ref={svgRef} role="img" aria-label="Scatter plot relating hours, stress levels, and meeting counts across work locations" />
       )}

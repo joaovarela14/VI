@@ -5,11 +5,18 @@ import MentalHealthByRegionChart from './components/MentalHealthByRegionChart'
 import HoursVsSleepScatter from './components/HoursVsSleepScatter'
 import MultiDimensionScatter from './components/MultiDimensionScatter'
 import IndustryRadar from './components/IndustryRadar'
+import en from './i18n/en'
+import pt from './i18n/pt'
 import './App.css'
 
 const dataUrl = new URL('../data/Impact_of_Remote_Work_on_Mental_Health.csv', import.meta.url)
 
 const positiveSatisfaction = new Set(['satisfied', 'very satisfied', 'extremely satisfied'])
+
+const translations = {
+  en,
+  pt,
+}
 
 const parseNumber = (value) => {
   const number = Number.parseFloat(value)
@@ -19,9 +26,12 @@ const parseNumber = (value) => {
 function App() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(false)
   const [activeTab, setActiveTab] = useState('overview')
   const [theme, setTheme] = useState('dark')
+  const [language, setLanguage] = useState('en')
+
+  const copy = translations[language]
 
   useEffect(() => {
     const classList = document.body.classList
@@ -56,9 +66,10 @@ function App() {
         }))
 
         setData(parsed)
+        setError(false)
         setLoading(false)
       } catch (err) {
-        setError('We were unable to load the dataset. Please try again later.')
+        setError(true)
         setLoading(false)
       }
     }
@@ -96,44 +107,33 @@ function App() {
     }
   }, [data])
 
-  const tabs = useMemo(
-    () => [
-      {
-        id: 'overview',
-        label: 'Overview story',
-        description: 'Highlights workload, stress, and support access at a glance.',
-      },
-      {
-        id: 'deep-dive',
-        label: 'Work patterns lab',
-        description: 'Analyse meeting load and sector mix by role and location.',
-      },
-    ],
-    []
-  )
+  const tabs = copy.hero.tabs
+  const datasetCount = data.length > 0 ? data.length : null
+  const themeButtonLabel = theme === 'dark' ? copy.hero.buttons.theme.light : copy.hero.buttons.theme.dark
+  const languageButtonLabel = language === 'en' ? copy.hero.buttons.language.toPortuguese : copy.hero.buttons.language.toEnglish
 
   const toggleTheme = () => {
     setTheme((current) => (current === 'dark' ? 'light' : 'dark'))
+  }
+
+  const toggleLanguage = () => {
+    setLanguage((current) => (current === 'en' ? 'pt' : 'en'))
   }
 
   return (
     <div className="page">
       <header className="hero">
         <div className="hero__content">
-          <p className="hero__eyebrow">Remote work mental health explorer</p>
-          <h1>How hybrid work patterns shape employee wellbeing</h1>
-          <p className="hero__lead">
-            This dashboard summarises a synthetic survey that captures how professionals across industries experience remote
-            work. Explore stress levels, regional differences in mental health conditions, and the connection between working
-            hours and sleep quality.
-          </p>
+          <p className="hero__eyebrow">{copy.hero.eyebrow}</p>
+          <h1>{copy.hero.title}</h1>
+          <p className="hero__lead">{copy.hero.lead}</p>
           <div className="hero__meta">
-            <span>Dataset size: {data.length || '—'} employees</span>
-            <span>Source: Impact of Remote Work on Mental Health survey (fictional)</span>
+            <span>{copy.hero.meta.datasetSize(datasetCount)}</span>
+            <span>{copy.hero.meta.source}</span>
           </div>
         </div>
         <div className="hero__footer">
-          <nav className="hero__tabs" role="tablist" aria-label="Dashboard views">
+          <nav className="hero__tabs" role="tablist" aria-label={copy.hero.tablistLabel}>
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -153,14 +153,26 @@ function App() {
             className="theme-toggle"
             onClick={toggleTheme}
             aria-pressed={theme === 'dark'}
-            aria-label="Toggle light and dark theme"
+            aria-label={copy.hero.buttons.theme.aria}
           >
             <span className="theme-toggle__icon" aria-hidden="true">
               {theme === 'dark' ? '🌙' : '☀️'}
             </span>
             <span className="theme-toggle__label">
-              {theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              {themeButtonLabel}
             </span>
+          </button>
+          <button
+            type="button"
+            className="theme-toggle"
+            onClick={toggleLanguage}
+            aria-pressed={language === 'pt'}
+            aria-label={copy.hero.buttons.language.aria}
+          >
+            <span className="theme-toggle__icon" aria-hidden="true">
+              🌐
+            </span>
+            <span className="theme-toggle__label">{languageButtonLabel}</span>
           </button>
         </div>
       </header>
@@ -169,110 +181,70 @@ function App() {
         {activeTab === 'overview' ? (
           <>
             <section className="section">
-              <h2>At a glance</h2>
-              <p className="section__intro">
-                Key indicators provide context before you dive into the detailed visual analysis. They highlight workload, meeting
-                load, access to support, and the share of people thriving or struggling.
-              </p>
+              <h2>{copy.overview.heading}</h2>
+              <p className="section__intro">{copy.overview.intro}</p>
               <div className="metrics-grid">
-                <article className="metric-card">
-                  <h3>Average weekly hours</h3>
-                  <p className="metric-card__value">{stats.avgHours.toFixed(1)} h</p>
-                  <p className="metric-card__description">Typical workload reported by the respondents each week.</p>
-                </article>
-                <article className="metric-card">
-                  <h3>High stress prevalence</h3>
-                  <p className="metric-card__value">{Math.round(stats.highStressShare * 100)}%</p>
-                  <p className="metric-card__description">Share of people who describe their stress level as high.</p>
-                </article>
-                <article className="metric-card">
-                  <h3>Satisfied with remote work</h3>
-                  <p className="metric-card__value">{Math.round(stats.satisfiedShare * 100)}%</p>
-                  <p className="metric-card__description">Percentage of employees expressing satisfaction with remote work.</p>
-                </article>
-                <article className="metric-card">
-                  <h3>Average virtual meetings</h3>
-                  <p className="metric-card__value">{stats.avgMeetings.toFixed(1)} / week</p>
-                  <p className="metric-card__description">How many video calls people typically attend in a week.</p>
-                </article>
-                <article className="metric-card">
-                  <h3>Access to mental health resources</h3>
-                  <p className="metric-card__value">{Math.round(stats.resourceAccessShare * 100)}%</p>
-                  <p className="metric-card__description">Employees who state that their company provides mental health support.</p>
-                </article>
+                {copy.overview.metrics.map((metric) => (
+                  <article key={metric.id} className="metric-card">
+                    <h3>{metric.title}</h3>
+                    <p className="metric-card__value">{metric.value(stats)}</p>
+                    <p className="metric-card__description">{metric.description}</p>
+                  </article>
+                ))}
               </div>
             </section>
 
             <section className="section section--charts">
-              <h2>Explore the survey results</h2>
-              <p className="section__intro">
-                Three complementary visualisations reveal how context, location, and lifestyle relate to wellbeing. Hover the charts
-                to inspect precise counts.
-              </p>
+              <h2>{copy.overview.charts.heading}</h2>
+              <p className="section__intro">{copy.overview.charts.intro}</p>
               <div className="chart-grid">
-                <StressByLocationChart data={data} theme={theme} />
-                <MentalHealthByRegionChart data={data} theme={theme} />
-                <HoursVsSleepScatter data={data} theme={theme} />
+                <StressByLocationChart data={data} theme={theme} copy={copy.stressByLocation} common={copy.common} />
+                <MentalHealthByRegionChart data={data} theme={theme} copy={copy.mentalHealthByRegion} common={copy.common} />
+                <HoursVsSleepScatter data={data} theme={theme} copy={copy.hoursVsSleep} common={copy.common} />
               </div>
             </section>
 
             <section className="section">
-              <h2>What to look for</h2>
+              <h2>{copy.overview.highlightsTitle}</h2>
               <div className="insights">
-                <p>
-                  <strong>Compare remote settings.</strong> The stacked bars clarify whether onsite, hybrid, or fully remote roles face the
-                  highest stress burden.
-                </p>
-                <p>
-                  <strong>Scan regional disparities.</strong> The mental health condition chart highlights where anxiety, depression, or
-                  burnout surface most often, guiding targeted interventions.
-                </p>
-                <p>
-                  <strong>Balance workload and rest.</strong> The scatter plot helps you spot when long working hours coincide with poor
-                  sleep, especially for those experiencing high stress.
-                </p>
+                {copy.overview.insights.map((insight, index) => (
+                  <p key={index}>
+                    <strong>{insight.emphasis}</strong> {insight.detail}
+                  </p>
+                ))}
               </div>
             </section>
           </>
         ) : (
           <>
             <section className="section">
-              <h2>Meeting load vs. stress</h2>
-              <p className="section__intro">
-                Visualise how weekly hours and meeting cadence intersect for each workplace arrangement. Colour compares job
-                locations, bubble size captures stress levels, and the Y axis shows the number of virtual meetings per week.
-              </p>
+              <h2>{copy.deepDive.meeting.heading}</h2>
+              <p className="section__intro">{copy.deepDive.meeting.intro}</p>
               <div className="chart-grid chart-grid--single">
-                <MultiDimensionScatter data={data} theme={theme} />
+                <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} />
               </div>
             </section>
 
             <section className="section">
-              <h2>Sector mix by job role</h2>
-              <p className="section__intro">
-                Choose a sector to see which job roles dominate within each work setting. Filter by work location to inspect how
-                remote, hybrid, and onsite teams differ inside that industry.
-              </p>
-              <IndustryRadar data={data} theme={theme} />
+              <h2>{copy.deepDive.sector.heading}</h2>
+              <p className="section__intro">{copy.deepDive.sector.intro}</p>
+              <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} />
             </section>
           </>
         )}
       </main>
 
       <footer className="page-footer">
-        <p>
-          Prototype created for the Information Visualisation course. Built with React, Vite, and d3.js to demonstrate a
-          human-centred approach to exploring wellbeing in distributed teams.
-        </p>
+        <p>{copy.footer}</p>
       </footer>
 
       {loading && (
         <div className="loading-overlay" role="status" aria-live="polite">
           <div className="loading-spinner" aria-hidden="true" />
-          <span>Loading survey responses…</span>
+          <span>{copy.loading}</span>
         </div>
       )}
-      {error && !loading && <div className="error-banner">{error}</div>}
+      {error && !loading && <div className="error-banner">{copy.error}</div>}
     </div>
   )
 }
