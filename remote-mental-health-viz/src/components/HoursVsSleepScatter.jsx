@@ -3,13 +3,18 @@ import * as d3 from 'd3'
 
 const sleepOrder = ['Poor', 'Average', 'Good']
 
-const HoursVsSleepScatter = ({ data }) => {
+const HoursVsSleepScatter = ({ data, theme }) => {
   const svgRef = useRef(null)
 
   useEffect(() => {
     if (!data || data.length === 0) {
       return
     }
+
+    const styles = getComputedStyle(document.body)
+    const axisColor = styles.getPropertyValue('--chart-axis-color').trim() || '#94a3b8'
+    const gridColor = styles.getPropertyValue('--chart-grid-stroke').trim() || '#334155'
+    const legendColor = styles.getPropertyValue('--chart-legend-text').trim() || '#cbd5f5'
 
     const width = 420
     const height = 320
@@ -53,10 +58,10 @@ const HoursVsSleepScatter = ({ data }) => {
         g
           .selectAll('text')
           .attr('font-size', 12)
-          .attr('fill', '#94a3b8')
+          .attr('fill', axisColor)
       )
-      .call((g) => g.selectAll('path').attr('stroke', '#334155'))
-      .call((g) => g.selectAll('line').attr('stroke', '#334155'))
+      .call((g) => g.selectAll('path').attr('stroke', gridColor))
+      .call((g) => g.selectAll('line').attr('stroke', gridColor))
 
     chartGroup
       .append('g')
@@ -65,10 +70,10 @@ const HoursVsSleepScatter = ({ data }) => {
         g
           .selectAll('text')
           .attr('font-size', 12)
-          .attr('fill', '#94a3b8')
+          .attr('fill', axisColor)
       )
-      .call((g) => g.selectAll('path').attr('stroke', '#334155'))
-      .call((g) => g.selectAll('line').attr('stroke', '#334155'))
+      .call((g) => g.selectAll('path').attr('stroke', gridColor))
+      .call((g) => g.selectAll('line').attr('stroke', gridColor))
 
     const jitter = () => (Math.random() - 0.5) * (yScale.bandwidth() * 0.5)
 
@@ -81,7 +86,7 @@ const HoursVsSleepScatter = ({ data }) => {
       .attr('r', 5)
       .attr('fill', (d) => colorScale(d.stressLevel))
       .attr('fill-opacity', 0.9)
-      .attr('stroke', '#0f172a')
+      .attr('stroke', gridColor)
       .attr('stroke-width', 1)
       .append('title')
       .text(
@@ -111,10 +116,10 @@ const HoursVsSleepScatter = ({ data }) => {
       .append('text')
       .attr('x', 18)
       .attr('y', 10)
-      .attr('fill', '#cbd5f5')
+      .attr('fill', legendColor)
       .attr('font-size', 12)
       .text((d) => d)
-  }, [data])
+  }, [data, theme])
 
   return (
     <div className="chart-card">

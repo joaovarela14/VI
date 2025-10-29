@@ -4,24 +4,79 @@
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #e2e8f0;
-  background-color: #020617;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text-primary);
+  background: var(--page-background);
+  transition: background 0.6s ease, color 0.6s ease;
+  --page-background: radial-gradient(circle at top left, #1e293b 0%, #0f172a 55%, #020617 100%);
+  --surface-hero: linear-gradient(135deg, rgba(59, 130, 246, 0.35), rgba(14, 116, 144, 0.25));
+  --surface-card: rgba(15, 23, 42, 0.65);
+  --surface-card-strong: rgba(15, 23, 42, 0.8);
+  --surface-footer: rgba(15, 23, 42, 0.75);
+  --chip-background: rgba(15, 23, 42, 0.65);
+  --toggle-background: rgba(15, 23, 42, 0.75);
+  --toggle-border: rgba(148, 163, 184, 0.35);
+  --border-soft: rgba(148, 163, 184, 0.25);
+  --text-primary: #e2e8f0;
+  --text-muted: #cbd5f5;
+  --text-subtle: #93c5fd;
+  --badge-text: #a5f3fc;
+  --insight-strong: #f1f5f9;
+  --chart-surface: rgba(15, 23, 42, 0.6);
+  --chart-border: rgba(148, 163, 184, 0.2);
+  --chart-axis-color: #94a3b8;
+  --chart-grid-stroke: #334155;
+  --chart-legend-text: #cbd5f5;
+  --focus-ring: 0 0 0 3px rgba(56, 189, 248, 0.35);
+  --error-background: rgba(248, 113, 113, 0.15);
+  --error-border: rgba(248, 113, 113, 0.4);
+  --error-text: #fecaca;
+  --spinner-border: rgba(148, 163, 184, 0.4);
+  --spinner-highlight: #38bdf8;
+}
+
+body.theme-light {
+  --page-background: radial-gradient(circle at top left, #f8fafc 0%, #e2e8f0 55%, #f1f5f9 100%);
+  --surface-hero: linear-gradient(135deg, rgba(14, 116, 144, 0.12), rgba(59, 130, 246, 0.1));
+  --surface-card: rgba(255, 255, 255, 0.85);
+  --surface-card-strong: rgba(248, 250, 252, 0.95);
+  --surface-footer: rgba(226, 232, 240, 0.65);
+  --chip-background: rgba(241, 245, 249, 0.85);
+  --toggle-background: rgba(255, 255, 255, 0.9);
+  --toggle-border: rgba(148, 163, 184, 0.45);
+  --border-soft: rgba(148, 163, 184, 0.35);
+  --text-primary: #0f172a;
+  --text-muted: #475569;
+  --text-subtle: #475569;
+  --badge-text: #0284c7;
+  --insight-strong: #0f172a;
+  --chart-surface: rgba(255, 255, 255, 0.95);
+  --chart-border: rgba(148, 163, 184, 0.3);
+  --chart-axis-color: #475569;
+  --chart-grid-stroke: #cbd5f5;
+  --chart-legend-text: #1e293b;
+  --focus-ring: 0 0 0 3px rgba(14, 165, 233, 0.35);
+  --error-background: rgba(248, 113, 113, 0.12);
+  --error-border: rgba(248, 113, 113, 0.3);
+  --error-text: #b91c1c;
+  --spinner-border: rgba(148, 163, 184, 0.35);
+  --spinner-highlight: #0ea5e9;
+}
+
 a {
   color: inherit;
+  text-decoration: none;
 }
 
 a:hover {
   color: #38bdf8;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
 }
 
 * {

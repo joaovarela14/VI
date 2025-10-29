@@ -1,13 +1,18 @@
 import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 
-const MentalHealthByRegionChart = ({ data }) => {
+const MentalHealthByRegionChart = ({ data, theme }) => {
   const svgRef = useRef(null)
 
   useEffect(() => {
     if (!data || data.length === 0) {
       return
     }
+
+    const styles = getComputedStyle(document.body)
+    const axisColor = styles.getPropertyValue('--chart-axis-color').trim() || '#94a3b8'
+    const gridColor = styles.getPropertyValue('--chart-grid-stroke').trim() || '#334155'
+    const legendColor = styles.getPropertyValue('--chart-legend-text').trim() || '#cbd5f5'
 
     const width = 420
     const height = 340
@@ -59,10 +64,10 @@ const MentalHealthByRegionChart = ({ data }) => {
         g
           .selectAll('text')
           .attr('font-size', 12)
-          .attr('fill', '#94a3b8')
+          .attr('fill', axisColor)
       )
-      .call((g) => g.selectAll('path').attr('stroke', '#334155'))
-      .call((g) => g.selectAll('line').attr('stroke', '#334155'))
+      .call((g) => g.selectAll('path').attr('stroke', gridColor))
+      .call((g) => g.selectAll('line').attr('stroke', gridColor))
 
     chartGroup
       .append('g')
@@ -76,10 +81,10 @@ const MentalHealthByRegionChart = ({ data }) => {
         g
           .selectAll('text')
           .attr('font-size', 12)
-          .attr('fill', '#94a3b8')
+          .attr('fill', axisColor)
       )
-      .call((g) => g.selectAll('path').attr('stroke', '#334155'))
-      .call((g) => g.selectAll('line').attr('stroke', '#334155'))
+      .call((g) => g.selectAll('path').attr('stroke', gridColor))
+      .call((g) => g.selectAll('line').attr('stroke', gridColor))
 
     const groups = chartGroup
       .selectAll('.layer')
@@ -130,10 +135,10 @@ const MentalHealthByRegionChart = ({ data }) => {
       .append('text')
       .attr('x', 18)
       .attr('y', 10)
-      .attr('fill', '#cbd5f5')
+      .attr('fill', legendColor)
       .attr('font-size', 12)
       .text((d) => d)
-  }, [data])
+  }, [data, theme])
 
   return (
     <div className="chart-card">
