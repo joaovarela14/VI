@@ -6,6 +6,10 @@ import HoursVsSleepScatter from './components/HoursVsSleepScatter'
 import MultiDimensionScatter from './components/MultiDimensionScatter'
 import IndustryRadar from './components/IndustryRadar'
 import WorkLifeBalanceLineChart from './components/WorkLifeBalanceLineChart'
+import SatisfactionPieChart from './components/SatisfactionPieChart'
+import SocialIsolationBarChart from './components/SocialIsolationBarChart'
+import ConditionActivityStressChart from './components/ConditionActivityStressChart'
+import SleepStressMatrix from './components/SleepStressMatrix'
 import en from './i18n/en'
 import pt from './i18n/pt'
 import './App.css'
@@ -231,6 +235,43 @@ function App() {
               <p className="section__intro">{copy.deepDive.meeting.intro}</p>
               <div className="chart-grid chart-grid--single">
                 <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} />
+              </div>
+            </section>
+
+            <section className="section">
+              <h2>{copy.deepDive.socialIsolation.heading}</h2>
+              <p className="section__intro">{copy.deepDive.socialIsolation.intro}</p>
+              <div className="chart-grid chart-grid--single">
+                <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} />
+              </div>
+            </section>
+
+            <section className="section">
+              <h2>{copy.deepDive.conditionStress.heading}</h2>
+              <p className="section__intro">{copy.deepDive.conditionStress.intro}</p>
+              <div className="chart-grid chart-grid--single">
+                <ConditionActivityStressChart
+                  data={data}
+                  theme={theme}
+                  copy={copy.conditionActivityStress}
+                  common={copy.common}
+                />
+              </div>
+            </section>
+
+            <section className="section">
+              <h2>{copy.deepDive.sleepStress.heading}</h2>
+              <p className="section__intro">{copy.deepDive.sleepStress.intro}</p>
+              <div className="chart-grid chart-grid--single">
+                <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} />
+              </div>
+            </section>
+
+            <section className="section">
+              <h2>{copy.deepDive.satisfaction.heading}</h2>
+              <p className="section__intro">{copy.deepDive.satisfaction.intro}</p>
+              <div className="chart-grid chart-grid--single">
+                <SatisfactionPieChart data={data} theme={theme} copy={copy.satisfactionPie} common={copy.common} />
               </div>
             </section>
 

@@ -41,6 +41,18 @@ const mentalHealthConditions = {
   Other: 'Other',
 }
 
+const satisfactionMap = {
+  unsatisfied: 'unsatisfied',
+  dissatisfied: 'unsatisfied',
+  'very unsatisfied': 'unsatisfied',
+  satisfied: 'satisfied',
+  'very satisfied': 'satisfied',
+  'extremely satisfied': 'satisfied',
+  neutral: 'neutral',
+  indifferent: 'neutral',
+  'neither satisfied nor dissatisfied': 'neutral',
+}
+
 const formatCount = (value) => integerFormatter.format(value ?? 0)
 
 const en = {
@@ -54,6 +66,7 @@ const en = {
       no: 'No mental health resources',
     },
     allLocations: 'All locations',
+    satisfactionMap,
   },
   hero: {
     eyebrow: 'Remote work mental health explorer',
@@ -65,7 +78,7 @@ const en = {
         const value = count != null ? integerFormatter.format(count) : '—'
         return `Dataset size: ${value} employees`
       },
-      source: 'Source: Impact of Remote Work on Mental Health survey (fictional)',
+      source: 'Source: Impact of Remote Work on Mental Health survey',
     },
     tablistLabel: 'Dashboard views',
     tabs: [
@@ -175,6 +188,74 @@ const en = {
     tooltip: ({ employeeId, hoursWorked, sleepQualityLabel, stressLevelLabel }) =>
       `${employeeId}\nHours per week: ${decimalFormatter.format(hoursWorked ?? 0)}\nSleep quality: ${sleepQualityLabel}\nStress level: ${stressLevelLabel}`,
   },
+  socialIsolationBar: {
+    title: 'Social isolation by continent',
+    description:
+      'Average social isolation rating (1 = low, 5 = high) split by continent. Refine the data by gender and access to mental health resources.',
+    filters: {
+      region: 'Filter by continent',
+      gender: 'Filter by gender',
+      access: 'Filter by mental health access',
+      allRegions: 'All continents',
+      allGenders: 'All genders',
+      allAccess: 'All access levels',
+      accessYes: 'Has support',
+      accessNo: 'No support',
+    },
+    axisLabel: 'Average isolation rating',
+    empty: 'No social isolation responses match the selected filters.',
+    tooltip: ({ region, average, count }) =>
+      `${region}\nAverage rating: ${decimalFormatter.format(average ?? 0)}\nResponses: ${integerFormatter.format(count ?? 0)}`,
+  },
+  conditionActivityStress: {
+    title: 'Stress levels by mental health condition',
+    description:
+      'Stacked bars highlight how often each stress level is reported for every mental health condition. Filter the distribution by physical activity frequency to see how sport habits relate to pressure.',
+    filters: {
+      activity: 'Filter by physical activity',
+      allActivities: 'All activity levels',
+    },
+    axis: {
+      y: 'Employees',
+    },
+    empty: 'No responses are available for the selected activity level.',
+    tooltip: ({ condition, stressLabel, count, percent }) =>
+      `${condition} — ${stressLabel}\nPeople: ${formatCount(count)}\nShare: ${percentFormatter.format((percent ?? 0) / 100)}`,
+  },
+  sleepStressMatrix: {
+    title: 'Sleep quality vs. stress',
+    description:
+      'A heatmap reveals how sleep quality changes with stress levels. Focus on a specific mental health condition to uncover distinctive rest patterns.',
+    filters: {
+      condition: 'Filter by mental health condition',
+      allConditions: 'All conditions',
+    },
+    axisLabel: 'People',
+    empty: 'No sleep quality details are available for the selected condition.',
+    tooltip: ({ stressLabel, sleepLabel, count }) =>
+      `${stressLabel} — ${sleepLabel}\nPeople: ${formatCount(count)}`,
+  },
+  satisfactionPie: {
+    title: 'Remote work satisfaction split',
+    description:
+      'Track how employees rate their remote work experience. Filter by sector or region to reveal contrasting sentiment.',
+    ariaLabel: 'Pie chart comparing satisfaction levels with remote work filtered by sector or region',
+    legendTitle: 'Satisfaction level',
+    legend: {
+      unsatisfied: 'Unsatisfied',
+      neutral: 'Neutral',
+      satisfied: 'Satisfied',
+    },
+    filters: {
+      sector: 'Filter by sector',
+      region: 'Filter by region',
+      allSectors: 'All sectors',
+      allRegions: 'All regions',
+    },
+    empty: 'No responses are available for the selected filters.',
+    tooltip: ({ label, count, percentage }) =>
+      `${label}: ${formatCount(count)} employees (${percentFormatter.format((percentage ?? 0) / 100)})`,
+  },
   scatter: {
     title: 'Hours, stress, and meeting cadence',
     description:
@@ -249,6 +330,26 @@ const en = {
       intro:
         'Visualise how weekly hours, stress, and meeting load intersect for each workplace arrangement. Use the colours to compare locations and the bubble size to understand how meeting-heavy schedules relate to pressure.',
     },
+    socialIsolation: {
+      heading: 'Isolation intensity by continent',
+      intro:
+        'Compare the average social isolation rating across continents, and slice the view by gender or access to mental health support to reveal vulnerable groups.',
+    },
+    conditionStress: {
+      heading: 'Stress mix by condition and activity',
+      intro:
+        'Inspect how reported stress levels shift across anxiety, depression, burnout, or other conditions. Toggle the physical activity filter to identify routines that coincide with lower stress.',
+    },
+    sleepStress: {
+      heading: 'Rest patterns under stress',
+      intro:
+        'Use the heatmap to study how sleep quality changes at each stress level, and focus on a specific mental health condition to spot where rest deteriorates most.',
+    },
+    satisfaction: {
+      heading: 'Remote work satisfaction filters',
+      intro:
+        'Slice the sentiment data by sector or region to uncover where remote work feels more supportive or frustrating. Hover the pie chart to read exact counts and percentages.',
+    },
     sector: {
       heading: 'Sector mix by job role',
       intro:
@@ -258,7 +359,7 @@ const en = {
   loading: 'Loading survey responses…',
   error: 'We were unable to load the dataset. Please try again later.',
   footer:
-    'Prototype created for the Information Visualisation course. Built with React, Vite, and d3.js to demonstrate a human-centred approach to exploring wellbeing in distributed teams.',
+    'Project for the Information Visualization course, developed by João Varela and Carolina Prata.',
 }
 
 export default en
