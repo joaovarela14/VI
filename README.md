@@ -14,7 +14,14 @@ It follows a **human-centred design** process, going from low-fidelity prototype
 ### Tools and Technologies
 - **D3.js** for interactive visualizations  
 - **React** for the interface  
-- **CSV/JSON datasets** from public sources (Kaggle)  
+- **CSV/JSON datasets** from public sources (Kaggle)
+
+## How to run 
+```bash
+cd remote-mental-health-viz
+npm i
+npm run dev
+```
 
 ## Contributors
 - [Carolina Prata](https://github.com/carolmprata)
