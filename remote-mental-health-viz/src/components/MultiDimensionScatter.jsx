@@ -6,6 +6,8 @@ const stressLevels = ['Low', 'Medium', 'High']
 
 const MultiDimensionScatter = ({ data, theme, copy, common }) => {
   const [selectedLocation, setSelectedLocation] = useState('All')
+  const [selectedIndustry, setSelectedIndustry] = useState('All')
+  const [sampleLimit, setSampleLimit] = useState('All')
   const containerRef = useRef(null)
   const svgRef = useRef(null)
 
@@ -15,12 +17,55 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
         const hasValues =
           Number.isFinite(d.hoursWorked) && Number.isFinite(d.virtualMeetings) && d.stressLevel && d.workLocation
         const matchesLocation = selectedLocation === 'All' || d.workLocation === selectedLocation
-        return hasValues && matchesLocation
+        const matchesIndustry = selectedIndustry === 'All' || d.industry === selectedIndustry
+        return hasValues && matchesLocation && matchesIndustry
       }),
-    [data, selectedLocation]
+    [data, selectedIndustry, selectedLocation]
   )
 
   const locationOptions = useMemo(() => ['All', ...locationOrder], [])
+  const industryOptions = useMemo(() => {
+    const industries = Array.from(
+      new Set(
+        data
+          .map((d) => d.industry)
+          .filter((value) => typeof value === 'string' && value.trim().length > 0)
+      )
+    )
+    industries.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
+    return ['All', ...industries]
+  }, [data])
+  const filteredCount = filteredData.length
+  const sampleOptions = useMemo(() => ['All', 200, 500, 1000, 2000, 5000], [])
+  const availableSampleOptions = useMemo(
+    () => sampleOptions.filter((option) => option === 'All' || Number(option) <= filteredCount),
+    [filteredCount, sampleOptions]
+  )
+
+  const limitedData = useMemo(() => {
+    if (sampleLimit === 'All') {
+      return filteredData
+    }
+
+    const limitValue = Number(sampleLimit)
+    if (!Number.isFinite(limitValue) || limitValue <= 0 || limitValue >= filteredData.length) {
+      return filteredData
+    }
+
+    const shuffled = d3.shuffle([...filteredData])
+    return shuffled.slice(0, limitValue)
+  }, [filteredData, sampleLimit])
+
+  useEffect(() => {
+    if (sampleLimit === 'All') {
+      return
+    }
+
+    const limitValue = Number(sampleLimit)
+    if (Number.isFinite(limitValue) && limitValue > filteredCount) {
+      setSampleLimit('All')
+    }
+  }, [filteredCount, sampleLimit])
 
   const activeLocations = useMemo(
     () => (selectedLocation === 'All' ? locationOrder : [selectedLocation]),
@@ -49,7 +94,7 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
           .style('opacity', 0)
       : null
 
-    if (!filteredData.length) {
+    if (!limitedData.length) {
       const svg = d3.select(svgRef.current)
       svg.selectAll('*').remove()
       if (tooltip) {
@@ -121,8 +166,8 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
     const innerWidth = width - margin.left - margin.right
     const innerHeight = height - margin.top - margin.bottom
 
-    const xExtent = d3.extent(filteredData, (d) => d.hoursWorked)
-    const meetingsExtent = d3.extent(filteredData, (d) => d.virtualMeetings)
+    const xExtent = d3.extent(limitedData, (d) => d.hoursWorked)
+    const meetingsExtent = d3.extent(limitedData, (d) => d.virtualMeetings)
 
     const xScale = d3
       .scaleLinear()
@@ -183,7 +228,7 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
 
     chartGroup
       .selectAll('circle')
-      .data(filteredData)
+      .data(limitedData)
       .join('circle')
       .attr('cx', (d) => xScale(d.hoursWorked))
       .attr('cy', (d) => yScale(d.virtualMeetings) ?? innerHeight)
@@ -275,7 +320,7 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
     return () => {
       hideTooltip()
     }
-  }, [activeLocations, common, copy, filteredData, stressSizeScale, theme])
+  }, [activeLocations, common, copy, limitedData, stressSizeScale, theme])
 
   return (
     <div ref={containerRef} className="chart-card chart-card--wide">
@@ -285,26 +330,64 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
             <h3>{copy.title}</h3>
             <p>{copy.description}</p>
           </div>
-          <label className="chart-controls">
-            <span className="visually-hidden">{copy.filterLabel}</span>
-            <select
-              className="chart-select"
-              value={selectedLocation}
-              onChange={(event) => setSelectedLocation(event.target.value)}
-            >
-              {locationOptions.map((option) => {
-                const label = copy.filterOptions[option] ?? option
-                return (
-                  <option key={option} value={option}>
-                    {label}
-                  </option>
-                )
-              })}
-            </select>
-          </label>
+          <div className="chart-controls-stack">
+            <label className="chart-controls">
+              <span className="visually-hidden">{copy.filterLabel}</span>
+              <select
+                className="chart-select"
+                value={selectedLocation}
+                onChange={(event) => setSelectedLocation(event.target.value)}
+              >
+                {locationOptions.map((option) => {
+                  const label = copy.filterOptions[option] ?? option
+                  return (
+                    <option key={option} value={option}>
+                      {label}
+                    </option>
+                  )
+                })}
+              </select>
+            </label>
+            <label className="chart-controls">
+              <span className="visually-hidden">{copy.industryFilterLabel}</span>
+              <select
+                className="chart-select"
+                value={selectedIndustry}
+                onChange={(event) => setSelectedIndustry(event.target.value)}
+              >
+                {industryOptions.map((option) => {
+                  const label =
+                    option === 'All' ? copy.industryFilterOptions.All : common?.industries?.[option] ?? option
+                  return (
+                    <option key={option} value={option}>
+                      {label}
+                    </option>
+                  )
+                })}
+              </select>
+            </label>
+            <label className="chart-controls">
+              <span className="visually-hidden">{copy.sampleFilterLabel}</span>
+              <select
+                className="chart-select"
+                value={sampleLimit}
+                onChange={(event) => setSampleLimit(event.target.value)}
+              >
+                {availableSampleOptions.map((option) => {
+                  const optionKey = option.toString()
+                  const label = copy.sampleFilterOptions?.[optionKey] ?? optionKey
+                  return (
+                    <option key={optionKey} value={optionKey}>
+                      {label}
+                    </option>
+                  )
+                })}
+              </select>
+            </label>
+          </div>
         </div>
       </div>
-      {filteredData.length === 0 ? (
+      {limitedData.length === 0 ? (
         <p className="chart-empty">{copy.empty}</p>
       ) : (
         <svg ref={svgRef} role="img" aria-label="Scatter plot relating hours, stress levels, and meeting counts across work locations" />

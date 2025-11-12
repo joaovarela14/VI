@@ -33,6 +33,16 @@ const sleepQuality = {
   Good: 'Good',
 }
 
+const industries = {
+  Consulting: 'Consulting',
+  Education: 'Education',
+  Finance: 'Finance',
+  Healthcare: 'Healthcare',
+  IT: 'IT',
+  Manufacturing: 'Manufacturing',
+  Retail: 'Retail',
+}
+
 const mentalHealthConditions = {
   Anxiety: 'Anxiety',
   Depression: 'Depression',
@@ -60,12 +70,14 @@ const en = {
     stressLevels,
     workLocations,
     sleepQuality,
+    industries,
     conditions: mentalHealthConditions,
     mentalHealthAccess: {
       yes: 'Has mental health resources',
       no: 'No mental health resources',
     },
     allLocations: 'All locations',
+    allIndustries: 'All industries',
     satisfactionMap,
   },
   hero: {
@@ -261,6 +273,8 @@ const en = {
     description:
       'Colour encodes workplace arrangement, bubble size reflects stress levels, and the vertical axis shows virtual meetings per week.',
     filterLabel: 'Filter by work location',
+    industryFilterLabel: 'Filter by work area',
+    sampleFilterLabel: 'Limit random sample',
     legendHeading: 'Work location',
     sizeLegendHeading: 'Stress level',
     filterOptions: {
@@ -269,6 +283,18 @@ const en = {
       Hybrid: 'Hybrid',
       Onsite: 'Onsite',
     },
+    industryFilterOptions: {
+      All: 'All industries',
+    },
+    sampleFilterOptions: {
+      All: 'Show all points',
+      200: 'Random sample (max 200)',
+      500: 'Random sample (max 500)',
+      1000: 'Random sample (max 1,000)',
+      2000: 'Random sample (max 2,000)',
+      5000: 'Random sample (max 5,000)',
+    },
+    sampleFilterUnavailable: 'Not enough responses for this sample size',
     empty: 'No responses with meeting and stress details are available.',
     tooltip: ({ employeeId, locationLabel, stressLabel, hoursWorked, virtualMeetings }) =>
       `<div class="chart-tooltip__title">${employeeId}</div>

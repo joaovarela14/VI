@@ -318,6 +318,14 @@ main {
   align-items: center;
 }
 
+.chart-controls-stack {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
 .chart-select {
   appearance: none;
   padding: 0.6rem 1rem;

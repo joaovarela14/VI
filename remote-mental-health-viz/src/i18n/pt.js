@@ -33,6 +33,16 @@ const sleepQuality = {
   Good: 'Boa',
 }
 
+const industries = {
+  Consulting: 'Consultoria',
+  Education: 'Educação',
+  Finance: 'Finanças',
+  Healthcare: 'Saúde',
+  IT: 'Tecnologia',
+  Manufacturing: 'Indústria',
+  Retail: 'Retalho',
+}
+
 const mentalHealthConditions = {
   Anxiety: 'Ansiedade',
   Depression: 'Depressão',
@@ -60,12 +70,14 @@ const pt = {
     stressLevels,
     workLocations,
     sleepQuality,
+    industries,
     conditions: mentalHealthConditions,
     mentalHealthAccess: {
       yes: "Com apoio de saúde mental",
       no: "Sem apoio de saúde mental",
     },
     allLocations: "Todas as localizações",
+    allIndustries: "Todas as áreas",
     satisfactionMap,
   },
   hero: {
@@ -288,6 +300,8 @@ const pt = {
     description:
       "A cor indica a modalidade de trabalho, o tamanho do círculo reflete o stress e o eixo vertical mostra o número de reuniões virtuais por semana.",
     filterLabel: "Filtrar por localização de trabalho",
+    industryFilterLabel: "Filtrar por área de trabalho",
+    sampleFilterLabel: "Limitar amostra aleatória",
     legendHeading: "Modalidade de trabalho",
     sizeLegendHeading: "Nível de stress",
     filterOptions: {
@@ -296,6 +310,18 @@ const pt = {
       Hybrid: "Híbrido",
       Onsite: "Presencial",
     },
+    industryFilterOptions: {
+      All: "Todas as áreas",
+    },
+    sampleFilterOptions: {
+      All: "Mostrar todos os pontos",
+      200: "Amostra aleatória (até 200)",
+      500: "Amostra aleatória (até 500)",
+      1000: "Amostra aleatória (até 1 000)",
+      2000: "Amostra aleatória (até 2 000)",
+      5000: "Amostra aleatória (até 5 000)",
+    },
+    sampleFilterUnavailable: "Sem respostas suficientes para este tamanho de amostra",
     empty: "Sem respostas com informação de reuniões e stress para apresentar.",
     tooltip: ({
       employeeId,
