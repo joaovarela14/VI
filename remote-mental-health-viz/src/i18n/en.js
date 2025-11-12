@@ -277,6 +277,8 @@ const en = {
     sampleFilterLabel: 'Limit random sample',
     legendHeading: 'Work location',
     sizeLegendHeading: 'Stress level',
+    xAxisLabel: 'Hours worked per week',
+    yAxisLabel: 'Virtual meetings per week',
     filterOptions: {
       All: 'All locations',
       Remote: 'Remote',
@@ -352,9 +354,9 @@ const en = {
         'See how access to mental health resources relates to perceived work-life balance across different ages or experience levels.',
     },
     meeting: {
-      heading: 'Meeting load vs. stress',
+      heading: 'Virtual meetings load',
       intro:
-        'Visualise how weekly hours, stress, and meeting load intersect for each workplace arrangement. Use the colours to compare locations and the bubble size to understand how meeting-heavy schedules relate to pressure.',
+        'Visualise how weekly hours, stress, and meeting load intersect for each workplace. Use the colours to compare locations and the bubble size to understand how are the stress levels.',
     },
     socialIsolation: {
       heading: 'Isolation intensity by continent',

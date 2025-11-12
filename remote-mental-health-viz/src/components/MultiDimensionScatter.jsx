@@ -4,10 +4,15 @@ import * as d3 from 'd3'
 const locationOrder = ['Remote', 'Hybrid', 'Onsite']
 const stressLevels = ['Low', 'Medium', 'High']
 
+const DEFAULT_SAMPLE_LIMIT = '200'
+
 const MultiDimensionScatter = ({ data, theme, copy, common }) => {
   const [selectedLocation, setSelectedLocation] = useState('All')
   const [selectedIndustry, setSelectedIndustry] = useState('All')
-  const [sampleLimit, setSampleLimit] = useState('All')
+  const [sampleLimit, setSampleLimit] = useState(() =>
+    data.length >= Number(DEFAULT_SAMPLE_LIMIT) ? DEFAULT_SAMPLE_LIMIT : 'All'
+  )
+  const [autoSampleLimit, setAutoSampleLimit] = useState(true)
   const containerRef = useRef(null)
   const svgRef = useRef(null)
 
@@ -36,28 +41,34 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
     return ['All', ...industries]
   }, [data])
   const filteredCount = filteredData.length
-  const sampleOptions = useMemo(() => ['All', 200, 500, 1000, 2000, 5000], [])
+  const sampleOptions = useMemo(() => ['All', '200', '500', '1000', '2000', '5000'], [])
   const availableSampleOptions = useMemo(
     () => sampleOptions.filter((option) => option === 'All' || Number(option) <= filteredCount),
     [filteredCount, sampleOptions]
   )
+  const effectiveSampleLimit = useMemo(() => {
+    if (autoSampleLimit && sampleLimit === 'All' && filteredCount >= Number(DEFAULT_SAMPLE_LIMIT)) {
+      return DEFAULT_SAMPLE_LIMIT
+    }
+    return sampleLimit
+  }, [autoSampleLimit, filteredCount, sampleLimit])
 
   const limitedData = useMemo(() => {
-    if (sampleLimit === 'All') {
+    if (effectiveSampleLimit === 'All') {
       return filteredData
     }
 
-    const limitValue = Number(sampleLimit)
+    const limitValue = Number(effectiveSampleLimit)
     if (!Number.isFinite(limitValue) || limitValue <= 0 || limitValue >= filteredData.length) {
       return filteredData
     }
 
     const shuffled = d3.shuffle([...filteredData])
     return shuffled.slice(0, limitValue)
-  }, [filteredData, sampleLimit])
+  }, [effectiveSampleLimit, filteredData])
 
   useEffect(() => {
-    if (sampleLimit === 'All') {
+    if (sampleLimit === 'All' || filteredCount === 0) {
       return
     }
 
@@ -66,6 +77,24 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
       setSampleLimit('All')
     }
   }, [filteredCount, sampleLimit])
+
+  useEffect(() => {
+    if (!autoSampleLimit) {
+      return
+    }
+    if (sampleLimit !== 'All') {
+      return
+    }
+    if (filteredCount < Number(DEFAULT_SAMPLE_LIMIT)) {
+      return
+    }
+    setSampleLimit(DEFAULT_SAMPLE_LIMIT)
+  }, [autoSampleLimit, filteredCount, sampleLimit])
+
+  const handleSampleLimitChange = (event) => {
+    setAutoSampleLimit(false)
+    setSampleLimit(event.target.value)
+  }
 
   const activeLocations = useMemo(
     () => (selectedLocation === 'All' ? locationOrder : [selectedLocation]),
@@ -80,6 +109,13 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
         ['High', 20],
       ]),
     []
+  )
+  const axisLabels = useMemo(
+    () => ({
+      x: copy?.xAxisLabel ?? 'Hours worked per week',
+      y: copy?.yAxisLabel ?? 'Virtual meetings per week',
+    }),
+    [copy]
   )
 
   useEffect(() => {
@@ -227,6 +263,29 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
       .call((g) => g.selectAll('line').attr('stroke', gridColor))
 
     chartGroup
+      .append('text')
+      .attr('class', 'chart-axis-label chart-axis-label--x')
+      .attr('x', innerWidth / 2)
+      .attr('y', innerHeight + 44)
+      .attr('fill', axisColor)
+      .attr('font-size', 13)
+      .attr('font-weight', 500)
+      .attr('text-anchor', 'middle')
+      .text(axisLabels.x)
+
+    chartGroup
+      .append('text')
+      .attr('class', 'chart-axis-label chart-axis-label--y')
+      .attr('x', -innerHeight / 2)
+      .attr('y', -48)
+      .attr('fill', axisColor)
+      .attr('font-size', 13)
+      .attr('font-weight', 500)
+      .attr('text-anchor', 'middle')
+      .attr('transform', 'rotate(-90)')
+      .text(axisLabels.y)
+
+    chartGroup
       .selectAll('circle')
       .data(limitedData)
       .join('circle')
@@ -320,7 +379,7 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
     return () => {
       hideTooltip()
     }
-  }, [activeLocations, common, copy, limitedData, stressSizeScale, theme])
+  }, [activeLocations, axisLabels, common, copy, limitedData, stressSizeScale, theme])
 
   return (
     <div ref={containerRef} className="chart-card chart-card--wide">
@@ -368,16 +427,11 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
             </label>
             <label className="chart-controls">
               <span className="visually-hidden">{copy.sampleFilterLabel}</span>
-              <select
-                className="chart-select"
-                value={sampleLimit}
-                onChange={(event) => setSampleLimit(event.target.value)}
-              >
+              <select className="chart-select" value={effectiveSampleLimit} onChange={handleSampleLimitChange}>
                 {availableSampleOptions.map((option) => {
-                  const optionKey = option.toString()
-                  const label = copy.sampleFilterOptions?.[optionKey] ?? optionKey
+                  const label = copy.sampleFilterOptions?.[option] ?? option
                   return (
-                    <option key={optionKey} value={optionKey}>
+                    <option key={option} value={option}>
                       {label}
                     </option>
                   )

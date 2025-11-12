@@ -304,6 +304,8 @@ const pt = {
     sampleFilterLabel: "Limitar amostra aleatória",
     legendHeading: "Modalidade de trabalho",
     sizeLegendHeading: "Nível de stress",
+    xAxisLabel: "Horas trabalhadas por semana",
+    yAxisLabel: "Reuniões virtuais por semana",
     filterOptions: {
       All: "Todas as localizações",
       Remote: "Remoto",

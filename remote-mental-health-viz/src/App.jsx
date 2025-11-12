@@ -33,7 +33,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [activeTab, setActiveTab] = useState('overview')
-  const [theme, setTheme] = useState('dark')
+  const [theme, setTheme] = useState('light')
   const [language, setLanguage] = useState('en')
 
   const copy = translations[language]
@@ -221,8 +221,8 @@ function App() {
             </section>
           </>
         ) : (
-          <>
-            <section className="section">
+          <div className="sections-grid">
+            <section className="section section--grid-child">
               <h2>{copy.deepDive.workLife.heading}</h2>
               <p className="section__intro">{copy.deepDive.workLife.intro}</p>
               <div className="chart-grid chart-grid--single">
@@ -230,7 +230,7 @@ function App() {
               </div>
             </section>
 
-            <section className="section">
+            <section className="section section--grid-child">
               <h2>{copy.deepDive.meeting.heading}</h2>
               <p className="section__intro">{copy.deepDive.meeting.intro}</p>
               <div className="chart-grid chart-grid--single">
@@ -238,7 +238,7 @@ function App() {
               </div>
             </section>
 
-            <section className="section">
+            <section className="section section--grid-child">
               <h2>{copy.deepDive.socialIsolation.heading}</h2>
               <p className="section__intro">{copy.deepDive.socialIsolation.intro}</p>
               <div className="chart-grid chart-grid--single">
@@ -246,7 +246,7 @@ function App() {
               </div>
             </section>
 
-            <section className="section">
+            <section className="section section--grid-child">
               <h2>{copy.deepDive.conditionStress.heading}</h2>
               <p className="section__intro">{copy.deepDive.conditionStress.intro}</p>
               <div className="chart-grid chart-grid--single">
@@ -259,7 +259,7 @@ function App() {
               </div>
             </section>
 
-            <section className="section">
+            <section className="section section--grid-child">
               <h2>{copy.deepDive.sleepStress.heading}</h2>
               <p className="section__intro">{copy.deepDive.sleepStress.intro}</p>
               <div className="chart-grid chart-grid--single">
@@ -267,7 +267,7 @@ function App() {
               </div>
             </section>
 
-            <section className="section">
+            <section className="section section--grid-child">
               <h2>{copy.deepDive.satisfaction.heading}</h2>
               <p className="section__intro">{copy.deepDive.satisfaction.intro}</p>
               <div className="chart-grid chart-grid--single">
@@ -275,12 +275,12 @@ function App() {
               </div>
             </section>
 
-            <section className="section">
+            <section className="section section--grid-child">
               <h2>{copy.deepDive.sector.heading}</h2>
               <p className="section__intro">{copy.deepDive.sector.intro}</p>
               <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} />
             </section>
-          </>
+          </div>
         )}
       </main>
 
