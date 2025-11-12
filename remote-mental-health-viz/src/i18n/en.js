@@ -73,8 +73,8 @@ const en = {
     industries,
     conditions: mentalHealthConditions,
     mentalHealthAccess: {
-      yes: 'Has mental health resources',
-      no: 'No mental health resources',
+      yes: 'Yes',
+      no: 'No',
     },
     allLocations: 'All locations',
     allIndustries: 'All industries',
@@ -319,8 +319,8 @@ const en = {
     yAxisLabel: 'Average work-life balance',
     legendTitle: 'Mental health access',
     legend: {
-      yes: 'Has mental health resources',
-      no: 'No mental health resources',
+      yes: 'Yes',
+      no: 'No',
     },
     empty: 'No work-life balance information is available for the selected settings.',
     ariaLabel: 'Line chart showing average work-life balance by age or experience split by mental health access',

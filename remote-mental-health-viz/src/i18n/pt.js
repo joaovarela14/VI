@@ -73,8 +73,8 @@ const pt = {
     industries,
     conditions: mentalHealthConditions,
     mentalHealthAccess: {
-      yes: "Com apoio de saúde mental",
-      no: "Sem apoio de saúde mental",
+      yes: "Sim",
+      no: "Não",
     },
     allLocations: "Todas as localizações",
     allIndustries: "Todas as áreas",

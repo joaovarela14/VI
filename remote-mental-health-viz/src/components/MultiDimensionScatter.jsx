@@ -237,55 +237,9 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
       .call((g) => g.selectAll('line').attr('stroke', gridColor).attr('stroke-opacity', 0.2))
       .call((g) => g.selectAll('path').remove())
 
-    chartGroup
-      .append('g')
-      .attr('transform', `translate(0,${innerHeight})`)
-      .call(d3.axisBottom(xScale).ticks(6).tickFormat((d) => `${d} h`))
-      .call((g) =>
-        g
-          .selectAll('text')
-          .attr('font-size', 12)
-          .attr('fill', axisColor)
-      )
-      .call((g) => g.selectAll('path').attr('stroke', gridColor))
-      .call((g) => g.selectAll('line').attr('stroke', gridColor))
+    const pointsGroup = chartGroup.append('g').attr('class', 'chart-points')
 
-    chartGroup
-      .append('g')
-      .call(d3.axisLeft(yScale).ticks(5).tickFormat((d) => `${d}`))
-      .call((g) =>
-        g
-          .selectAll('text')
-          .attr('font-size', 12)
-          .attr('fill', axisColor)
-      )
-      .call((g) => g.selectAll('path').attr('stroke', gridColor))
-      .call((g) => g.selectAll('line').attr('stroke', gridColor))
-
-    chartGroup
-      .append('text')
-      .attr('class', 'chart-axis-label chart-axis-label--x')
-      .attr('x', innerWidth / 2)
-      .attr('y', innerHeight + 44)
-      .attr('fill', axisColor)
-      .attr('font-size', 13)
-      .attr('font-weight', 500)
-      .attr('text-anchor', 'middle')
-      .text(axisLabels.x)
-
-    chartGroup
-      .append('text')
-      .attr('class', 'chart-axis-label chart-axis-label--y')
-      .attr('x', -innerHeight / 2)
-      .attr('y', -48)
-      .attr('fill', axisColor)
-      .attr('font-size', 13)
-      .attr('font-weight', 500)
-      .attr('text-anchor', 'middle')
-      .attr('transform', 'rotate(-90)')
-      .text(axisLabels.y)
-
-    chartGroup
+    pointsGroup
       .selectAll('circle')
       .data(limitedData)
       .join('circle')
@@ -299,6 +253,56 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
       .on('mouseenter', showTooltip)
       .on('mousemove', showTooltip)
       .on('mouseleave', hideTooltip)
+
+    const xAxisGroup = chartGroup
+      .append('g')
+      .attr('class', 'axis axis--x')
+      .attr('transform', `translate(0,${innerHeight})`)
+      .call(d3.axisBottom(xScale).ticks(6).tickFormat((d) => `${d} h`).tickPadding(12))
+      .call((g) =>
+        g
+          .selectAll('text')
+          .attr('font-size', 12)
+          .attr('fill', axisColor)
+      )
+      .call((g) => g.selectAll('path').attr('stroke', gridColor))
+      .call((g) => g.selectAll('line').attr('stroke', gridColor))
+
+    const yAxisGroup = chartGroup
+      .append('g')
+      .attr('class', 'axis axis--y')
+      .call(d3.axisLeft(yScale).ticks(5).tickFormat((d) => `${d}`).tickPadding(10))
+      .call((g) =>
+        g
+          .selectAll('text')
+          .attr('font-size', 12)
+          .attr('fill', axisColor)
+      )
+      .call((g) => g.selectAll('path').attr('stroke', gridColor))
+      .call((g) => g.selectAll('line').attr('stroke', gridColor))
+
+    const xAxisLabel = chartGroup
+      .append('text')
+      .attr('class', 'chart-axis-label chart-axis-label--x')
+      .attr('x', innerWidth / 2)
+      .attr('y', innerHeight + 44)
+      .attr('fill', axisColor)
+      .attr('font-size', 13)
+      .attr('font-weight', 500)
+      .attr('text-anchor', 'middle')
+      .text(axisLabels.x)
+
+    const yAxisLabel = chartGroup
+      .append('text')
+      .attr('class', 'chart-axis-label chart-axis-label--y')
+      .attr('x', -innerHeight / 2)
+      .attr('y', -48)
+      .attr('fill', axisColor)
+      .attr('font-size', 13)
+      .attr('font-weight', 500)
+      .attr('text-anchor', 'middle')
+      .attr('transform', 'rotate(-90)')
+      .text(axisLabels.y)
 
     const legend = svg
       .append('g')
@@ -351,12 +355,23 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
       level,
       radius: stressSizeScale.get(level) ?? 12,
     }))
+    const stressLegendOffsets = stressEntries.reduce((offsets, { radius }, index) => {
+      const padding = 12
+      if (index === 0) {
+        offsets.push(radius)
+      } else {
+        const previousTotal = offsets[index - 1]
+        const previousRadius = stressEntries[index - 1].radius
+        offsets.push(previousTotal + previousRadius + radius + padding)
+      }
+      return offsets
+    }, [])
 
     sizeLegend
       .selectAll('g')
       .data(stressEntries)
       .join('g')
-      .attr('transform', (_, i) => `translate(0, ${(i + 1) * 28})`)
+      .attr('transform', (_, i) => `translate(0, ${12 + stressLegendOffsets[i]})`)
       .each(function ({ level, radius }) {
         const group = d3.select(this)
         group
