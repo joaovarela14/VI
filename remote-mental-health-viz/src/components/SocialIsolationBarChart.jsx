@@ -46,9 +46,9 @@ const SocialIsolationBarChart = ({ data, theme, copy }) => {
     const gridColor = styles.getPropertyValue('--chart-grid-stroke').trim() || '#334155'
     const legendColor = styles.getPropertyValue('--chart-legend-text').trim() || '#cbd5f5'
 
-    const width = 420
-    const height = 340
-    const margin = { top: 32, right: 24, bottom: 56, left: 56 }
+    const width = 640
+    const height = 360
+    const margin = { top: 36, right: 32, bottom: 64, left: 64 }
 
     svg.attr('viewBox', `0 0 ${width} ${height}`)
 
@@ -113,11 +113,12 @@ const SocialIsolationBarChart = ({ data, theme, copy }) => {
     chartGroup
       .append('text')
       .attr('x', -innerHeight / 2)
-      .attr('y', -36)
+      .attr('y', -48)
       .attr('transform', 'rotate(-90)')
       .attr('text-anchor', 'middle')
-      .attr('fill', legendColor)
-      .attr('font-size', 12)
+      .attr('fill', axisColor)
+      .attr('font-size', 13)
+      .attr('font-weight', 500)
       .text(copy.axisLabel)
 
     const bars = chartGroup
@@ -167,7 +168,7 @@ const SocialIsolationBarChart = ({ data, theme, copy }) => {
   }
 
   return (
-    <div className="chart-card">
+    <div className="chart-card chart-card--wide">
       <div className="chart-header">
         <div className="chart-header__top">
           <div>

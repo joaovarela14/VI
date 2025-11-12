@@ -20,9 +20,9 @@ const ConditionActivityStressChart = ({ data, theme, copy, common }) => {
     const gridColor = styles.getPropertyValue('--chart-grid-stroke').trim() || '#334155'
     const legendColor = styles.getPropertyValue('--chart-legend-text').trim() || '#cbd5f5'
 
-    const width = 420
+    const width = 640
     const height = 360
-    const margin = { top: 40, right: 24, bottom: 64, left: 56 }
+    const margin = { top: 48, right: 64, bottom: 72, left: 72 }
 
     svg.attr('viewBox', `0 0 ${width} ${height}`)
 
@@ -100,7 +100,7 @@ const ConditionActivityStressChart = ({ data, theme, copy, common }) => {
         g
           .selectAll('text')
           .attr('fill', axisColor)
-          .attr('font-size', 11)
+          .attr('font-size', 12)
           .attr('text-anchor', 'end')
           .attr('dx', '-0.6em')
           .attr('dy', '0.15em')
@@ -120,11 +120,12 @@ const ConditionActivityStressChart = ({ data, theme, copy, common }) => {
     chartGroup
       .append('text')
       .attr('x', -(height / 2))
-      .attr('y', margin.left - 48)
+      .attr('y', margin.left - 56)
       .attr('transform', 'rotate(-90)')
       .attr('text-anchor', 'middle')
-      .attr('fill', legendColor)
-      .attr('font-size', 12)
+      .attr('fill', axisColor)
+      .attr('font-size', 13)
+      .attr('font-weight', 500)
       .text(copy.axis?.y ?? '')
 
     const groups = chartGroup.selectAll('.layer').data(series).join('g').attr('fill', ({ key }) => colorScale(key))
@@ -178,7 +179,7 @@ const ConditionActivityStressChart = ({ data, theme, copy, common }) => {
   }, [activity, common, copy, data, theme])
 
   return (
-    <div className="chart-card">
+    <div className="chart-card chart-card--wide">
       <div className="chart-header">
         <div className="chart-header__top">
           <div>
