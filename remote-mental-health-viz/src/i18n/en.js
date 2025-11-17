@@ -95,6 +95,11 @@ const en = {
     tablistLabel: 'Dashboard views',
     tabs: [
       {
+        id: 'data-lab',
+        label: 'Immersion studio',
+        description: 'Preview future 3D experiments and review every available variable.',
+      },
+      {
         id: 'overview',
         label: 'Overview story',
         description: 'Highlights workload, stress, and support access at a glance.',
@@ -390,6 +395,64 @@ const en = {
   error: 'We were unable to load the dataset. Please try again later.',
   footer:
     'Project for the Information Visualization course, developed by João Varela and Carolina Prata.',
+  dataLab: {
+    heading: 'Dataset Overview',
+    intro:
+      'Explore every quantitative and qualitative variable available in the dataset. Hover each variable name to preview the values it can take.',
+    quantitativeHeading: 'Quantitative metrics',
+    qualitativeHeading: 'Qualitative signals',
+    quantitative: [
+      {
+        id: 'age',
+        name: 'Age',
+        description: 'Respondent age in years.',
+      },
+      {
+        id: 'experience',
+        name: 'Years of experience',
+        description: 'Total professional experience reported by the employee.',
+      },
+      {
+        id: 'hours',
+        name: 'Hours worked per week',
+        description: 'Weekly workload dedicated to the job.',
+      },
+      {
+        id: 'meetings',
+        name: 'Number of virtual meetings',
+        description: 'Average virtual meetings per week.',
+      },
+      {
+        id: 'balance',
+        name: 'Work-life balance rating',
+        description: 'Self-reported score from 1 (poor) to 5 (excellent).',
+      },
+      {
+        id: 'isolation',
+        name: 'Social isolation rating',
+        description: 'Perceived sense of isolation on a 1–5 scale.',
+      },
+      {
+        id: 'companySupport',
+        name: 'Company support for remote work',
+        description: 'How respondents rate their organisation’s remote-work support.',
+      },
+    ],
+    qualitative: [
+      { id: 'stress', name: 'Stress level' },
+      { id: 'gender', name: 'Gender' },
+      { id: 'role', name: 'Job role' },
+      { id: 'industry', name: 'Industry' },
+      { id: 'location', name: 'Work location' },
+      { id: 'condition', name: 'Mental health condition' },
+      { id: 'access', name: 'Access to mental health resources' },
+      { id: 'productivity', name: 'Productivity change' },
+      { id: 'satisfaction', name: 'Satisfaction with remote work' },
+      { id: 'activity', name: 'Physical activity' },
+      { id: 'sleep', name: 'Sleep quality' },
+      { id: 'region', name: 'Region' },
+    ],
+  },
 }
 
 export default en

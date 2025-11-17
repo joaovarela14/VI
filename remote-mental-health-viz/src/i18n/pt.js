@@ -94,6 +94,12 @@ const pt = {
     tablistLabel: "Vistas do painel",
     tabs: [
       {
+        id: "data-lab",
+        label: "Estúdio imersivo",
+        description:
+          "Antecipe experiências 3D e consulte todas as variáveis disponíveis.",
+      },
+      {
         id: "overview",
         label: "História geral",
         description:
@@ -435,6 +441,64 @@ const pt = {
       intro:
         "Escolha um sector para perceber que funções lideram em cada modelo de trabalho. Filtre por modalidade para identificar focos de especialização ou lacunas.",
     },
+  },
+  dataLab: {
+    heading: "Mapa das variáveis",
+    intro:
+      "Enquanto preparamos os modelos 3D interativos, explore todas as variáveis quantitativas e qualitativas disponíveis. Esta lista ajuda a planear que sinais irá ligar aos futuros protótipos.",
+    quantitativeHeading: "Variáveis quantitativas",
+    qualitativeHeading: "Variáveis qualitativas",
+    quantitative: [
+      {
+        id: "age",
+        name: "Idade",
+        description: "Idade do participante em anos.",
+      },
+      {
+        id: "experience",
+        name: "Anos de experiência",
+        description: "Tempo total de experiência profissional declarado.",
+      },
+      {
+        id: "hours",
+        name: "Horas trabalhadas por semana",
+        description: "Carga horária semanal dedicada ao trabalho.",
+      },
+      {
+        id: "meetings",
+        name: "Reuniões virtuais por semana",
+        description: "Número médio de reuniões virtuais semanais.",
+      },
+      {
+        id: "balance",
+        name: "Avaliação do equilíbrio trabalho-vida",
+        description: "Pontuação autorrelatada de 1 (fraco) a 5 (excelente).",
+      },
+      {
+        id: "isolation",
+        name: "Avaliação de isolamento social",
+        description: "Perceção de isolamento numa escala de 1 a 5.",
+      },
+      {
+        id: "companySupport",
+        name: "Suporte da empresa ao trabalho remoto",
+        description: "Como o participante avalia o apoio da organização ao remoto.",
+      },
+    ],
+    qualitative: [
+      { id: "stress", name: "Nível de stress" },
+      { id: "gender", name: "Género" },
+      { id: "role", name: "Função" },
+      { id: "industry", name: "Indústria" },
+      { id: "location", name: "Local de trabalho" },
+      { id: "condition", name: "Condição de saúde mental" },
+      { id: "access", name: "Acesso a recursos de saúde mental" },
+      { id: "productivity", name: "Variação de produtividade" },
+      { id: "satisfaction", name: "Satisfação com trabalho remoto" },
+      { id: "activity", name: "Atividade física" },
+      { id: "sleep", name: "Qualidade do sono" },
+      { id: "region", name: "Região" },
+    ],
   },
   loading: "A carregar respostas do inquérito…",
   error: "Não foi possível carregar os dados. Tente novamente mais tarde.",

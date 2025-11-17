@@ -6,6 +6,7 @@ import HoursVsSleepScatter from './components/HoursVsSleepScatter'
 import OverviewMetrics from './components/OverviewMetrics'
 import MultiDimensionScatter from './components/MultiDimensionScatter'
 import IndustryRadar from './components/IndustryRadar'
+import DataLabPanel from './components/DataLabPanel'
 import WorkLifeBalanceLineChart from './components/WorkLifeBalanceLineChart'
 import SatisfactionPieChart from './components/SatisfactionPieChart'
 import SocialIsolationBarChart from './components/SocialIsolationBarChart'
@@ -127,6 +128,93 @@ function App() {
     setLanguage((current) => (current === 'en' ? 'pt' : 'en'))
   }
 
+  let mainContent = null
+
+  if (activeTab === 'overview') {
+    mainContent = (
+      <>
+        <section className="section section--wide">
+          <h2>{copy.overview.heading}</h2>
+          <p className="section__intro">{copy.overview.intro}</p>
+          <OverviewMetrics metrics={copy.overview.metrics} stats={stats} />
+        </section>
+
+        <section className="section section--wide section--charts">
+          <h2>{copy.overview.charts.heading}</h2>
+          <p className="section__intro">{copy.overview.charts.intro}</p>
+          <div className="chart-grid chart-grid--triple">
+            <StressByLocationChart data={data} theme={theme} copy={copy.stressByLocation} common={copy.common} />
+            <MentalHealthByRegionChart data={data} theme={theme} copy={copy.mentalHealthByRegion} common={copy.common} />
+            <HoursVsSleepScatter data={data} theme={theme} copy={copy.hoursVsSleep} common={copy.common} />
+          </div>
+        </section>
+
+        <section className="section section--wide">
+          <h2>{copy.overview.highlightsTitle}</h2>
+          <div className="insights">
+            {copy.overview.insights.map((insight, index) => (
+              <p key={index}>
+                <strong>{insight.emphasis}</strong> {insight.detail}
+              </p>
+            ))}
+          </div>
+        </section>
+      </>
+    )
+  } else if (activeTab === 'deep-dive') {
+    mainContent = (
+      <div className="sections-grid sections-grid--wide">
+        <section className="section section--grid-child">
+          <h2>{copy.deepDive.workLife.heading}</h2>
+          <p className="section__intro">{copy.deepDive.workLife.intro}</p>
+          <div className="chart-grid chart-grid--single">
+            <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} showHeader={false} />
+          </div>
+        </section>
+
+        <section className="section section--grid-child">
+          <h2>{copy.deepDive.meeting.heading}</h2>
+          <p className="section__intro">{copy.deepDive.meeting.intro}</p>
+          <div className="chart-grid chart-grid--single">
+            <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} showHeader={false} />
+          </div>
+        </section>
+
+        <section className="section section--grid-child">
+          <h2>{copy.deepDive.socialIsolation.heading}</h2>
+          <p className="section__intro">{copy.deepDive.socialIsolation.intro}</p>
+          <div className="chart-grid chart-grid--single">
+            <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} showHeader={false} />
+          </div>
+        </section>
+
+        <section className="section section--grid-child">
+          <h2>{copy.deepDive.sleepStress.heading}</h2>
+          <p className="section__intro">{copy.deepDive.sleepStress.intro}</p>
+          <div className="chart-grid chart-grid--single">
+            <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} showHeader={false} />
+          </div>
+        </section>
+
+        <section className="section section--grid-child">
+          <h2>{copy.deepDive.satisfaction.heading}</h2>
+          <p className="section__intro">{copy.deepDive.satisfaction.intro}</p>
+          <div className="chart-grid chart-grid--single">
+            <SatisfactionPieChart data={data} theme={theme} copy={copy.satisfactionPie} common={copy.common} showHeader={false} />
+          </div>
+        </section>
+
+        <section className="section section--grid-child">
+          <h2>{copy.deepDive.sector.heading}</h2>
+          <p className="section__intro">{copy.deepDive.sector.intro}</p>
+          <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} showHeader={false} />
+        </section>
+      </div>
+    )
+  } else if (activeTab === 'data-lab' && copy.dataLab) {
+    mainContent = <DataLabPanel copy={copy.dataLab} data={data} common={copy.common} />
+  }
+
   return (
     <div className="page">
       <header className="hero">
@@ -186,86 +274,7 @@ function App() {
         </div>
       </header>
 
-      <main>
-        {activeTab === 'overview' ? (
-          <>
-            <section className="section section--wide">
-              <h2>{copy.overview.heading}</h2>
-              <p className="section__intro">{copy.overview.intro}</p>
-              <OverviewMetrics metrics={copy.overview.metrics} stats={stats} />
-            </section>
-
-            <section className="section section--wide section--charts">
-              <h2>{copy.overview.charts.heading}</h2>
-              <p className="section__intro">{copy.overview.charts.intro}</p>
-              <div className="chart-grid chart-grid--triple">
-                <StressByLocationChart data={data} theme={theme} copy={copy.stressByLocation} common={copy.common} />
-                <MentalHealthByRegionChart data={data} theme={theme} copy={copy.mentalHealthByRegion} common={copy.common} />
-                <HoursVsSleepScatter data={data} theme={theme} copy={copy.hoursVsSleep} common={copy.common} />
-              </div>
-            </section>
-
-            <section className="section section--wide">
-              <h2>{copy.overview.highlightsTitle}</h2>
-              <div className="insights">
-                {copy.overview.insights.map((insight, index) => (
-                  <p key={index}>
-                    <strong>{insight.emphasis}</strong> {insight.detail}
-                  </p>
-                ))}
-              </div>
-            </section>
-          </>
-        ) : (
-          <div className="sections-grid sections-grid--wide">
-            <section className="section section--grid-child">
-              <h2>{copy.deepDive.workLife.heading}</h2>
-              <p className="section__intro">{copy.deepDive.workLife.intro}</p>
-              <div className="chart-grid chart-grid--single">
-                <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} showHeader={false} />
-              </div>
-            </section>
-
-            <section className="section section--grid-child">
-              <h2>{copy.deepDive.meeting.heading}</h2>
-              <p className="section__intro">{copy.deepDive.meeting.intro}</p>
-              <div className="chart-grid chart-grid--single">
-                <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} showHeader={false} />
-              </div>
-            </section>
-
-            <section className="section section--grid-child">
-              <h2>{copy.deepDive.socialIsolation.heading}</h2>
-              <p className="section__intro">{copy.deepDive.socialIsolation.intro}</p>
-              <div className="chart-grid chart-grid--single">
-                <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} showHeader={false} />
-              </div>
-            </section>
-
-            <section className="section section--grid-child">
-              <h2>{copy.deepDive.sleepStress.heading}</h2>
-              <p className="section__intro">{copy.deepDive.sleepStress.intro}</p>
-              <div className="chart-grid chart-grid--single">
-                <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} showHeader={false} />
-              </div>
-            </section>
-
-            <section className="section section--grid-child">
-              <h2>{copy.deepDive.satisfaction.heading}</h2>
-              <p className="section__intro">{copy.deepDive.satisfaction.intro}</p>
-              <div className="chart-grid chart-grid--single">
-                <SatisfactionPieChart data={data} theme={theme} copy={copy.satisfactionPie} common={copy.common} showHeader={false} />
-              </div>
-            </section>
-
-            <section className="section section--grid-child">
-              <h2>{copy.deepDive.sector.heading}</h2>
-              <p className="section__intro">{copy.deepDive.sector.intro}</p>
-              <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} showHeader={false} />
-            </section>
-          </div>
-        )}
-      </main>
+      <main>{mainContent}</main>
 
       <footer className="page-footer">
         <p>{copy.footer}</p>
