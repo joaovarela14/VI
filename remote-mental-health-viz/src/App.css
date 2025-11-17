@@ -238,6 +238,18 @@ main {
   width: 100%;
 }
 
+.sections-grid--wide {
+  max-width: 1480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.sections-grid--wide .chart-card {
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+}
+
 @media (max-width: 1024px) {
   .sections-grid {
     grid-template-columns: 1fr;
@@ -292,6 +304,25 @@ main {
 
 .chart-card--wide {
   padding: 1.5rem 2rem;
+}
+
+.chart-card--tall {
+  min-height: 560px;
+  height: 560px;
+}
+
+.chart-card--tall > svg,
+.chart-card--tall .chart-card__canvas,
+.chart-card--tall .chart-grid__canvas {
+  flex: 1;
+  min-height: 0;
+}
+
+.chart-card--tall .chart-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chart-header {
@@ -506,6 +537,11 @@ main {
   .hero__controls .theme-toggle {
     width: 100%;
     justify-content: center;
+  }
+
+  .chart-card--tall {
+    height: auto;
+    min-height: 0;
   }
 
   main {

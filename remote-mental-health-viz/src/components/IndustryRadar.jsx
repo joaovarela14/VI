@@ -294,7 +294,7 @@ const IndustryRadar = ({ data, theme, copy, common }) => {
   const noData = !selectedIndustry || !roleAxes.length || !hasData
 
   return (
-    <div ref={containerRef} className="chart-card chart-card--wide">
+    <div ref={containerRef} className="chart-card chart-card--wide chart-card--tall">
       <div className="chart-header">
         <div className="industry-radar__controls">
           <div>

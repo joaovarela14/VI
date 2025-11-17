@@ -82,7 +82,7 @@ const en = {
   },
   hero: {
     eyebrow: 'Remote work mental health explorer',
-    title: 'How hybrid work patterns shape employee wellbeing',
+    title: 'Impact of Remote Work on Mental Health',
     lead:
       'This dashboard summarises a synthetic survey that captures how professionals across industries experience remote work. Explore stress levels, regional differences in mental health conditions, and the connection between working hours and sleep quality.',
     meta: {

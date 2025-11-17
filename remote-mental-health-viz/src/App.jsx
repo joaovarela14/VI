@@ -217,7 +217,7 @@ function App() {
             </section>
           </>
         ) : (
-          <div className="sections-grid">
+          <div className="sections-grid sections-grid--wide">
             <section className="section section--grid-child">
               <h2>{copy.deepDive.workLife.heading}</h2>
               <p className="section__intro">{copy.deepDive.workLife.intro}</p>
@@ -239,19 +239,6 @@ function App() {
               <p className="section__intro">{copy.deepDive.socialIsolation.intro}</p>
               <div className="chart-grid chart-grid--single">
                 <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} />
-              </div>
-            </section>
-
-            <section className="section section--grid-child">
-              <h2>{copy.deepDive.conditionStress.heading}</h2>
-              <p className="section__intro">{copy.deepDive.conditionStress.intro}</p>
-              <div className="chart-grid chart-grid--single">
-                <ConditionActivityStressChart
-                  data={data}
-                  theme={theme}
-                  copy={copy.conditionActivityStress}
-                  common={copy.common}
-                />
               </div>
             </section>
 

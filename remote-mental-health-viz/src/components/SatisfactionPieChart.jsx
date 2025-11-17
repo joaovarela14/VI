@@ -197,7 +197,7 @@ const SatisfactionPieChart = ({ data, theme, copy, common }) => {
   }, [common, copy, data, theme])
 
   return (
-    <div className="chart-card">
+    <div className="chart-card chart-card--wide chart-card--tall">
       <div className="chart-header">
         <div className="chart-header__top">
           <div>

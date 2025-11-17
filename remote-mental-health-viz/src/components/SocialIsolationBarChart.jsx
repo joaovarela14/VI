@@ -168,7 +168,7 @@ const SocialIsolationBarChart = ({ data, theme, copy }) => {
   }
 
   return (
-    <div className="chart-card chart-card--wide">
+    <div className="chart-card chart-card--wide chart-card--tall">
       <div className="chart-header">
         <div className="chart-header__top">
           <div>

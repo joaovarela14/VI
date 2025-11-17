@@ -173,7 +173,7 @@ const SleepStressMatrix = ({ data, theme, copy, common }) => {
   }, [condition, common, copy, data, theme])
 
   return (
-    <div className="chart-card">
+    <div className="chart-card chart-card--tall">
       <div className="chart-header">
         <div className="chart-header__top">
           <div>

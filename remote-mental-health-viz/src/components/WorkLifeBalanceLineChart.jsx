@@ -281,7 +281,7 @@ const WorkLifeBalanceLineChart = ({ data, theme, copy }) => {
   const hasData = series.length > 0
 
   return (
-    <div ref={containerRef} className="chart-card chart-card--wide">
+    <div ref={containerRef} className="chart-card chart-card--wide chart-card--tall">
       <div className="chart-header">
         <div className="chart-header__top">
           <div>

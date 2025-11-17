@@ -397,7 +397,7 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
   }, [activeLocations, axisLabels, common, copy, limitedData, stressSizeScale, theme])
 
   return (
-    <div ref={containerRef} className="chart-card chart-card--wide">
+    <div ref={containerRef} className="chart-card chart-card--wide chart-card--tall">
       <div className="chart-header">
         <div className="chart-header__top">
           <div>
