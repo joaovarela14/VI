@@ -399,6 +399,7 @@ main {
 .chart-controls {
   display: inline-flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .chart-controls-stack {
@@ -556,4 +557,10 @@ main {
   .hero__tabs {
     grid-template-columns: 1fr;
   }
+}
+.chart-header__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
 }
