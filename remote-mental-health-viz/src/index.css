@@ -40,6 +40,9 @@ body {
   --error-text: #fecaca;
   --spinner-border: rgba(148, 163, 184, 0.4);
   --spinner-highlight: #38bdf8;
+  --tooltip-background: #082f49;
+  --tooltip-border: #38bdf8;
+  --tooltip-text: #e2e8f0;
 }
 
 body.theme-light {
@@ -68,6 +71,9 @@ body.theme-light {
   --error-text: #b91c1c;
   --spinner-border: rgba(148, 163, 184, 0.35);
   --spinner-highlight: #0ea5e9;
+  --tooltip-background: #e0f2fe;
+  --tooltip-border: #0284c7;
+  --tooltip-text: #0f172a;
 }
 
 a {

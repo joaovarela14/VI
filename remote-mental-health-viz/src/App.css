@@ -490,12 +490,20 @@ main {
 .variable-list__name {
   font-weight: 600;
   color: var(--text-primary);
+  display: block;
+  overflow-wrap: anywhere;
 }
 
 .variable-list__description {
   color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.4;
+}
+
+.variable-list__type {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-right: 0.35rem;
 }
 
 .variable-list--columns {
@@ -511,10 +519,11 @@ main {
   border-radius: 16px;
   padding: 0.85rem 1rem;
   min-height: 100%;
+  min-width: 0;
 }
 
 .variable-list__item--tooltip {
-  cursor: help;
+  cursor: pointer;
 }
 
 .variable-list__tooltip {
@@ -525,8 +534,8 @@ main {
   max-width: 320px;
   padding: 0.75rem 1rem;
   border-radius: 12px;
-  background: #bae6fd;
-  border: 1px solid #38bdf8;
+  background: var(--tooltip-background);
+  border: 1px solid var(--tooltip-border);
   box-shadow: 0 12px 20px -12px rgba(15, 23, 42, 0.6);
   opacity: 0;
   visibility: hidden;
@@ -545,7 +554,7 @@ main {
 
 .variable-list__tooltip-text {
   font-size: 0.9rem;
-  color: var(--text-primary);
+  color: var(--tooltip-text);
 }
 
 .variable-list__tooltip-values {

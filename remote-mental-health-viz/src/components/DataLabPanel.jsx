@@ -37,8 +37,11 @@ const VariableList = ({
               {item.name}
             </span>
 
-            {showDescriptions && item.description && (
-              <span className="variable-list__description">{item.description}</span>
+            {showDescriptions && (item.type || item.description) && (
+              <span className="variable-list__description">
+                {item.type && <span className="variable-list__type">{item.type}</span>}
+                {item.description}
+              </span>
             )}
 
             {showValues && values.length > 0 && (
@@ -193,20 +196,13 @@ const DataLabPanel = ({ copy, data, common }) => {
       <div className="variable-grid">
         <div className="variable-card">
           <p className="variable-card__eyebrow">{copy.quantitativeHeading}</p>
-          <VariableList
-            items={copy.quantitative}
-            showDescriptions={false}
-            showValues={false}
-            columns={2}
-            tooltipMap={quantitativeTooltips}
-          />
+          <VariableList items={copy.quantitative} showValues={false} columns={2} tooltipMap={quantitativeTooltips} />
         </div>
 
         <div className="variable-card">
           <p className="variable-card__eyebrow">{copy.qualitativeHeading}</p>
           <VariableList
             items={copy.qualitative}
-            showDescriptions={false}
             showValues={false}
             columns={2}
             tooltipMap={qualitativeTooltips}
