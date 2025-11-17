@@ -3,6 +3,7 @@ import * as d3 from 'd3'
 import StressByLocationChart from './components/StressByLocationChart'
 import MentalHealthByRegionChart from './components/MentalHealthByRegionChart'
 import HoursVsSleepScatter from './components/HoursVsSleepScatter'
+import OverviewMetrics from './components/OverviewMetrics'
 import MultiDimensionScatter from './components/MultiDimensionScatter'
 import IndustryRadar from './components/IndustryRadar'
 import WorkLifeBalanceLineChart from './components/WorkLifeBalanceLineChart'
@@ -116,6 +117,7 @@ function App() {
   const datasetCount = data.length > 0 ? data.length : null
   const themeButtonLabel = theme === 'dark' ? copy.hero.buttons.theme.light : copy.hero.buttons.theme.dark
   const languageButtonLabel = language === 'en' ? copy.hero.buttons.language.toPortuguese : copy.hero.buttons.language.toEnglish
+  const controlsLabel = `${copy.hero.buttons.theme.aria} / ${copy.hero.buttons.language.aria}`
 
   const toggleTheme = () => {
     setTheme((current) => (current === 'dark' ? 'light' : 'dark'))
@@ -129,15 +131,43 @@ function App() {
     <div className="page">
       <header className="hero">
         <div className="hero__content">
-          <p className="hero__eyebrow">{copy.hero.eyebrow}</p>
+          <div className="hero__top-bar">
+            <p className="hero__eyebrow">{copy.hero.eyebrow}</p>
+            <div className="hero__controls" role="group" aria-label={controlsLabel}>
+              <button
+                type="button"
+                className="theme-toggle"
+                onClick={toggleTheme}
+                aria-pressed={theme === 'dark'}
+                aria-label={copy.hero.buttons.theme.aria}
+              >
+                <span className="theme-toggle__icon" aria-hidden="true">
+                  {theme === 'dark' ? '🌙' : '☀️'}
+                </span>
+                <span className="theme-toggle__label">
+                  {themeButtonLabel}
+                </span>
+              </button>
+              <button
+                type="button"
+                className="theme-toggle"
+                onClick={toggleLanguage}
+                aria-pressed={language === 'pt'}
+                aria-label={copy.hero.buttons.language.aria}
+              >
+                <span className="theme-toggle__icon" aria-hidden="true">
+                  🌐
+                </span>
+                <span className="theme-toggle__label">{languageButtonLabel}</span>
+              </button>
+            </div>
+          </div>
           <h1>{copy.hero.title}</h1>
           <p className="hero__lead">{copy.hero.lead}</p>
           <div className="hero__meta">
             <span>{copy.hero.meta.datasetSize(datasetCount)}</span>
             <span>{copy.hero.meta.source}</span>
           </div>
-        </div>
-        <div className="hero__footer">
           <nav className="hero__tabs" role="tablist" aria-label={copy.hero.tablistLabel}>
             {tabs.map((tab) => (
               <button
@@ -153,63 +183,29 @@ function App() {
               </button>
             ))}
           </nav>
-          <button
-            type="button"
-            className="theme-toggle"
-            onClick={toggleTheme}
-            aria-pressed={theme === 'dark'}
-            aria-label={copy.hero.buttons.theme.aria}
-          >
-            <span className="theme-toggle__icon" aria-hidden="true">
-              {theme === 'dark' ? '🌙' : '☀️'}
-            </span>
-            <span className="theme-toggle__label">
-              {themeButtonLabel}
-            </span>
-          </button>
-          <button
-            type="button"
-            className="theme-toggle"
-            onClick={toggleLanguage}
-            aria-pressed={language === 'pt'}
-            aria-label={copy.hero.buttons.language.aria}
-          >
-            <span className="theme-toggle__icon" aria-hidden="true">
-              🌐
-            </span>
-            <span className="theme-toggle__label">{languageButtonLabel}</span>
-          </button>
         </div>
       </header>
 
       <main>
         {activeTab === 'overview' ? (
           <>
-            <section className="section">
+            <section className="section section--wide">
               <h2>{copy.overview.heading}</h2>
               <p className="section__intro">{copy.overview.intro}</p>
-              <div className="metrics-grid">
-                {copy.overview.metrics.map((metric) => (
-                  <article key={metric.id} className="metric-card">
-                    <h3>{metric.title}</h3>
-                    <p className="metric-card__value">{metric.value(stats)}</p>
-                    <p className="metric-card__description">{metric.description}</p>
-                  </article>
-                ))}
-              </div>
+              <OverviewMetrics metrics={copy.overview.metrics} stats={stats} />
             </section>
 
-            <section className="section section--charts">
+            <section className="section section--wide section--charts">
               <h2>{copy.overview.charts.heading}</h2>
               <p className="section__intro">{copy.overview.charts.intro}</p>
-              <div className="chart-grid">
+              <div className="chart-grid chart-grid--triple">
                 <StressByLocationChart data={data} theme={theme} copy={copy.stressByLocation} common={copy.common} />
                 <MentalHealthByRegionChart data={data} theme={theme} copy={copy.mentalHealthByRegion} common={copy.common} />
                 <HoursVsSleepScatter data={data} theme={theme} copy={copy.hoursVsSleep} common={copy.common} />
               </div>
             </section>
 
-            <section className="section">
+            <section className="section section--wide">
               <h2>{copy.overview.highlightsTitle}</h2>
               <div className="insights">
                 {copy.overview.insights.map((insight, index) => (

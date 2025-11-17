@@ -8,18 +8,33 @@
 }
 
 .hero {
-  padding: 4rem clamp(1.5rem, 4vw, 6rem) 3rem;
+  padding: 3.5rem clamp(1.5rem, 4vw, 6rem) 2.5rem;
   background: var(--surface-hero);
   border-bottom: 1px solid var(--border-soft);
   transition: background 0.6s ease;
 }
 
 .hero__content {
-  max-width: 960px;
+  max-width: 1480px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  gap: 1.25rem;
+}
+
+.hero__top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero__controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .hero__eyebrow {
@@ -38,7 +53,7 @@
 
 .hero__lead {
   margin: 0;
-  max-width: 720px;
+  max-width: 1180px;
   line-height: 1.6;
   font-size: 1.1rem;
   color: var(--text-muted);
@@ -52,23 +67,11 @@
   color: var(--text-subtle);
 }
 
-.hero__footer {
-  margin-top: 2.75rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .hero__tabs {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
-  width: min(100%, 640px);
+  width: 100%;
 }
 
 .hero__tab {
@@ -112,7 +115,7 @@
 }
 
 .theme-toggle {
-  margin-left: auto;
+  margin-left: 0;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -149,11 +152,16 @@ main {
 }
 
 .section {
-  max-width: 1080px;
+  max-width: 1180px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+.section--wide {
+  max-width: 1480px;
+  width: 100%;
 }
 
 .section h2 {
@@ -164,15 +172,20 @@ main {
 
 .section__intro {
   margin: 0;
-  max-width: 720px;
+  max-width: 960px;
   color: var(--text-muted);
   line-height: 1.6;
 }
 
-.metrics-grid {
+.section--wide .section__intro {
+  max-width: 1180px;
+}
+
+.metrics-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(5, minmax(220px, 1fr));
+  gap: 2rem;
+  width: 100%;
 }
 
 .metric-card {
@@ -210,8 +223,12 @@ main {
   font-size: 0.95rem;
 }
 
-.metrics-grid > .metric-card:nth-child(odd) {
+.metric-card:nth-of-type(odd) {
   border-color: rgba(56, 189, 248, 0.4);
+}
+
+.chart-grid--triple {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .sections-grid {
@@ -224,6 +241,10 @@ main {
 @media (max-width: 1024px) {
   .sections-grid {
     grid-template-columns: 1fr;
+  }
+
+  .chart-grid--triple {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 }
 
@@ -466,36 +487,37 @@ main {
   border: 0;
 }
 
-@media (max-width: 1024px) {
-  .hero__footer {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .theme-toggle {
-    align-self: flex-end;
-  }
-}
-
 @media (max-width: 768px) {
   .hero {
-    padding: 3rem 1.5rem 2.5rem;
+    padding: 2.75rem 1.5rem 2.25rem;
+  }
+
+  .hero__top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .hero__controls {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .hero__controls .theme-toggle {
+    width: 100%;
+    justify-content: center;
   }
 
   main {
     padding: 2.5rem 1.5rem 3rem;
   }
 
-  .metrics-grid {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  .metrics-row {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
   }
 
-  .hero__footer {
-    margin-top: 2rem;
-  }
-
-  .theme-toggle {
-    align-self: stretch;
-    justify-content: center;
+  .hero__tabs {
+    grid-template-columns: 1fr;
   }
 }
