@@ -267,6 +267,8 @@ const pt = {
       allConditions: "Todas as condições",
     },
     axisLabel: "Pessoas",
+    xAxisLabel: "Qualidade do sono",
+    yAxisLabel: "Nível de stress",
     empty: "Sem dados de sono para a condição selecionada.",
     tooltip: ({ stressLabel, sleepLabel, count }) =>
       `${stressLabel} — ${sleepLabel}\nPessoas: ${formatCount(count)}`,

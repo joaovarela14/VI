@@ -6,7 +6,7 @@ const stressLevels = ['Low', 'Medium', 'High']
 
 const DEFAULT_SAMPLE_LIMIT = '200'
 
-const MultiDimensionScatter = ({ data, theme, copy, common }) => {
+const MultiDimensionScatter = ({ data, theme, copy, common, showHeader = true }) => {
   const [selectedLocation, setSelectedLocation] = useState('All')
   const [selectedIndustry, setSelectedIndustry] = useState('All')
   const [sampleLimit, setSampleLimit] = useState(() =>
@@ -400,10 +400,12 @@ const MultiDimensionScatter = ({ data, theme, copy, common }) => {
     <div ref={containerRef} className="chart-card chart-card--wide chart-card--tall">
       <div className="chart-header">
         <div className="chart-header__top">
-          <div>
-            <h3>{copy.title}</h3>
-            <p>{copy.description}</p>
-          </div>
+          {showHeader && (
+            <div>
+              <h3>{copy.title}</h3>
+              <p>{copy.description}</p>
+            </div>
+          )}
           <div className="chart-controls-stack">
             <label className="chart-controls">
               <span className="visually-hidden">{copy.filterLabel}</span>

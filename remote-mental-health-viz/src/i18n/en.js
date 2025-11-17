@@ -243,6 +243,8 @@ const en = {
       allConditions: 'All conditions',
     },
     axisLabel: 'People',
+    xAxisLabel: 'Sleep quality',
+    yAxisLabel: 'Stress level',
     empty: 'No sleep quality details are available for the selected condition.',
     tooltip: ({ stressLabel, sleepLabel, count }) =>
       `${stressLabel} — ${sleepLabel}\nPeople: ${formatCount(count)}`,

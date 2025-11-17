@@ -4,9 +4,11 @@ import * as d3 from 'd3'
 const STRESS_LEVELS = ['Low', 'Medium', 'High']
 const SLEEP_LEVELS = ['Poor', 'Average', 'Good']
 
-const SleepStressMatrix = ({ data, theme, copy, common }) => {
+const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => {
+  const cardRef = useRef(null)
   const svgRef = useRef(null)
   const [condition, setCondition] = useState('all')
+  const [cardWidth, setCardWidth] = useState(0)
 
   const conditionOptions = useMemo(() => {
     const values = Array.from(new Set(data.map((item) => item.mentalHealthCondition || 'Other'))).sort()
@@ -14,7 +16,36 @@ const SleepStressMatrix = ({ data, theme, copy, common }) => {
   }, [data])
 
   useEffect(() => {
-    const svg = d3.select(svgRef.current)
+    if (typeof ResizeObserver === 'undefined') {
+      return
+    }
+    const node = cardRef.current
+    if (!node) {
+      return
+    }
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0]
+      if (!entry) return
+      const nextWidth = entry.contentRect.width
+      setCardWidth((current) => {
+        if (Math.abs(current - nextWidth) < 1) {
+          return current
+        }
+        return nextWidth
+      })
+    })
+    observer.observe(node)
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  useEffect(() => {
+    const svgNode = svgRef.current
+    if (!svgNode) {
+      return
+    }
+    const svg = d3.select(svgNode)
     svg.selectAll('*').remove()
 
     const styles = getComputedStyle(document.body)
@@ -22,9 +53,13 @@ const SleepStressMatrix = ({ data, theme, copy, common }) => {
     const gridColor = styles.getPropertyValue('--chart-grid-stroke').trim() || '#334155'
     const legendColor = styles.getPropertyValue('--chart-legend-text').trim() || '#cbd5f5'
 
-    const width = 420
-    const height = 340
-    const margin = { top: 32, right: 16, bottom: 56, left: 80 }
+    const MIN_WIDTH = 600
+    const effectiveWidth = Math.max(cardWidth || svgNode.clientWidth || 0, MIN_WIDTH)
+    const width = Number.isFinite(effectiveWidth) ? effectiveWidth : MIN_WIDTH
+    const height = 420
+    const margin = { top: 20, right: 24, bottom: 72, left: 88 }
+    const innerWidth = width - margin.left - margin.right
+    const innerHeight = height - margin.top - margin.bottom
 
     svg.attr('viewBox', `0 0 ${width} ${height}`)
 
@@ -82,6 +117,27 @@ const SleepStressMatrix = ({ data, theme, copy, common }) => {
       .call((g) => g.selectAll('path').attr('stroke', gridColor))
       .call((g) => g.selectAll('line').attr('stroke', gridColor))
 
+    svg
+      .append('text')
+      .attr('x', margin.left + innerWidth / 2)
+      .attr('y', height - 16)
+      .attr('text-anchor', 'middle')
+      .attr('fill', axisColor)
+      .attr('font-size', 12)
+      .attr('font-weight', 600)
+      .text(copy.xAxisLabel ?? 'Sleep quality')
+
+    svg
+      .append('text')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -(margin.top + innerHeight / 2))
+      .attr('y', 20)
+      .attr('text-anchor', 'middle')
+      .attr('fill', axisColor)
+      .attr('font-size', 12)
+      .attr('font-weight', 600)
+      .text(copy.yAxisLabel ?? 'Stress level')
+
     const cells = svg
       .append('g')
       .selectAll('rect')
@@ -118,10 +174,10 @@ const SleepStressMatrix = ({ data, theme, copy, common }) => {
       .attr('font-weight', 600)
       .text((entry) => (entry.count > 0 ? entry.count : ''))
 
-    const legendWidth = 140
-    const legendHeight = 10
+    const legendWidth = 160
+    const legendHeight = 12
     const legendX = width - margin.right - legendWidth
-    const legendY = margin.top - 12
+    const legendY = Math.max(4, margin.top - 24)
 
     const legendScale = d3
       .scaleLinear()
@@ -170,16 +226,18 @@ const SleepStressMatrix = ({ data, theme, copy, common }) => {
       .attr('fill', legendColor)
       .attr('font-size', 10)
       .text(copy.axisLabel ?? '')
-  }, [condition, common, copy, data, theme])
+  }, [cardWidth, condition, common, copy, data, theme])
 
   return (
-    <div className="chart-card chart-card--tall">
+    <div ref={cardRef} className="chart-card chart-card--tall">
       <div className="chart-header">
         <div className="chart-header__top">
-          <div>
-            <h3>{copy.title}</h3>
-            <p>{copy.description}</p>
-          </div>
+          {showHeader && (
+            <div>
+              <h3>{copy.title}</h3>
+              <p>{copy.description}</p>
+            </div>
+          )}
           <div className="chart-header__filters">
             <label className="chart-controls">
               <span className="visually-hidden">{copy.filters.condition}</span>

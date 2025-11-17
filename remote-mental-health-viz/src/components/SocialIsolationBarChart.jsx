@@ -7,7 +7,7 @@ const ACCESS_OPTIONS = {
   no: 'no',
 }
 
-const SocialIsolationBarChart = ({ data, theme, copy }) => {
+const SocialIsolationBarChart = ({ data, theme, copy, showHeader = true }) => {
   const svgRef = useRef(null)
   const [filters, setFilters] = useState({
     region: 'all',
@@ -171,10 +171,12 @@ const SocialIsolationBarChart = ({ data, theme, copy }) => {
     <div className="chart-card chart-card--wide chart-card--tall">
       <div className="chart-header">
         <div className="chart-header__top">
-          <div>
-            <h3>{copy.title}</h3>
-            <p>{copy.description}</p>
-          </div>
+          {showHeader && (
+            <div>
+              <h3>{copy.title}</h3>
+              <p>{copy.description}</p>
+            </div>
+          )}
           <div className="chart-header__filters">
             <label className="chart-controls">
               <span className="visually-hidden">{copy.filters.region}</span>

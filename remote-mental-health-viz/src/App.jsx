@@ -222,7 +222,7 @@ function App() {
               <h2>{copy.deepDive.workLife.heading}</h2>
               <p className="section__intro">{copy.deepDive.workLife.intro}</p>
               <div className="chart-grid chart-grid--single">
-                <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} />
+                <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} showHeader={false} />
               </div>
             </section>
 
@@ -230,7 +230,7 @@ function App() {
               <h2>{copy.deepDive.meeting.heading}</h2>
               <p className="section__intro">{copy.deepDive.meeting.intro}</p>
               <div className="chart-grid chart-grid--single">
-                <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} />
+                <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} showHeader={false} />
               </div>
             </section>
 
@@ -238,7 +238,7 @@ function App() {
               <h2>{copy.deepDive.socialIsolation.heading}</h2>
               <p className="section__intro">{copy.deepDive.socialIsolation.intro}</p>
               <div className="chart-grid chart-grid--single">
-                <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} />
+                <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} showHeader={false} />
               </div>
             </section>
 
@@ -246,7 +246,7 @@ function App() {
               <h2>{copy.deepDive.sleepStress.heading}</h2>
               <p className="section__intro">{copy.deepDive.sleepStress.intro}</p>
               <div className="chart-grid chart-grid--single">
-                <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} />
+                <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} showHeader={false} />
               </div>
             </section>
 
@@ -254,14 +254,14 @@ function App() {
               <h2>{copy.deepDive.satisfaction.heading}</h2>
               <p className="section__intro">{copy.deepDive.satisfaction.intro}</p>
               <div className="chart-grid chart-grid--single">
-                <SatisfactionPieChart data={data} theme={theme} copy={copy.satisfactionPie} common={copy.common} />
+                <SatisfactionPieChart data={data} theme={theme} copy={copy.satisfactionPie} common={copy.common} showHeader={false} />
               </div>
             </section>
 
             <section className="section section--grid-child">
               <h2>{copy.deepDive.sector.heading}</h2>
               <p className="section__intro">{copy.deepDive.sector.intro}</p>
-              <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} />
+              <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} showHeader={false} />
             </section>
           </div>
         )}

@@ -8,7 +8,7 @@ const DEFAULT_COLORS = {
   satisfied: '#34d399',
 }
 
-const SatisfactionPieChart = ({ data, theme, copy, common }) => {
+const SatisfactionPieChart = ({ data, theme, copy, common, showHeader = true }) => {
   const svgRef = useRef(null)
   const filterSelectRef = useRef(null)
 
@@ -200,10 +200,12 @@ const SatisfactionPieChart = ({ data, theme, copy, common }) => {
     <div className="chart-card chart-card--wide chart-card--tall">
       <div className="chart-header">
         <div className="chart-header__top">
-          <div>
-            <h3>{copy.title}</h3>
-            <p>{copy.description}</p>
-          </div>
+          {showHeader && (
+            <div>
+              <h3>{copy.title}</h3>
+              <p>{copy.description}</p>
+            </div>
+          )}
           <div ref={filterSelectRef} className="chart-header__filters">
             <label className="chart-controls">
               <span className="visually-hidden">{copy.filters.sector}</span>
