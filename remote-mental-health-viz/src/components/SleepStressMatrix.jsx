@@ -92,7 +92,8 @@ const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => 
     }
 
     const xScale = d3.scaleBand().domain(SLEEP_LEVELS).range([margin.left, width - margin.right]).padding(0.15)
-    const yScale = d3.scaleBand().domain(STRESS_LEVELS).range([margin.top, height - margin.bottom]).padding(0.15)
+    const yDomain = [...STRESS_LEVELS].reverse()
+    const yScale = d3.scaleBand().domain(yDomain).range([margin.top, height - margin.bottom]).padding(0.15)
 
     const colorScale = d3
       .scaleSequential((t) => d3.interpolateTurbo(t))
