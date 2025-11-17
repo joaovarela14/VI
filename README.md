@@ -14,7 +14,9 @@ It follows a **human-centred design** process, going from low-fidelity prototype
 ### Tools and Technologies
 - **D3.js** for interactive visualizations  
 - **React** for the interface  
-- **CSV/JSON datasets** from public sources (Kaggle)
+- **CSV dataset** from public sources  
+[Link to the dataset](https://www.kaggle.com/datasets/iramshahzadi9/remote-work-and-mental-health)
+
 
 ## How to run 
 ```bash
