@@ -12,6 +12,7 @@ import SatisfactionPieChart from './components/SatisfactionPieChart'
 import SocialIsolationBarChart from './components/SocialIsolationBarChart'
 import ConditionActivityStressChart from './components/ConditionActivityStressChart'
 import SleepStressMatrix from './components/SleepStressMatrix'
+import DocumentationPanel from './components/DocumentationPanel'
 import en from './i18n/en'
 import pt from './i18n/pt'
 import './App.css'
@@ -34,17 +35,55 @@ function App() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const [activeTab, setActiveTab] = useState('overview')
+  const [activeTab, setActiveTab] = useState('workload')
+  const [activeSubTab, setActiveSubTab] = useState('workload-metrics')
   const [theme, setTheme] = useState('light')
   const [language, setLanguage] = useState('en')
 
   const copy = translations[language]
+  const navigationTabs = useMemo(() => copy.navigation?.tabs ?? [], [copy.navigation])
+  const activeTabConfig = useMemo(() => navigationTabs.find((tab) => tab.id === activeTab), [navigationTabs, activeTab])
+  const activeSubTabs = activeTabConfig?.subTabs ?? []
+  const activeSubTabConfig = useMemo(
+    () => activeSubTabs.find((subTab) => subTab.id === activeSubTab),
+    [activeSubTabs, activeSubTab]
+  )
 
   useEffect(() => {
     const classList = document.body.classList
     classList.remove('theme-dark', 'theme-light')
     classList.add(`theme-${theme}`)
   }, [theme])
+
+  useEffect(() => {
+    if (!navigationTabs.length) {
+      return
+    }
+    setActiveTab((current) => {
+      if (navigationTabs.some((tab) => tab.id === current)) {
+        return current
+      }
+      return navigationTabs[0].id
+    })
+  }, [navigationTabs])
+
+  useEffect(() => {
+    if (!activeTabConfig) {
+      setActiveSubTab(null)
+      return
+    }
+    const subTabs = activeTabConfig.subTabs ?? []
+    if (!subTabs.length) {
+      setActiveSubTab(null)
+      return
+    }
+    setActiveSubTab((current) => {
+      if (subTabs.some((subTab) => subTab.id === current)) {
+        return current
+      }
+      return subTabs[0].id
+    })
+  }, [activeTabConfig])
 
   useEffect(() => {
     const loadData = async () => {
@@ -114,7 +153,6 @@ function App() {
     }
   }, [data])
 
-  const tabs = copy.hero.tabs
   const datasetCount = data.length > 0 ? data.length : null
   const themeButtonLabel = theme === 'dark' ? copy.hero.buttons.theme.light : copy.hero.buttons.theme.dark
   const languageButtonLabel = language === 'en' ? copy.hero.buttons.language.toPortuguese : copy.hero.buttons.language.toEnglish
@@ -128,99 +166,128 @@ function App() {
     setLanguage((current) => (current === 'en' ? 'pt' : 'en'))
   }
 
-  let mainContent = null
+  const renderContent = () => {
+    if (activeTab === 'documentation') {
+      return (
+        <>
+          <DocumentationPanel copy={copy.documentation} datasetCount={datasetCount} />
+          <DataLabPanel copy={copy.dataLab} data={data} common={copy.common} />
+        </>
+      )
+    }
 
-  if (activeTab === 'overview') {
-    mainContent = (
-      <>
-        <section className="section section--wide">
-          <h2>{copy.overview.heading}</h2>
-          <p className="section__intro">{copy.overview.intro}</p>
-          <OverviewMetrics metrics={copy.overview.metrics} stats={stats} />
-        </section>
+    const subTabInfo = activeSubTabConfig
+    switch (activeSubTab) {
+      case 'workload-metrics':
+        return (
+          <>
+            <section className="section section--wide">
+              <h2>{subTabInfo?.label ?? copy.overview.heading}</h2>
+              {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
+              <OverviewMetrics metrics={copy.overview.metrics} stats={stats} />
+            </section>
 
-        <section className="section section--wide section--charts">
-          <h2>{copy.overview.charts.heading}</h2>
-          <p className="section__intro">{copy.overview.charts.intro}</p>
-          <div className="chart-grid chart-grid--triple">
-            <StressByLocationChart data={data} theme={theme} copy={copy.stressByLocation} common={copy.common} />
-            <MentalHealthByRegionChart data={data} theme={theme} copy={copy.mentalHealthByRegion} common={copy.common} />
-            <HoursVsSleepScatter data={data} theme={theme} copy={copy.hoursVsSleep} common={copy.common} />
-          </div>
-        </section>
-
-        <section className="section section--wide">
-          <h2>{copy.overview.highlightsTitle}</h2>
-          <div className="insights">
-            {copy.overview.insights.map((insight, index) => (
-              <p key={index}>
-                <strong>{insight.emphasis}</strong> {insight.detail}
-              </p>
-            ))}
-          </div>
-        </section>
-      </>
-    )
-  } else if (activeTab === 'deep-dive') {
-    mainContent = (
-      <div className="sections-grid sections-grid--wide">
-        <section className="section section--grid-child">
-          <h2>{copy.deepDive.workLife.heading}</h2>
-          <p className="section__intro">{copy.deepDive.workLife.intro}</p>
-          <div className="chart-grid chart-grid--single">
-            <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} showHeader={false} />
-          </div>
-        </section>
-
-        <section className="section section--grid-child">
-          <h2>{copy.deepDive.meeting.heading}</h2>
-          <p className="section__intro">{copy.deepDive.meeting.intro}</p>
-          <div className="chart-grid chart-grid--single">
-            <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} showHeader={false} />
-          </div>
-        </section>
-
-        <section className="section section--grid-child">
-          <h2>{copy.deepDive.socialIsolation.heading}</h2>
-          <p className="section__intro">{copy.deepDive.socialIsolation.intro}</p>
-          <div className="chart-grid chart-grid--single">
-            <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} showHeader={false} />
-          </div>
-        </section>
-
-        <section className="section section--grid-child">
-          <h2>{copy.deepDive.sleepStress.heading}</h2>
-          <p className="section__intro">{copy.deepDive.sleepStress.intro}</p>
-          <div className="chart-grid chart-grid--single">
-            <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} showHeader={false} />
-          </div>
-        </section>
-
-        <section className="section section--grid-child">
-          <h2>{copy.deepDive.satisfaction.heading}</h2>
-          <p className="section__intro">{copy.deepDive.satisfaction.intro}</p>
-          <div className="chart-grid chart-grid--single">
-            <SatisfactionPieChart data={data} theme={theme} copy={copy.satisfactionPie} common={copy.common} showHeader={false} />
-          </div>
-        </section>
-
-        <section className="section section--grid-child">
-          <h2>{copy.deepDive.sector.heading}</h2>
-          <p className="section__intro">{copy.deepDive.sector.intro}</p>
-          <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} showHeader={false} />
-        </section>
-      </div>
-    )
-  } else if (activeTab === 'data-lab' && copy.dataLab) {
-    mainContent = <DataLabPanel copy={copy.dataLab} data={data} common={copy.common} />
+            <section className="section section--wide">
+              <h2>{copy.hoursVsSleep.title}</h2>
+              <p className="section__intro">{copy.hoursVsSleep.description}</p>
+              <div className="chart-grid chart-grid--single">
+                <HoursVsSleepScatter data={data} theme={theme} copy={copy.hoursVsSleep} common={copy.common} />
+              </div>
+            </section>
+          </>
+        )
+      case 'workload-balance':
+        return (
+          <section className="section section--wide">
+            <h2>{subTabInfo?.label ?? copy.workLifeBalanceLine?.title}</h2>
+            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
+            <div className="chart-grid chart-grid--single">
+              <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} showHeader={false} />
+            </div>
+          </section>
+        )
+      case 'workload-meetings': {
+        const meetingCopy = copy.deepDive?.meeting
+        const heading = subTabInfo?.label ?? meetingCopy?.heading
+        const intro = subTabInfo?.description ?? meetingCopy?.intro
+        return (
+          <section className="section section--wide">
+            {heading && <h2>{heading}</h2>}
+            {intro && <p className="section__intro">{intro}</p>}
+            <div className="chart-grid chart-grid--single">
+              <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} showHeader={false} />
+            </div>
+          </section>
+        )
+      }
+      case 'wellbeing-stress':
+        return (
+          <section className="section section--wide">
+            <h2>{subTabInfo?.label}</h2>
+            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
+            <div className="chart-grid">
+              <StressByLocationChart data={data} theme={theme} copy={copy.stressByLocation} common={copy.common} />
+              <MentalHealthByRegionChart data={data} theme={theme} copy={copy.mentalHealthByRegion} common={copy.common} />
+            </div>
+          </section>
+        )
+      case 'wellbeing-habits':
+        return (
+          <section className="section section--wide">
+            <h2>{subTabInfo?.label}</h2>
+            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
+            <div className="chart-grid">
+              <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} showHeader={false} />
+              <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} showHeader={false} />
+            </div>
+          </section>
+        )
+      case 'wellbeing-sentiment':
+        return (
+          <section className="section section--wide">
+            <h2>{subTabInfo?.label ?? copy.satisfactionPie?.title}</h2>
+            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
+            <div className="chart-grid chart-grid--single">
+              <SatisfactionPieChart data={data} theme={theme} copy={copy.satisfactionPie} common={copy.common} showHeader={false} />
+            </div>
+          </section>
+        )
+      case 'roles-activity':
+        return (
+          <section className="section section--wide">
+            <h2>{subTabInfo?.label}</h2>
+            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
+            <div className="chart-grid chart-grid--single">
+              <ConditionActivityStressChart data={data} theme={theme} copy={copy.conditionActivityStress} common={copy.common} showHeader={false} />
+            </div>
+          </section>
+        )
+      case 'roles-industry':
+        return (
+          <section className="section section--wide">
+            <h2>{subTabInfo?.label ?? copy.industryRadar?.title}</h2>
+            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
+            <div className="chart-grid chart-grid--single">
+              <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} showHeader={false} />
+            </div>
+          </section>
+        )
+      default:
+        return null
+    }
   }
+
+  const mainContent = renderContent()
 
   return (
     <div className="page">
       <header className="hero">
         <div className="hero__content">
           <div className="hero__top-bar">
-            <p className="hero__eyebrow">{copy.hero.eyebrow}</p>
+            <div>
+              {copy.hero.eyebrow && <p className="hero__eyebrow">{copy.hero.eyebrow}</p>}
+              {copy.hero.title && <h1>{copy.hero.title}</h1>}
+            </div>
             <div className="hero__controls" role="group" aria-label={controlsLabel}>
               <button
                 type="button"
@@ -232,9 +299,7 @@ function App() {
                 <span className="theme-toggle__icon" aria-hidden="true">
                   {theme === 'dark' ? '🌙' : '☀️'}
                 </span>
-                <span className="theme-toggle__label">
-                  {themeButtonLabel}
-                </span>
+                <span className="theme-toggle__label">{themeButtonLabel}</span>
               </button>
               <button
                 type="button"
@@ -250,27 +315,48 @@ function App() {
               </button>
             </div>
           </div>
-          <h1>{copy.hero.title}</h1>
-          <p className="hero__lead">{copy.hero.lead}</p>
-          <div className="hero__meta">
-            <span>{copy.hero.meta.datasetSize(datasetCount)}</span>
-            <span>{copy.hero.meta.source}</span>
-          </div>
-          <nav className="hero__tabs" role="tablist" aria-label={copy.hero.tablistLabel}>
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                role="tab"
-                type="button"
-                onClick={() => setActiveTab(tab.id)}
-                aria-selected={activeTab === tab.id}
-                className={`hero__tab ${activeTab === tab.id ? 'hero__tab--active' : ''}`}
-              >
-                <span className="hero__tab-label">{tab.label}</span>
-                <span className="hero__tab-description">{tab.description}</span>
-              </button>
-            ))}
-          </nav>
+
+          {navigationTabs.length > 0 && (
+            <div className="hero__navigation">
+              <nav className="hero__tabs hero__tabs--primary" role="tablist" aria-label={copy.navigation?.label}>
+                {navigationTabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    role="tab"
+                    type="button"
+                    onClick={() => setActiveTab(tab.id)}
+                    aria-selected={activeTab === tab.id}
+                    className={`hero__tab hero__tab--primary ${activeTab === tab.id ? 'hero__tab--active' : ''}`}
+                  >
+                    <span className="hero__tab-label">{tab.label}</span>
+                    <span className="hero__tab-description">{tab.description}</span>
+                  </button>
+                ))}
+              </nav>
+
+              {activeSubTabs.length > 0 && (
+                <nav
+                  className="hero__tabs hero__tabs--secondary"
+                  role="tablist"
+                  aria-label={copy.navigation?.subLabel ?? (activeTabConfig ? `${activeTabConfig.label} sections` : undefined)}
+                >
+                  {activeSubTabs.map((subTab) => (
+                    <button
+                      key={subTab.id}
+                      role="tab"
+                      type="button"
+                      onClick={() => setActiveSubTab(subTab.id)}
+                      aria-selected={activeSubTab === subTab.id}
+                      className={`hero__tab hero__tab--secondary ${activeSubTab === subTab.id ? 'hero__tab--active' : ''}`}
+                    >
+                      <span className="hero__tab-label">{subTab.label}</span>
+                      <span className="hero__tab-description">{subTab.description}</span>
+                    </button>
+                  ))}
+                </nav>
+              )}
+            </div>
+          )}
         </div>
       </header>
 

@@ -179,7 +179,7 @@ const ConditionActivityStressChart = ({ data, theme, copy, common }) => {
   }, [activity, common, copy, data, theme])
 
   return (
-    <div className="chart-card chart-card--wide">
+    <div className="chart-card chart-card--wide chart-card--medium">
       <div className="chart-header">
         <div className="chart-header__top">
           <div>

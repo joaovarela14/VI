@@ -82,34 +82,7 @@ const en = {
   },
   hero: {
     eyebrow: 'Remote work mental health explorer',
-    title: 'Impact of Remote Work on Mental Health',
-    lead:
-      'This dashboard summarises a synthetic survey that captures how professionals across industries experience remote work. Explore stress levels, regional differences in mental health conditions, and the connection between working hours and sleep quality.',
-    meta: {
-      datasetSize: (count) => {
-        const value = count != null ? integerFormatter.format(count) : '—'
-        return `Dataset size: ${value} employees`
-      },
-      source: 'Source: Impact of Remote Work on Mental Health survey',
-    },
-    tablistLabel: 'Dashboard views',
-    tabs: [
-      {
-        id: 'data-lab',
-        label: 'Immersion studio',
-        description: 'Preview future 3D experiments and review every available variable.',
-      },
-      {
-        id: 'overview',
-        label: 'Overview story',
-        description: 'Highlights workload, stress, and support access at a glance.',
-      },
-      {
-        id: 'deep-dive',
-        label: 'Work patterns lab',
-        description: 'Analyse meeting load and sector mix by role and location.',
-      },
-    ],
+    title: 'Modular insights workspace',
     buttons: {
       theme: {
         light: 'Switch to light mode',
@@ -122,6 +95,104 @@ const en = {
         aria: 'Change language',
       },
     },
+  },
+  navigation: {
+    label: 'Primary content tabs',
+    subLabel: 'Sections inside the selected tab',
+    tabs: [
+      {
+        id: 'workload',
+        label: 'Workload & balance',
+        description: 'Hours, meetings, and balance indicators driven by numeric drivers.',
+        subTabs: [
+          {
+            id: 'workload-metrics',
+            label: 'Workload dashboard',
+            description: 'Overview KPIs plus the hours vs. sleep scatter.',
+          },
+          {
+            id: 'workload-balance',
+            label: 'Balance by support',
+            description: 'Track work-life ratings split by access to mental health resources.',
+          },
+          {
+            id: 'workload-meetings',
+            label: 'Meetings vs. stress',
+            description: 'Link hours, meeting load, stress, and locations in one scatter.',
+          },
+        ],
+      },
+      {
+        id: 'wellbeing',
+        label: 'Wellbeing signals',
+        description: 'Stress, conditions, isolation, and sleep quality indicators.',
+        subTabs: [
+          {
+            id: 'wellbeing-stress',
+            label: 'Stress & conditions',
+            description: 'Location stress mix plus mental health prevalence by region.',
+          },
+          {
+            id: 'wellbeing-habits',
+            label: 'Isolation & sleep',
+            description: 'Compare isolation averages and sleep quality vs. stress.',
+          },
+          {
+            id: 'wellbeing-sentiment',
+            label: 'Satisfaction & support',
+            description: 'Slice satisfaction sentiment by sector and region filters.',
+          },
+        ],
+      },
+      {
+        id: 'roles',
+        label: 'Roles & industries',
+        description: 'Role mix, physical activity, and remote environment context.',
+        subTabs: [
+          {
+            id: 'roles-activity',
+            label: 'Activity & stress mix',
+            description: 'Mental health conditions contrasted with physical activity levels.',
+          },
+          {
+            id: 'roles-industry',
+            label: 'Industry radar',
+            description: 'Top job roles by industry, split by remote set-up.',
+          },
+        ],
+      },
+      {
+        id: 'documentation',
+        label: 'Documentation',
+        description: 'Dataset notes, methodology, and variable map.',
+      },
+    ],
+  },
+  documentation: {
+    heading: 'Dataset documentation',
+    intro:
+      'The Impact of Remote Work on Mental Health dataset consolidates anonymised survey responses describing workload, lifestyle, and wellbeing signals across remote, hybrid, and onsite professionals.',
+    stats: [
+      {
+        id: 'records',
+        label: 'Employee records',
+        value: (count) => {
+          const value = count != null ? integerFormatter.format(count) : '—'
+          return `${value} employees`
+        },
+      },
+      {
+        id: 'source',
+        label: 'Source',
+        value: 'Impact of Remote Work on Mental Health (Kaggle)',
+      },
+      {
+        id: 'format',
+        label: 'Format',
+        value: 'UTF-8 CSV, comma separated',
+      },
+    ],
+    sections: [],
   },
   overview: {
     heading: 'At a glance',

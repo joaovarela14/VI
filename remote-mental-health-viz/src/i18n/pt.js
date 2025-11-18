@@ -82,36 +82,7 @@ const pt = {
   },
   hero: {
     eyebrow: "Explorador da saúde mental em trabalho remoto",
-    title: "Como os modelos híbridos moldam o bem-estar das equipas",
-    lead: "Este painel resume um inquérito sintético sobre a experiência de profissionais em trabalho remoto. Explore níveis de stress, diferenças regionais nas condições de saúde mental e a relação entre horas trabalhadas e qualidade do sono.",
-    meta: {
-      datasetSize: (count) => {
-        const value = count != null ? integerFormatter.format(count) : "—";
-        return `Dimensão do inquérito: ${value} colaboradores`;
-      },
-      source: "Fonte: Impact of Remote Work on Mental Health",
-    },
-    tablistLabel: "Vistas do painel",
-    tabs: [
-      {
-        id: "data-lab",
-        label: "Estúdio imersivo",
-        description:
-          "Antecipe experiências 3D e consulte todas as variáveis disponíveis.",
-      },
-      {
-        id: "overview",
-        label: "História geral",
-        description:
-          "Destaca carga de trabalho, stress e apoio disponível de forma imediata.",
-      },
-      {
-        id: "deep-dive",
-        label: "Laboratório de padrões",
-        description:
-          "Analise reuniões semanais e a mistura sectorial por função e localização.",
-      },
-    ],
+    title: "Workspace modular de insights",
     buttons: {
       theme: {
         light: "Mudar para modo claro",
@@ -124,6 +95,104 @@ const pt = {
         aria: "Alterar idioma",
       },
     },
+  },
+  navigation: {
+    label: "Separadores principais",
+    subLabel: "Subseções do separador ativo",
+    tabs: [
+      {
+        id: "workload",
+        label: "Carga e equilíbrio",
+        description: "Horas, reuniões e indicadores de equilíbrio guiados por variáveis numéricas.",
+        subTabs: [
+          {
+            id: "workload-metrics",
+            label: "Painel de carga",
+            description: "KPIs agregados e o scatter de horas versus sono.",
+          },
+          {
+            id: "workload-balance",
+            label: "Equilíbrio por apoio",
+            description: "Compara ratings de equilíbrio conforme a existência de recursos.",
+          },
+          {
+            id: "workload-meetings",
+            label: "Reuniões vs. stress",
+            description: "Liga horas, reuniões, stress e localização num único scatter.",
+          },
+        ],
+      },
+      {
+        id: "wellbeing",
+        label: "Bem-estar",
+        description: "Indicadores de stress, condições, isolamento e qualidade do sono.",
+        subTabs: [
+          {
+            id: "wellbeing-stress",
+            label: "Stress e condições",
+            description: "Mapa por localização e prevalência regional de saúde mental.",
+          },
+          {
+            id: "wellbeing-habits",
+            label: "Isolamento e sono",
+            description: "Compara médias de isolamento e a matriz sono versus stress.",
+          },
+          {
+            id: "wellbeing-sentiment",
+            label: "Satisfação e apoio",
+            description: "Mistura de satisfação filtrada por sector e região.",
+          },
+        ],
+      },
+      {
+        id: "roles",
+        label: "Funções e sectores",
+        description: "Distribuição de funções, atividade física e contextos remotos.",
+        subTabs: [
+          {
+            id: "roles-activity",
+            label: "Atividade vs. stress",
+            description: "Condições mentais em contraste com o perfil de atividade física.",
+          },
+          {
+            id: "roles-industry",
+            label: "Radar industrial",
+            description: "Principais funções por indústria e modalidade de trabalho.",
+          },
+        ],
+      },
+      {
+        id: "documentation",
+        label: "Documentação",
+        description: "Notas do conjunto de dados, metodologia e mapa de variáveis.",
+      },
+    ],
+  },
+  documentation: {
+    heading: "Documentação do dataset",
+    intro:
+      "O conjunto Impact of Remote Work on Mental Health reúne respostas anónimas sobre carga de trabalho, estilo de vida e indicadores de bem-estar para profissionais remotos, híbridos e presenciais.",
+    stats: [
+      {
+        id: "records",
+        label: "Registos de colaboradores",
+        value: (count) => {
+          const value = count != null ? integerFormatter.format(count) : "—";
+          return `${value} pessoas`;
+        },
+      },
+      {
+        id: "source",
+        label: "Fonte",
+        value: "Impact of Remote Work on Mental Health (Kaggle)",
+      },
+      {
+        id: "format",
+        label: "Formato",
+        value: "CSV UTF-8, separado por vírgulas",
+      },
+    ],
+    sections: [],
   },
   overview: {
     heading: "Em destaque",
