@@ -96,6 +96,78 @@ const pt = {
       },
     },
   },
+  stressLab: {
+    eyebrow: "Laboratório interativo de stress",
+    title: "Linguagem corporal remoto vs. presencial",
+    description:
+      "Ajusta horas trabalhadas, reuniões virtuais, qualidade do sono e género para transformar as personas. As posturas mudam conforme o cenário filtra o dataset para remoto e presencial.",
+    modelsLabel: "Personas 3D para comparar remoto e presencial",
+    remoteLabel: "Remoto / híbrido",
+    onsiteLabel: "Presencial",
+    context: {
+      remote: {
+        icon: "🏡",
+        label: "Ambiente em casa",
+      },
+      onsite: {
+        icon: "🏢",
+        label: "Piso de escritório",
+      },
+    },
+    states: {
+      calm: "Calmo",
+      balanced: "Em alerta",
+      strained: "Sobrecarregado",
+    },
+    panel: {
+      title: "Personaliza a amostra",
+      subtitle: "Os sliders procuram perfis semelhantes. Observa como remoto e presencial se afastam quando alteras os hábitos da persona.",
+      reset: "Repor cenário",
+      hours: {
+        label: "Horas por semana",
+        unit: "h/sem",
+      },
+      meetings: {
+        label: "Reuniões virtuais",
+        unit: "semana",
+      },
+      sleep: {
+        label: "Qualidade do sono",
+        labels: {
+          Poor: "Sem descanso",
+          Average: "Regular",
+          Good: "Revigorado",
+        },
+      },
+      gender: {
+        label: "Género (checkbox)",
+        hint: "Selecciona as identidades relevantes. Sem seleção significa incluir todas.",
+      },
+      differenceLabel: "Diferença remoto vs. presencial",
+    },
+    genderOptions: [
+      {
+        id: "female",
+        label: "Feminino",
+        matches: ["female"],
+      },
+      {
+        id: "male",
+        label: "Masculino",
+        matches: ["male"],
+      },
+      {
+        id: "nonbinary",
+        label: "Não-binário",
+        matches: ["non-binary"],
+      },
+      {
+        id: "unspecified",
+        label: "Prefere não dizer",
+        matches: ["prefer not to say"],
+      },
+    ],
+  },
   navigation: {
     label: "Separadores principais",
     subLabel: "Subseções do separador ativo",

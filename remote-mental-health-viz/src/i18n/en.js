@@ -96,6 +96,78 @@ const en = {
       },
     },
   },
+  stressLab: {
+    eyebrow: 'Interactive stress lab',
+    title: 'Remote vs. onsite body language',
+    description:
+      'Use hours worked, meeting load, sleep quality, and the gender mix to morph the personas. The avatars react to the filtered dataset, shifting posture and stress colors as the scenario changes.',
+    modelsLabel: '3D personas comparing remote and onsite contexts',
+    remoteLabel: 'Remote / hybrid',
+    onsiteLabel: 'On-site',
+    context: {
+      remote: {
+        icon: '🏡',
+        label: 'Home base',
+      },
+      onsite: {
+        icon: '🏢',
+        label: 'Office floor',
+      },
+    },
+    states: {
+      calm: 'Grounded',
+      balanced: 'On alert',
+      strained: 'Overloaded',
+    },
+    panel: {
+      title: 'Adjust the sample',
+      subtitle: 'The sliders pick respondents with matching habits. Watch how remote vs. onsite stress changes as you tweak the profile.',
+      reset: 'Reset inputs',
+      hours: {
+        label: 'Hours per week',
+        unit: 'hrs',
+      },
+      meetings: {
+        label: 'Virtual meetings',
+        unit: 'per wk',
+      },
+      sleep: {
+        label: 'Sleep quality',
+        labels: {
+          Poor: 'Restless',
+          Average: 'Balanced',
+          Good: 'Rested',
+        },
+      },
+      gender: {
+        label: 'Gender focus',
+        hint: 'Tick the checkboxes to focus on specific identities. Clear all to include everyone.',
+      },
+      differenceLabel: 'Remote vs. onsite gap',
+    },
+    genderOptions: [
+      {
+        id: 'female',
+        label: 'Female',
+        matches: ['female'],
+      },
+      {
+        id: 'male',
+        label: 'Male',
+        matches: ['male'],
+      },
+      {
+        id: 'nonbinary',
+        label: 'Non-binary',
+        matches: ['non-binary'],
+      },
+      {
+        id: 'unspecified',
+        label: 'Prefer not to say',
+        matches: ['prefer not to say'],
+      },
+    ],
+  },
   navigation: {
     label: 'Primary content tabs',
     subLabel: 'Sections inside the selected tab',

@@ -13,6 +13,7 @@ import SocialIsolationBarChart from './components/SocialIsolationBarChart'
 import ConditionActivityStressChart from './components/ConditionActivityStressChart'
 import SleepStressMatrix from './components/SleepStressMatrix'
 import DocumentationPanel from './components/DocumentationPanel'
+import StressPersonaHero from './components/StressPersonaHero'
 import en from './i18n/en'
 import pt from './i18n/pt'
 import './App.css'
@@ -315,6 +316,8 @@ function App() {
               </button>
             </div>
           </div>
+
+          {copy.stressLab && <StressPersonaHero data={data} copy={copy.stressLab} theme={theme} />}
 
           {navigationTabs.length > 0 && (
             <div className="hero__navigation">
