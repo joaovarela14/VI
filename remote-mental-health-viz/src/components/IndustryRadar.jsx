@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 
 const workLocations = ['Remote', 'Hybrid', 'Onsite']
 
-const IndustryRadar = ({ data, theme, copy, common }) => {
+const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
   const containerRef = useRef(null)
   const svgRef = useRef(null)
 
@@ -294,13 +294,15 @@ const IndustryRadar = ({ data, theme, copy, common }) => {
   const noData = !selectedIndustry || !roleAxes.length || !hasData
 
   return (
-    <div ref={containerRef} className="chart-card chart-card--wide">
+    <div ref={containerRef} className="chart-card chart-card--wide chart-card--tall">
       <div className="chart-header">
         <div className="industry-radar__controls">
-          <div>
-            <h3>{copy.title}</h3>
-            <p>{copy.description}</p>
-          </div>
+          {showHeader && (
+            <div>
+              <h3>{copy.title}</h3>
+              <p>{copy.description}</p>
+            </div>
+          )}
           <div className="industry-radar__filters">
             <label>
               <span className="visually-hidden">{copy.sectorLabel}</span>

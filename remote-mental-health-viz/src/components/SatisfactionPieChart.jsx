@@ -8,7 +8,7 @@ const DEFAULT_COLORS = {
   satisfied: '#34d399',
 }
 
-const SatisfactionPieChart = ({ data, theme, copy, common }) => {
+const SatisfactionPieChart = ({ data, theme, copy, common, showHeader = true }) => {
   const svgRef = useRef(null)
   const filterSelectRef = useRef(null)
 
@@ -36,18 +36,23 @@ const SatisfactionPieChart = ({ data, theme, copy, common }) => {
     const axisColor = styles.getPropertyValue('--chart-axis-color').trim() || '#94a3b8'
     const cardSurface = styles.getPropertyValue('--chart-surface').trim() || '#0f172a'
 
-    const width = 420
-    const height = 340
-    const radius = Math.min(width, height) / 2 - 28
+    const width = 640
+    const height = 360
+    const legendWidth = 160
+    const legendPadding = 32
+    const chartPadding = 32
+    const chartAreaWidth = width - legendWidth - legendPadding - chartPadding
+    const radius = Math.min(chartAreaWidth, height) / 2 - 16
     const colorScale = (key) => DEFAULT_COLORS[key] ?? '#60a5fa'
 
     const svgRoot = svg.attr('viewBox', `0 0 ${width} ${height}`)
-    const chartGroup = svgRoot.append('g').attr('transform', `translate(${width / 2}, ${(height / 2) + 10})`)
+    const chartCenterX = chartPadding + chartAreaWidth / 2
+    const chartGroup = svgRoot.append('g').attr('transform', `translate(${chartCenterX}, ${height / 2})`)
     const labelArc = d3.arc().innerRadius(radius * 0.55).outerRadius(radius * 0.9)
 
     const legendGroup = svgRoot
       .append('g')
-      .attr('transform', 'translate(24, 20)')
+      .attr('transform', `translate(${width - legendWidth}, 32)`)
       .attr('class', 'legend')
 
     legendGroup
@@ -59,13 +64,13 @@ const SatisfactionPieChart = ({ data, theme, copy, common }) => {
       .attr('font-weight', 600)
       .text(copy.legendTitle)
 
-    const legendItems = legendGroup.append('g').attr('transform', 'translate(0, 22)')
+    const legendItems = legendGroup.append('g').attr('transform', 'translate(0, 24)')
 
     legendItems
       .selectAll('g')
       .data(SATISFACTION_ORDER)
       .join('g')
-      .attr('transform', (_, index) => `translate(${index * 120}, 0)`)
+      .attr('transform', (_, index) => `translate(0, ${index * 24})`)
       .each(function (key) {
         const item = d3.select(this)
         item
@@ -197,13 +202,15 @@ const SatisfactionPieChart = ({ data, theme, copy, common }) => {
   }, [common, copy, data, theme])
 
   return (
-    <div className="chart-card">
+    <div className="chart-card chart-card--wide chart-card--tall">
       <div className="chart-header">
         <div className="chart-header__top">
-          <div>
-            <h3>{copy.title}</h3>
-            <p>{copy.description}</p>
-          </div>
+          {showHeader && (
+            <div>
+              <h3>{copy.title}</h3>
+              <p>{copy.description}</p>
+            </div>
+          )}
           <div ref={filterSelectRef} className="chart-header__filters">
             <label className="chart-controls">
               <span className="visually-hidden">{copy.filters.sector}</span>

@@ -40,34 +40,40 @@ body {
   --error-text: #fecaca;
   --spinner-border: rgba(148, 163, 184, 0.4);
   --spinner-highlight: #38bdf8;
+  --tooltip-background: #082f49;
+  --tooltip-border: #38bdf8;
+  --tooltip-text: #e2e8f0;
 }
 
 body.theme-light {
-  --page-background: radial-gradient(circle at top left, #f8fafc 0%, #e2e8f0 55%, #f1f5f9 100%);
-  --surface-hero: linear-gradient(135deg, rgba(14, 116, 144, 0.12), rgba(59, 130, 246, 0.1));
-  --surface-card: rgba(255, 255, 255, 0.85);
-  --surface-card-strong: rgba(248, 250, 252, 0.95);
-  --surface-footer: rgba(226, 232, 240, 0.65);
-  --chip-background: rgba(241, 245, 249, 0.85);
-  --toggle-background: rgba(255, 255, 255, 0.9);
-  --toggle-border: rgba(148, 163, 184, 0.45);
-  --border-soft: rgba(148, 163, 184, 0.35);
+  --page-background: radial-gradient(circle at 20% 20%, #ffffff 0%, #f4f6fb 48%, #edf2f7 100%);
+  --surface-hero: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(14, 165, 233, 0.05));
+  --surface-card: rgba(255, 255, 255, 0.92);
+  --surface-card-strong: rgba(255, 255, 255, 0.98);
+  --surface-footer: rgba(226, 232, 240, 0.85);
+  --chip-background: rgba(248, 250, 252, 0.9);
+  --toggle-background: rgba(255, 255, 255, 0.95);
+  --toggle-border: rgba(148, 163, 184, 0.35);
+  --border-soft: rgba(148, 163, 184, 0.3);
   --text-primary: #0f172a;
   --text-muted: #475569;
-  --text-subtle: #475569;
+  --text-subtle: #64748b;
   --badge-text: #0284c7;
   --insight-strong: #0f172a;
-  --chart-surface: rgba(255, 255, 255, 0.95);
-  --chart-border: rgba(148, 163, 184, 0.3);
+  --chart-surface: rgba(255, 255, 255, 0.96);
+  --chart-border: rgba(148, 163, 184, 0.25);
   --chart-axis-color: #475569;
-  --chart-grid-stroke: #cbd5f5;
-  --chart-legend-text: #1e293b;
-  --focus-ring: 0 0 0 3px rgba(14, 165, 233, 0.35);
-  --error-background: rgba(248, 113, 113, 0.12);
-  --error-border: rgba(248, 113, 113, 0.3);
+  --chart-grid-stroke: #e2e8f0;
+  --chart-legend-text: #0f172a;
+  --focus-ring: 0 0 0 3px rgba(14, 165, 233, 0.25);
+  --error-background: rgba(248, 113, 113, 0.1);
+  --error-border: rgba(248, 113, 113, 0.25);
   --error-text: #b91c1c;
-  --spinner-border: rgba(148, 163, 184, 0.35);
+  --spinner-border: rgba(148, 163, 184, 0.3);
   --spinner-highlight: #0ea5e9;
+  --tooltip-background: #f0f9ff;
+  --tooltip-border: #0ea5e9;
+  --tooltip-text: #0f172a;
 }
 
 a {

@@ -33,6 +33,16 @@ const sleepQuality = {
   Good: 'Boa',
 }
 
+const industries = {
+  Consulting: 'Consultoria',
+  Education: 'Educação',
+  Finance: 'Finanças',
+  Healthcare: 'Saúde',
+  IT: 'Tecnologia',
+  Manufacturing: 'Indústria',
+  Retail: 'Retalho',
+}
+
 const mentalHealthConditions = {
   Anxiety: 'Ansiedade',
   Depression: 'Depressão',
@@ -60,40 +70,19 @@ const pt = {
     stressLevels,
     workLocations,
     sleepQuality,
+    industries,
     conditions: mentalHealthConditions,
     mentalHealthAccess: {
-      yes: "Com apoio de saúde mental",
-      no: "Sem apoio de saúde mental",
+      yes: "Sim",
+      no: "Não",
     },
     allLocations: "Todas as localizações",
+    allIndustries: "Todas as áreas",
     satisfactionMap,
   },
   hero: {
     eyebrow: "Explorador da saúde mental em trabalho remoto",
-    title: "Como os modelos híbridos moldam o bem-estar das equipas",
-    lead: "Este painel resume um inquérito sintético sobre a experiência de profissionais em trabalho remoto. Explore níveis de stress, diferenças regionais nas condições de saúde mental e a relação entre horas trabalhadas e qualidade do sono.",
-    meta: {
-      datasetSize: (count) => {
-        const value = count != null ? integerFormatter.format(count) : "—";
-        return `Dimensão do inquérito: ${value} colaboradores`;
-      },
-      source: "Fonte: Impact of Remote Work on Mental Health",
-    },
-    tablistLabel: "Vistas do painel",
-    tabs: [
-      {
-        id: "overview",
-        label: "História geral",
-        description:
-          "Destaca carga de trabalho, stress e apoio disponível de forma imediata.",
-      },
-      {
-        id: "deep-dive",
-        label: "Laboratório de padrões",
-        description:
-          "Analise reuniões semanais e a mistura sectorial por função e localização.",
-      },
-    ],
+    title: "Workspace modular de insights",
     buttons: {
       theme: {
         light: "Mudar para modo claro",
@@ -106,6 +95,104 @@ const pt = {
         aria: "Alterar idioma",
       },
     },
+  },
+  navigation: {
+    label: "Separadores principais",
+    subLabel: "Subseções do separador ativo",
+    tabs: [
+      {
+        id: "workload",
+        label: "Carga e equilíbrio",
+        description: "Horas, reuniões e indicadores de equilíbrio guiados por variáveis numéricas.",
+        subTabs: [
+          {
+            id: "workload-metrics",
+            label: "Painel de carga",
+            description: "KPIs agregados e o scatter de horas versus sono.",
+          },
+          {
+            id: "workload-balance",
+            label: "Equilíbrio por apoio",
+            description: "Compara ratings de equilíbrio conforme a existência de recursos.",
+          },
+          {
+            id: "workload-meetings",
+            label: "Reuniões vs. stress",
+            description: "Liga horas, reuniões, stress e localização num único scatter.",
+          },
+        ],
+      },
+      {
+        id: "wellbeing",
+        label: "Bem-estar",
+        description: "Indicadores de stress, condições, isolamento e qualidade do sono.",
+        subTabs: [
+          {
+            id: "wellbeing-stress",
+            label: "Stress e condições",
+            description: "Mapa por localização e prevalência regional de saúde mental.",
+          },
+          {
+            id: "wellbeing-habits",
+            label: "Isolamento e sono",
+            description: "Compara médias de isolamento e a matriz sono versus stress.",
+          },
+          {
+            id: "wellbeing-sentiment",
+            label: "Satisfação e apoio",
+            description: "Mistura de satisfação filtrada por sector e região.",
+          },
+        ],
+      },
+      {
+        id: "roles",
+        label: "Funções e sectores",
+        description: "Distribuição de funções, atividade física e contextos remotos.",
+        subTabs: [
+          {
+            id: "roles-activity",
+            label: "Atividade vs. stress",
+            description: "Condições mentais em contraste com o perfil de atividade física.",
+          },
+          {
+            id: "roles-industry",
+            label: "Radar industrial",
+            description: "Principais funções por indústria e modalidade de trabalho.",
+          },
+        ],
+      },
+      {
+        id: "documentation",
+        label: "Documentação",
+        description: "Notas do conjunto de dados, metodologia e mapa de variáveis.",
+      },
+    ],
+  },
+  documentation: {
+    heading: "Documentação do dataset",
+    intro:
+      "O conjunto Impact of Remote Work on Mental Health reúne respostas anónimas sobre carga de trabalho, estilo de vida e indicadores de bem-estar para profissionais remotos, híbridos e presenciais.",
+    stats: [
+      {
+        id: "records",
+        label: "Registos de colaboradores",
+        value: (count) => {
+          const value = count != null ? integerFormatter.format(count) : "—";
+          return `${value} pessoas`;
+        },
+      },
+      {
+        id: "source",
+        label: "Fonte",
+        value: "Impact of Remote Work on Mental Health (Kaggle)",
+      },
+      {
+        id: "format",
+        label: "Formato",
+        value: "CSV UTF-8, separado por vírgulas",
+      },
+    ],
+    sections: [],
   },
   overview: {
     heading: "Em destaque",
@@ -255,6 +342,8 @@ const pt = {
       allConditions: "Todas as condições",
     },
     axisLabel: "Pessoas",
+    xAxisLabel: "Qualidade do sono",
+    yAxisLabel: "Nível de stress",
     empty: "Sem dados de sono para a condição selecionada.",
     tooltip: ({ stressLabel, sleepLabel, count }) =>
       `${stressLabel} — ${sleepLabel}\nPessoas: ${formatCount(count)}`,
@@ -288,14 +377,30 @@ const pt = {
     description:
       "A cor indica a modalidade de trabalho, o tamanho do círculo reflete o stress e o eixo vertical mostra o número de reuniões virtuais por semana.",
     filterLabel: "Filtrar por localização de trabalho",
+    industryFilterLabel: "Filtrar por área de trabalho",
+    sampleFilterLabel: "Limitar amostra aleatória",
     legendHeading: "Modalidade de trabalho",
     sizeLegendHeading: "Nível de stress",
+    xAxisLabel: "Horas trabalhadas por semana",
+    yAxisLabel: "Reuniões virtuais por semana",
     filterOptions: {
       All: "Todas as localizações",
       Remote: "Remoto",
       Hybrid: "Híbrido",
       Onsite: "Presencial",
     },
+    industryFilterOptions: {
+      All: "Todas as áreas",
+    },
+    sampleFilterOptions: {
+      All: "Mostrar todos os pontos",
+      200: "Amostra aleatória (até 200)",
+      500: "Amostra aleatória (até 500)",
+      1000: "Amostra aleatória (até 1 000)",
+      2000: "Amostra aleatória (até 2 000)",
+      5000: "Amostra aleatória (até 5 000)",
+    },
+    sampleFilterUnavailable: "Sem respostas suficientes para este tamanho de amostra",
     empty: "Sem respostas com informação de reuniões e stress para apresentar.",
     tooltip: ({
       employeeId,
@@ -405,6 +510,155 @@ const pt = {
       intro:
         "Escolha um sector para perceber que funções lideram em cada modelo de trabalho. Filtre por modalidade para identificar focos de especialização ou lacunas.",
     },
+  },
+  dataLab: {
+    heading: "Mapa das variáveis",
+    intro:
+      "Enquanto preparamos os modelos 3D interativos, explore todas as variáveis quantitativas e qualitativas disponíveis. Esta lista ajuda a planear que sinais irá ligar aos futuros protótipos.",
+    datasetOverview: {
+      title: "Retrato do inquérito",
+      paragraphs: [
+        "À medida que o trabalho remoto se torna o novo padrão, é essencial compreender o impacto no bem-estar mental dos colaboradores. Este dataset analisa como o trabalho à distância afeta níveis de stress, equilíbrio trabalho-vida e condições de saúde mental em diferentes sectores e regiões.",
+        "Com 5 000 registos recolhidos em todo o mundo, o dataset reúne insights sobre modalidade de trabalho (remoto, híbrido, presencial), níveis de stress, acesso a recursos de saúde mental e satisfação profissional. Foi desenhado para apoiar investigadores, profissionais de RH e empresas a avaliar a influência crescente do trabalho remoto na produtividade e no bem-estar.",
+      ],
+      topics: [
+        {
+          title: "Âmbito em foco",
+          description:
+            "As respostas cobrem profissionais remotos, híbridos e presenciais em vários sectores e continentes, destacando como o contexto influencia os indicadores de bem-estar.",
+        },
+        {
+          title: "Como os dados foram reunidos",
+          description:
+            "O CSV agrega um inquérito global anónimo onde colaboradores reportaram stress, carga laboral, acesso a apoio e satisfação através de perguntas estruturadas.",
+        },
+        {
+          title: "Controlo de qualidade",
+          description:
+            "Registos sem campos essenciais foram descartados e identificadores repetidos removidos, garantindo uma tabela coerente para filtragem e análise visual.",
+        },
+      ],
+    },
+    quantitativeHeading: "Variáveis quantitativas",
+    qualitativeHeading: "Variáveis qualitativas",
+    quantitative: [
+      {
+        id: "age",
+        name: "Age",
+        type: "Integer",
+        description: "Idade em anos.",
+      },
+      {
+        id: "experience",
+        name: "Years_of_Experience",
+        type: "Integer",
+        description: "Total de anos de experiência profissional.",
+      },
+      {
+        id: "hours",
+        name: "Hours_Worked_Per_Week",
+        type: "Integer",
+        description: "Horas semanais dedicadas ao trabalho.",
+      },
+      {
+        id: "meetings",
+        name: "Number_of_Virtual_Meetings",
+        type: "Integer",
+        description: "Reuniões virtuais por semana.",
+      },
+      {
+        id: "balance",
+        name: "Work_Life_Balance_Rating",
+        type: "Integer",
+        description: "Classificação autorrelatada de 1 (fraco) a 5 (excelente).",
+      },
+      {
+        id: "isolation",
+        name: "Social_Isolation_Rating",
+        type: "Integer",
+        description: "Pontuação de isolamento percebido de 1 a 5.",
+      },
+      {
+        id: "companySupport",
+        name: "Company_Support_for_Remote_Work",
+        type: "Integer",
+        description: "Avaliação de suporte de 1 (baixo) a 5 (alto).",
+      },
+    ],
+    qualitative: [
+      {
+        id: "stress",
+        name: "Stress_Level",
+        type: "String",
+        description: "Intensidade de stress autorrelatada.",
+      },
+      {
+        id: "gender",
+        name: "Gender",
+        type: "String",
+        description: "Identidade de género do participante.",
+      },
+      {
+        id: "role",
+        name: "Job_Role",
+        type: "String",
+        description: "Função profissional declarada.",
+      },
+      {
+        id: "industry",
+        name: "Industry",
+        type: "String",
+        description: "Sector de atuação.",
+      },
+      {
+        id: "location",
+        name: "Work_Location",
+        type: "String",
+        description: "Modalidade remota, híbrida ou presencial.",
+      },
+      {
+        id: "condition",
+        name: "Mental_Health_Condition",
+        type: "String",
+        description: "Condição de saúde mental mencionada.",
+      },
+      {
+        id: "access",
+        name: "Access_to_Mental_Health_Resources",
+        type: "String",
+        description: "Indica se a empresa fornece recursos de saúde mental.",
+      },
+      {
+        id: "productivity",
+        name: "Productivity_Change",
+        type: "String",
+        description: "Perceção de variação de produtividade.",
+      },
+      {
+        id: "satisfaction",
+        name: "Satisfaction_with_Remote_Work",
+        type: "String",
+        description: "Sentimento relativamente ao trabalho remoto.",
+      },
+      {
+        id: "activity",
+        name: "Physical_Activity",
+        type: "String",
+        description: "Frequência de atividade física.",
+      },
+      {
+        id: "sleep",
+        name: "Sleep_Quality",
+        type: "String",
+        description: "Classificação da qualidade do sono.",
+      },
+      {
+        id: "region",
+        name: "Region",
+        type: "String",
+        description: "Região geográfica.",
+      },
+    ],
   },
   loading: "A carregar respostas do inquérito…",
   error: "Não foi possível carregar os dados. Tente novamente mais tarde.",

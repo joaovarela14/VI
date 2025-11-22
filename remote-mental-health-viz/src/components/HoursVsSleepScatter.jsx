@@ -132,7 +132,7 @@ const HoursVsSleepScatter = ({ data, theme, copy, common }) => {
   }, [common, copy, data, theme])
 
   return (
-    <div className="chart-card">
+    <div className="chart-card chart-card--medium">
       <div className="chart-header">
         <h3>{copy.title}</h3>
         <p>{copy.description}</p>

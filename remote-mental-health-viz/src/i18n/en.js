@@ -33,6 +33,16 @@ const sleepQuality = {
   Good: 'Good',
 }
 
+const industries = {
+  Consulting: 'Consulting',
+  Education: 'Education',
+  Finance: 'Finance',
+  Healthcare: 'Healthcare',
+  IT: 'IT',
+  Manufacturing: 'Manufacturing',
+  Retail: 'Retail',
+}
+
 const mentalHealthConditions = {
   Anxiety: 'Anxiety',
   Depression: 'Depression',
@@ -60,39 +70,19 @@ const en = {
     stressLevels,
     workLocations,
     sleepQuality,
+    industries,
     conditions: mentalHealthConditions,
     mentalHealthAccess: {
-      yes: 'Has mental health resources',
-      no: 'No mental health resources',
+      yes: 'Yes',
+      no: 'No',
     },
     allLocations: 'All locations',
+    allIndustries: 'All industries',
     satisfactionMap,
   },
   hero: {
     eyebrow: 'Remote work mental health explorer',
-    title: 'How hybrid work patterns shape employee wellbeing',
-    lead:
-      'This dashboard summarises a synthetic survey that captures how professionals across industries experience remote work. Explore stress levels, regional differences in mental health conditions, and the connection between working hours and sleep quality.',
-    meta: {
-      datasetSize: (count) => {
-        const value = count != null ? integerFormatter.format(count) : '—'
-        return `Dataset size: ${value} employees`
-      },
-      source: 'Source: Impact of Remote Work on Mental Health survey',
-    },
-    tablistLabel: 'Dashboard views',
-    tabs: [
-      {
-        id: 'overview',
-        label: 'Overview story',
-        description: 'Highlights workload, stress, and support access at a glance.',
-      },
-      {
-        id: 'deep-dive',
-        label: 'Work patterns lab',
-        description: 'Analyse meeting load and sector mix by role and location.',
-      },
-    ],
+    title: 'Modular insights workspace',
     buttons: {
       theme: {
         light: 'Switch to light mode',
@@ -105,6 +95,104 @@ const en = {
         aria: 'Change language',
       },
     },
+  },
+  navigation: {
+    label: 'Primary content tabs',
+    subLabel: 'Sections inside the selected tab',
+    tabs: [
+      {
+        id: 'workload',
+        label: 'Workload & balance',
+        description: 'Hours, meetings, and balance indicators driven by numeric drivers.',
+        subTabs: [
+          {
+            id: 'workload-metrics',
+            label: 'Workload dashboard',
+            description: 'Overview KPIs plus the hours vs. sleep scatter.',
+          },
+          {
+            id: 'workload-balance',
+            label: 'Balance by support',
+            description: 'Track work-life ratings split by access to mental health resources.',
+          },
+          {
+            id: 'workload-meetings',
+            label: 'Meetings vs. stress',
+            description: 'Link hours, meeting load, stress, and locations in one scatter.',
+          },
+        ],
+      },
+      {
+        id: 'wellbeing',
+        label: 'Wellbeing signals',
+        description: 'Stress, conditions, isolation, and sleep quality indicators.',
+        subTabs: [
+          {
+            id: 'wellbeing-stress',
+            label: 'Stress & conditions',
+            description: 'Location stress mix plus mental health prevalence by region.',
+          },
+          {
+            id: 'wellbeing-habits',
+            label: 'Isolation & sleep',
+            description: 'Compare isolation averages and sleep quality vs. stress.',
+          },
+          {
+            id: 'wellbeing-sentiment',
+            label: 'Satisfaction & support',
+            description: 'Slice satisfaction sentiment by sector and region filters.',
+          },
+        ],
+      },
+      {
+        id: 'roles',
+        label: 'Roles & industries',
+        description: 'Role mix, physical activity, and remote environment context.',
+        subTabs: [
+          {
+            id: 'roles-activity',
+            label: 'Activity & stress mix',
+            description: 'Mental health conditions contrasted with physical activity levels.',
+          },
+          {
+            id: 'roles-industry',
+            label: 'Industry radar',
+            description: 'Top job roles by industry, split by remote set-up.',
+          },
+        ],
+      },
+      {
+        id: 'documentation',
+        label: 'Documentation',
+        description: 'Dataset notes, methodology, and variable map.',
+      },
+    ],
+  },
+  documentation: {
+    heading: 'Dataset documentation',
+    intro:
+      'The Impact of Remote Work on Mental Health dataset consolidates anonymised survey responses describing workload, lifestyle, and wellbeing signals across remote, hybrid, and onsite professionals.',
+    stats: [
+      {
+        id: 'records',
+        label: 'Employee records',
+        value: (count) => {
+          const value = count != null ? integerFormatter.format(count) : '—'
+          return `${value} employees`
+        },
+      },
+      {
+        id: 'source',
+        label: 'Source',
+        value: 'Impact of Remote Work on Mental Health (Kaggle)',
+      },
+      {
+        id: 'format',
+        label: 'Format',
+        value: 'UTF-8 CSV, comma separated',
+      },
+    ],
+    sections: [],
   },
   overview: {
     heading: 'At a glance',
@@ -231,6 +319,8 @@ const en = {
       allConditions: 'All conditions',
     },
     axisLabel: 'People',
+    xAxisLabel: 'Sleep quality',
+    yAxisLabel: 'Stress level',
     empty: 'No sleep quality details are available for the selected condition.',
     tooltip: ({ stressLabel, sleepLabel, count }) =>
       `${stressLabel} — ${sleepLabel}\nPeople: ${formatCount(count)}`,
@@ -261,14 +351,30 @@ const en = {
     description:
       'Colour encodes workplace arrangement, bubble size reflects stress levels, and the vertical axis shows virtual meetings per week.',
     filterLabel: 'Filter by work location',
+    industryFilterLabel: 'Filter by work area',
+    sampleFilterLabel: 'Limit random sample',
     legendHeading: 'Work location',
     sizeLegendHeading: 'Stress level',
+    xAxisLabel: 'Hours worked per week',
+    yAxisLabel: 'Virtual meetings per week',
     filterOptions: {
       All: 'All locations',
       Remote: 'Remote',
       Hybrid: 'Hybrid',
       Onsite: 'Onsite',
     },
+    industryFilterOptions: {
+      All: 'All industries',
+    },
+    sampleFilterOptions: {
+      All: 'Show all points',
+      200: 'Random sample (max 200)',
+      500: 'Random sample (max 500)',
+      1000: 'Random sample (max 1,000)',
+      2000: 'Random sample (max 2,000)',
+      5000: 'Random sample (max 5,000)',
+    },
+    sampleFilterUnavailable: 'Not enough responses for this sample size',
     empty: 'No responses with meeting and stress details are available.',
     tooltip: ({ employeeId, locationLabel, stressLabel, hoursWorked, virtualMeetings }) =>
       `<div class="chart-tooltip__title">${employeeId}</div>
@@ -291,8 +397,8 @@ const en = {
     yAxisLabel: 'Average work-life balance',
     legendTitle: 'Mental health access',
     legend: {
-      yes: 'Has mental health resources',
-      no: 'No mental health resources',
+      yes: 'Yes',
+      no: 'No',
     },
     empty: 'No work-life balance information is available for the selected settings.',
     ariaLabel: 'Line chart showing average work-life balance by age or experience split by mental health access',
@@ -326,9 +432,9 @@ const en = {
         'See how access to mental health resources relates to perceived work-life balance across different ages or experience levels.',
     },
     meeting: {
-      heading: 'Meeting load vs. stress',
+      heading: 'Virtual meetings load',
       intro:
-        'Visualise how weekly hours, stress, and meeting load intersect for each workplace arrangement. Use the colours to compare locations and the bubble size to understand how meeting-heavy schedules relate to pressure.',
+        'Visualise how weekly hours, stress, and meeting load intersect for each workplace. Use the colours to compare locations and the bubble size to understand how are the stress levels.',
     },
     socialIsolation: {
       heading: 'Isolation intensity by continent',
@@ -360,6 +466,155 @@ const en = {
   error: 'We were unable to load the dataset. Please try again later.',
   footer:
     'Project for the Information Visualization course, developed by João Varela and Carolina Prata.',
+  dataLab: {
+    heading: 'Dataset Overview',
+    intro:
+      'Explore every quantitative and qualitative variable available in the dataset. Hover each variable name to preview the values it can take.',
+    datasetOverview: {
+      title: 'Survey snapshot',
+      paragraphs: [
+        "As remote work becomes the new norm, it's essential to understand its impact on employees' mental well-being. This dataset dives into how working remotely affects stress levels, work-life balance, and mental health conditions across various industries and regions.",
+        'With 5,000 records collected from employees worldwide, this dataset provides valuable insights into key areas like work location (remote, hybrid, onsite), stress levels, access to mental health resources, and job satisfaction. It’s designed to help researchers, HR professionals, and businesses assess the growing influence of remote work on productivity and well-being.',
+      ],
+      topics: [
+        {
+          title: 'Scope at a glance',
+          description:
+            'Responses span remote, hybrid, and onsite professionals across multiple industries and continents, keeping the focus on how context shapes wellbeing indicators.',
+        },
+        {
+          title: 'How data was compiled',
+          description:
+            'The CSV aggregates an anonymous global survey where employees reported stress, workload, access to support, and satisfaction levels via structured questions.',
+        },
+        {
+          title: 'Quality checks',
+          description:
+            'Entries missing key fields were discarded and repeated employee identifiers removed, leaving a consistent table ready for filtering and visual analysis.',
+        },
+      ],
+    },
+    quantitativeHeading: 'Quantitative metrics',
+    qualitativeHeading: 'Qualitative signals',
+    quantitative: [
+      {
+        id: 'age',
+        name: 'Age',
+        type: 'Integer',
+        description: 'Age in years.',
+      },
+      {
+        id: 'experience',
+        name: 'Years_of_Experience',
+        type: 'Integer',
+        description: 'Total years of professional experience.',
+      },
+      {
+        id: 'hours',
+        name: 'Hours_Worked_Per_Week',
+        type: 'Integer',
+        description: 'Weekly hours dedicated to work.',
+      },
+      {
+        id: 'meetings',
+        name: 'Number_of_Virtual_Meetings',
+        type: 'Integer',
+        description: 'Virtual meetings attended per week.',
+      },
+      {
+        id: 'balance',
+        name: 'Work_Life_Balance_Rating',
+        type: 'Integer',
+        description: 'Self-rating from 1 (poor) to 5 (excellent).',
+      },
+      {
+        id: 'isolation',
+        name: 'Social_Isolation_Rating',
+        type: 'Integer',
+        description: 'Perceived isolation score from 1 to 5.',
+      },
+      {
+        id: 'companySupport',
+        name: 'Company_Support_for_Remote_Work',
+        type: 'Integer',
+        description: 'Support rating from 1 (low) to 5 (high).',
+      },
+    ],
+    qualitative: [
+      {
+        id: 'stress',
+        name: 'Stress_Level',
+        type: 'String',
+        description: 'Self-reported stress intensity.',
+      },
+      {
+        id: 'gender',
+        name: 'Gender',
+        type: 'String',
+        description: 'Participant gender identity.',
+      },
+      {
+        id: 'role',
+        name: 'Job_Role',
+        type: 'String',
+        description: 'Stated job role.',
+      },
+      {
+        id: 'industry',
+        name: 'Industry',
+        type: 'String',
+        description: 'Industry sector.',
+      },
+      {
+        id: 'location',
+        name: 'Work_Location',
+        type: 'String',
+        description: 'Remote, hybrid, or onsite mode.',
+      },
+      {
+        id: 'condition',
+        name: 'Mental_Health_Condition',
+        type: 'String',
+        description: 'Reported mental health condition.',
+      },
+      {
+        id: 'access',
+        name: 'Access_to_Mental_Health_Resources',
+        type: 'String',
+        description: 'States if a company provides mental health resources.',
+      },
+      {
+        id: 'productivity',
+        name: 'Productivity_Change',
+        type: 'String',
+        description: 'Perceived productivity shift.',
+      },
+      {
+        id: 'satisfaction',
+        name: 'Satisfaction_with_Remote_Work',
+        type: 'String',
+        description: 'Sentiment about remote work.',
+      },
+      {
+        id: 'activity',
+        name: 'Physical_Activity',
+        type: 'String',
+        description: 'Physical activity frequency.',
+      },
+      {
+        id: 'sleep',
+        name: 'Sleep_Quality',
+        type: 'String',
+        description: 'Sleep quality rating.',
+      },
+      {
+        id: 'region',
+        name: 'Region',
+        type: 'String',
+        description: 'Geographic region.',
+      },
+    ],
+  },
 }
 
 export default en

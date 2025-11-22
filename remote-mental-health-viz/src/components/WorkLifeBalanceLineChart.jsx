@@ -7,7 +7,7 @@ const ACCESS_COLORS = {
   no: '#f87171',
 }
 
-const WorkLifeBalanceLineChart = ({ data, theme, copy }) => {
+const WorkLifeBalanceLineChart = ({ data, theme, copy, showHeader = true }) => {
   const [dimension, setDimension] = useState('age')
   const containerRef = useRef(null)
   const svgRef = useRef(null)
@@ -281,13 +281,15 @@ const WorkLifeBalanceLineChart = ({ data, theme, copy }) => {
   const hasData = series.length > 0
 
   return (
-    <div ref={containerRef} className="chart-card chart-card--wide">
+    <div ref={containerRef} className="chart-card chart-card--wide chart-card--tall">
       <div className="chart-header">
         <div className="chart-header__top">
-          <div>
-            <h3>{copy.title}</h3>
-            <p>{copy.description}</p>
-          </div>
+          {showHeader && (
+            <div>
+              <h3>{copy.title}</h3>
+              <p>{copy.description}</p>
+            </div>
+          )}
           <label className="chart-controls">
             <span className="visually-hidden">{copy.toggleLabel}</span>
             <select className="chart-select" value={dimension} onChange={handleDimensionChange}>
