@@ -32,6 +32,18 @@
   gap: 1.75rem;
 }
 
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.sidebar__brand-icon {
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+
 .sidebar__eyebrow {
   font-size: 0.85rem;
   letter-spacing: 0.12em;
@@ -346,15 +358,6 @@ body.theme-light .hero__tab--secondary.hero__tab--active {
 
 .theme-toggle__icon {
   font-size: 1.1rem;
-}
-
-.sidebar-toggle {
-  background: var(--surface-card);
-}
-
-.sidebar-toggle__icon {
-  font-size: 0.95rem;
-  line-height: 1;
 }
 
 main {
