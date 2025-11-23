@@ -83,6 +83,13 @@ body.theme-light .stress-lab::before {
   width: 100%;
 }
 
+.stress-model__layout {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
 .stress-model:hover {
   transform: none;
   border-color: transparent;
@@ -106,8 +113,8 @@ body.theme-light .stress-lab::before {
 
 .stress-model__scene {
   position: relative;
-  width: 100%;
-  min-height: 400px;
+  flex: 0 1 1100px;
+  min-height: 420px;
   border-radius: 0;
   overflow: visible;
   border: none;
@@ -132,39 +139,40 @@ body.theme-light .stress-lab::before {
   filter: drop-shadow(0 50px 90px rgba(2, 6, 23, 0.45));
 }
 
-
 .stress-model__bar {
+  position: absolute;
+  top: 50%;
+  right: clamp(-70px, -4vw, -40px);
+  transform: translateY(-50%);
+  min-width: 80px;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-}
-
-.stress-bar-label {
-  font-size: 0.82rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text-subtle);
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .stress-bar-container {
   position: relative;
-  width: 100%;
-  height: 46px;
-  border-radius: 18px;
-  background: linear-gradient(180deg, rgba(148, 163, 184, 0.15), rgba(148, 163, 184, 0.25));
+  width: 18px;
+  height: clamp(240px, 38vw, 460px);
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.2);
   border: 1px solid rgba(148, 163, 184, 0.35);
   overflow: hidden;
 }
 
 body.theme-light .stress-bar-container {
-  background: rgba(148, 163, 184, 0.25);
+  background: rgba(148, 163, 184, 0.3);
 }
 
 .stress-bar-fill {
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0;
   border-radius: inherit;
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .stress-bar-fill--calm {
@@ -180,20 +188,17 @@ body.theme-light .stress-bar-container {
 }
 
 .stress-bar-percentage {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  font-size: 1.6rem;
+  line-height: 1.2;
+  text-align: center;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 0.04em;
 }
 
-.stress-bar-state {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  letter-spacing: 0.08em;
+.stress-model__layout {
+  position: relative;
+  justify-content: center;
 }
 
 .stress-lab__comparison {
