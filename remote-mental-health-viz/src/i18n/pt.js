@@ -203,6 +203,7 @@ const pt = {
     heading: "Documentação do dataset",
     intro:
       "O conjunto Impact of Remote Work on Mental Health reúne respostas anónimas sobre carga de trabalho, estilo de vida e indicadores de bem-estar para profissionais remotos, híbridos e presenciais.",
+    variablesHeading: "Variáveis do dataset",
     stats: [
       {
         id: "records",
@@ -612,33 +613,9 @@ const pt = {
     },
   },
   dataLab: {
-    heading: "Documentação do conjunto de dados",
+    heading: "Variáveis do dataset",
     intro:
-      "Este dataset recolhe respostas anónimas sobre carga de trabalho, estilo de vida e indicadores de bem-estar para profissionais remotos, híbridos e presenciais. A seguir, encontra uma visão geral do inquérito, seguida de uma descrição detalhada das variáveis quantitativas e qualitativas incluídas.",
-    datasetOverview: {
-      title: "Retrato do inquérito",
-      paragraphs: [
-        "À medida que o trabalho remoto se torna o novo padrão, é essencial compreender o impacto no bem-estar mental dos colaboradores. Este dataset analisa como o trabalho à distância afeta níveis de stress, equilíbrio trabalho-vida e condições de saúde mental em diferentes sectores e regiões.",
-        "Com 5 000 registos recolhidos em todo o mundo, o dataset reúne insights sobre modalidade de trabalho (remoto, híbrido, presencial), níveis de stress, acesso a recursos de saúde mental e satisfação profissional. Foi desenhado para apoiar investigadores, profissionais de RH e empresas a avaliar a influência crescente do trabalho remoto na produtividade e no bem-estar.",
-      ],
-      topics: [
-        {
-          title: "Âmbito em foco",
-          description:
-            "As respostas cobrem profissionais remotos, híbridos e presenciais em vários sectores e continentes, destacando como o contexto influencia os indicadores de bem-estar.",
-        },
-        {
-          title: "Como os dados foram reunidos",
-          description:
-            "O CSV agrega um inquérito global anónimo onde colaboradores reportaram stress, carga laboral, acesso a apoio e satisfação através de perguntas estruturadas.",
-        },
-        {
-          title: "Controlo de qualidade",
-          description:
-            "Registos sem campos essenciais foram descartados e identificadores repetidos removidos, garantindo uma tabela coerente para filtragem e análise visual.",
-        },
-      ],
-    },
+      "Explora todas as variáveis quantitativas e qualitativas disponíveis. Passa o rato sobre cada nome para consultar os intervalos ou os valores reportados na amostra.",
     quantitativeHeading: "Variáveis quantitativas",
     qualitativeHeading: "Variáveis qualitativas",
     quantitative: [

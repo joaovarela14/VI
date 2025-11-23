@@ -166,7 +166,6 @@ const buildQuantitativeTooltips = (data, quantitativeItems = []) => {
 }
 
 const DataLabPanel = ({ copy, data, common }) => {
-  const datasetOverview = copy?.datasetOverview
   const qualitativeValues = useMemo(
     () => buildQualitativeValues(data, common, copy?.qualitative ?? []),
     [common, copy?.qualitative, data]
@@ -193,26 +192,6 @@ const DataLabPanel = ({ copy, data, common }) => {
       <h2>{copy.heading}</h2>
 
       <p className="section__intro">{copy.intro}</p>
-
-      {datasetOverview && (
-        <div className="dataset-overview">
-          <h3>{datasetOverview.title}</h3>
-          {datasetOverview.paragraphs?.map((text, index) => (
-            <p key={index}>{text}</p>
-          ))}
-
-          {datasetOverview.topics?.length > 0 && (
-            <div className="dataset-overview__topics">
-              {datasetOverview.topics.map((topic) => (
-                <div key={topic.title} className="dataset-overview__topic">
-                  <h4>{topic.title}</h4>
-                  <p>{topic.description}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
 
       <div className="variable-grid">
         <div className="variable-card">

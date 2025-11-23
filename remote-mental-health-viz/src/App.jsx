@@ -190,7 +190,7 @@ function App() {
                 </div>
               </div>
             </section>
-            <DocumentationPanel copy={copy.documentation} datasetCount={datasetCount} />
+            <DocumentationPanel copy={copy.documentation} />
             <DataLabPanel copy={copy.dataLab} data={data} common={copy.common} />
           </>
         )
