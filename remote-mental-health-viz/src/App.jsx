@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import * as d3 from 'd3'
-import OverviewMetrics from './components/OverviewMetrics'
 import DatasetOverviewChart from './components/DatasetOverviewChart'
-import HoursVsSleepScatter from './components/HoursVsSleepScatter'
 import MultiDimensionScatter from './components/MultiDimensionScatter'
 import WorkLifeBalanceLineChart from './components/WorkLifeBalanceLineChart'
 import SocialIsolationBarChart from './components/SocialIsolationBarChart'
@@ -21,8 +19,6 @@ const translations = {
   en,
   pt,
 }
-
-const positiveSatisfaction = new Set(['satisfied', 'very satisfied', 'extremely satisfied'])
 
 const parseNumber = (value) => {
   const number = Number.parseFloat(value)
@@ -101,36 +97,6 @@ function App() {
     loadData()
   }, [])
 
-  const stats = useMemo(() => {
-    if (!data.length) {
-      return {
-        avgHours: 0,
-        highStressShare: 0,
-        satisfiedShare: 0,
-        avgMeetings: 0,
-        resourceAccessShare: 0,
-      }
-    }
-
-    const hoursValues = data.map((d) => d.hoursWorked).filter((value) => Number.isFinite(value))
-    const meetingsValues = data.map((d) => d.virtualMeetings).filter((value) => Number.isFinite(value))
-
-    const avgHours = d3.mean(hoursValues) ?? 0
-    const avgMeetings = d3.mean(meetingsValues) ?? 0
-    const highStressShare = data.filter((d) => d.stressLevel === 'High').length / data.length
-    const satisfiedShare =
-      data.filter((d) => positiveSatisfaction.has((d.satisfaction ?? '').toLowerCase())).length / data.length
-    const resourceAccessShare = data.filter((d) => d.hasMentalHealthResources).length / data.length
-
-    return {
-      avgHours,
-      avgMeetings,
-      highStressShare,
-      satisfiedShare,
-      resourceAccessShare,
-    }
-  }, [data])
-
   const datasetCount = data.length > 0 ? data.length : null
   const themeButtonLabel = theme === 'dark' ? copy.hero.buttons.theme.light : copy.hero.buttons.theme.dark
   const languageButtonLabel = language === 'en' ? copy.hero.buttons.language.toPortuguese : copy.hero.buttons.language.toEnglish
@@ -203,8 +169,6 @@ function App() {
         )
       }
       case 'workspace-influence': {
-        const meetingCopy = copy.deepDive?.meeting
-        const isolationCopy = copy.deepDive?.socialIsolation
         return (
           <section className="section section--wide">
             <div className="chart-grid">

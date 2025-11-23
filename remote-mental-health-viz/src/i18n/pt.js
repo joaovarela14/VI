@@ -239,72 +239,6 @@ const pt = {
     },
     sections: [],
   },
-  overview: {
-    heading: "Em destaque",
-    intro:
-      "Os indicadores principais dão contexto antes de explorar as visualizações. Mostram carga de trabalho, ritmo de reuniões, acesso a apoio e a proporção de pessoas em equilíbrio ou em dificuldade.",
-    highlightsTitle: "Pontos de atenção",
-    metrics: [
-      {
-        id: "avgHours",
-        title: "Horas semanais médias",
-        description:
-          "Carga típica reportada pelos participantes ao longo da semana.",
-        value: (stats) => `${decimalFormatter.format(stats.avgHours ?? 0)} h`,
-      },
-      {
-        id: "highStress",
-        title: "Prevalência de stress elevado",
-        description:
-          "Percentagem de pessoas que descrevem o seu nível de stress como elevado.",
-        value: (stats) => percentFormatter.format(stats.highStressShare ?? 0),
-      },
-      {
-        id: "satisfiedShare",
-        title: "Satisfação com trabalho remoto",
-        description:
-          "Colaboradores que demonstram satisfação com o trabalho remoto.",
-        value: (stats) => percentFormatter.format(stats.satisfiedShare ?? 0),
-      },
-      {
-        id: "avgMeetings",
-        title: "Reuniões virtuais médias",
-        description: "Número típico de reuniões por videochamada numa semana.",
-        value: (stats) =>
-          `${meetingsFormatter.format(stats.avgMeetings ?? 0)} / semana`,
-      },
-      {
-        id: "resourceAccess",
-        title: "Acesso a apoio psicológico",
-        description:
-          "Colaboradores que referem ter recursos de saúde mental fornecidos pela empresa.",
-        value: (stats) =>
-          percentFormatter.format(stats.resourceAccessShare ?? 0),
-      },
-    ],
-    charts: {
-      heading: "Explore os resultados do inquérito",
-      intro:
-        "Três visualizações complementares revelam como contexto, localização e estilo de vida se relacionam com o bem-estar. Passe com o rato para ver contagens exactas.",
-    },
-    insights: [
-      {
-        emphasis: "Compare os modelos de trabalho.",
-        detail:
-          "As barras empilhadas mostram se funções presenciais, híbridas ou totalmente remotas concentram mais stress.",
-      },
-      {
-        emphasis: "Observe disparidades regionais.",
-        detail:
-          "O gráfico de condições de saúde mental evidencia onde ansiedade, depressão ou burnout surgem com maior frequência.",
-      },
-      {
-        emphasis: "Equilibre carga e descanso.",
-        detail:
-          "O diagrama de dispersão ajuda a identificar quando longas jornadas coincidem com sono frágil, sobretudo em situações de elevado stress.",
-      },
-    ],
-  },
   datasetOverviewChart: {
     title: "Níveis de stress por região",
     conditionTitle: "Condições de saúde mental por região",
@@ -373,41 +307,6 @@ const pt = {
       unknown: "Desconhecido",
     },
   },
-  stressByLocation: {
-    title: "Níveis de stress por modelo de trabalho",
-    description:
-      "Contagens empilhadas de colaboradores com stress baixo, médio ou elevado por modalidade laboral.",
-    legend: stressLevels,
-    tooltip: ({ location, level, count, percent }) =>
-      `${location} — ${level}: ${formatCount(
-        count
-      )} pessoas (${percentFormatter.format((percent ?? 0) / 100)})`,
-  },
-  mentalHealthByRegion: {
-    title: "Condições de saúde mental por região",
-    description:
-      "As barras empilhadas mostram a frequência de depressão, ansiedade e outras condições por região.",
-    legend: mentalHealthConditions,
-    tooltip: ({ region, condition, count, percent }) =>
-      `${region} — ${condition}: ${formatCount(
-        count
-      )} pessoas (${percentFormatter.format((percent ?? 0) / 100)})`,
-  },
-  hoursVsSleep: {
-    title: "Horas trabalhadas vs. qualidade de sono",
-    description:
-      "Cada ponto representa um colaborador, com cor consoante o nível de stress. Um ligeiro desalinhamento evita sobreposição.",
-    legend: stressLevels,
-    tooltip: ({
-      employeeId,
-      hoursWorked,
-      sleepQualityLabel,
-      stressLevelLabel,
-    }) =>
-      `${employeeId}\nHoras por semana: ${decimalFormatter.format(
-        hoursWorked ?? 0
-      )}\nQualidade de sono: ${sleepQualityLabel}\nNível de stress: ${stressLevelLabel}`,
-  },
   socialIsolationBar: {
     title: "Isolamento social por continente",
     description:
@@ -428,23 +327,6 @@ const pt = {
         average ?? 0
       )}\nRespostas: ${integerFormatter.format(count ?? 0)}`,
   },
-  conditionActivityStress: {
-    title: "Stress por condição de saúde mental",
-    description:
-      "As barras empilhadas mostram a frequência de cada nível de stress para cada condição de saúde mental. Filtre pela frequência de atividade física para perceber como o desporto se relaciona com a pressão.",
-    filters: {
-      activity: "Filtrar por atividade física",
-      allActivities: "Todas as frequências",
-    },
-    axis: {
-      y: "Colaboradores",
-    },
-    empty: "Sem respostas para esta combinação de atividade física.",
-    tooltip: ({ condition, stressLabel, count, percent }) =>
-      `${condition} — ${stressLabel}\nPessoas: ${formatCount(
-        count
-      )}\nPercentagem: ${percentFormatter.format((percent ?? 0) / 100)}`,
-  },
   sleepStressMatrix: {
     title: "Qualidade do sono vs. stress",
     description:
@@ -461,28 +343,11 @@ const pt = {
       `${stressLabel} — ${sleepLabel}\nPessoas: ${formatCount(count)}`,
   },
   satisfactionPie: {
-    title: "Satisfação com trabalho remoto",
-    description:
-      "Acompanhe como os colaboradores avaliam o trabalho remoto. Filtre por sector ou região para revelar diferenças de sentimento.",
-    ariaLabel:
-      "Gráfico circular que mostra a repartição da satisfação com trabalho remoto filtrada por sector ou região",
-    legendTitle: "Nível de satisfação",
     legend: {
       unsatisfied: "Insatisfeitos",
       neutral: "Neutros",
       satisfied: "Satisfeitos",
     },
-    filters: {
-      sector: "Filtrar por sector",
-      region: "Filtrar por região",
-      allSectors: "Todos os sectores",
-      allRegions: "Todas as regiões",
-    },
-    empty: "Sem respostas para estas combinações de filtros.",
-    tooltip: ({ label, count, percentage }) =>
-      `${label}: ${formatCount(count)} pessoas (${percentFormatter.format(
-        (percentage ?? 0) / 100
-      )})`,
   },
   scatter: {
     title: "Ritmo de reuniões, stress e carga horária",
@@ -585,43 +450,6 @@ const pt = {
        <div class="chart-tooltip__meta">Funções estimadas: <strong>${formatCount(
          count
        )}</strong></div>`,
-  },
-  deepDive: {
-    workLife: {
-      heading: "Equilíbrio trabalho-vida e apoio disponível",
-      intro:
-        "Veja como o acesso a recursos de saúde mental se relaciona com o equilíbrio trabalho-vida percebido em diferentes idades ou níveis de experiência.",
-    },
-    meeting: {
-      heading: "Carga de reuniões vs. stress",
-      intro:
-        "Visualize como horas semanais, stress e número de reuniões se relacionam em cada modalidade. Use as cores para comparar localizações e o tamanho do círculo para perceber calendários mais intensos.",
-    },
-    socialIsolation: {
-      heading: "Intensidade de isolamento por continente",
-      intro:
-        "Compare a classificação média de isolamento social entre continentes e aplique filtros por género ou acesso a apoio psicológico para identificar grupos vulneráveis.",
-    },
-    conditionStress: {
-      heading: "Mistura de stress por condição e atividade",
-      intro:
-        "Observe como os níveis de stress variam entre ansiedade, depressão, burnout ou outras condições. Ajuste o filtro de atividade física para descobrir rotinas associadas a menor pressão.",
-    },
-    sleepStress: {
-      heading: "Padrões de descanso sob stress",
-      intro:
-        "Use o mapa de calor para estudar como a qualidade do sono muda em cada nível de stress e foque uma condição específica para perceber onde o descanso degrada mais.",
-    },
-    satisfaction: {
-      heading: "Satisfação filtrada por contexto",
-      intro:
-        "Aplique filtros de sector ou região para perceber onde o trabalho remoto é visto com mais entusiasmo ou frustração. Passe o rato no gráfico circular para ver contagens e percentagens exactas.",
-    },
-    sector: {
-      heading: "Funções predominantes por sector",
-      intro:
-        "Escolha um sector para perceber que funções lideram em cada modelo de trabalho. Filtre por modalidade para identificar focos de especialização ou lacunas.",
-    },
   },
   dataLab: {
     heading: "Variáveis do dataset",

@@ -233,66 +233,6 @@ const en = {
     },
     sections: [],
   },
-  overview: {
-    heading: 'At a glance',
-    intro:
-      'Key indicators provide context before you dive into the detailed visual analysis. They highlight workload, meeting load, access to support, and the share of people thriving or struggling.',
-    highlightsTitle: 'What to look for',
-    metrics: [
-      {
-        id: 'avgHours',
-        title: 'Average weekly hours',
-        description: 'Typical workload reported by the respondents each week.',
-        value: (stats) => `${decimalFormatter.format(stats.avgHours ?? 0)} h`,
-      },
-      {
-        id: 'highStress',
-        title: 'High stress prevalence',
-        description: 'Share of people who describe their stress level as high.',
-        value: (stats) => percentFormatter.format(stats.highStressShare ?? 0),
-      },
-      {
-        id: 'satisfiedShare',
-        title: 'Satisfied with remote work',
-        description: 'Percentage of employees expressing satisfaction with remote work.',
-        value: (stats) => percentFormatter.format(stats.satisfiedShare ?? 0),
-      },
-      {
-        id: 'avgMeetings',
-        title: 'Average virtual meetings',
-        description: 'How many video calls people typically attend in a week.',
-        value: (stats) => `${meetingsFormatter.format(stats.avgMeetings ?? 0)} / week`,
-      },
-      {
-        id: 'resourceAccess',
-        title: 'Access to mental health resources',
-        description: 'Employees who state that their company provides mental health support.',
-        value: (stats) => percentFormatter.format(stats.resourceAccessShare ?? 0),
-      },
-    ],
-    charts: {
-      heading: 'Explore the survey results',
-      intro:
-        'Three complementary visualisations reveal how context, location, and lifestyle relate to wellbeing. Hover the charts to inspect precise counts.',
-    },
-    insights: [
-      {
-        emphasis: 'Compare remote settings.',
-        detail:
-          'The stacked bars clarify whether onsite, hybrid, or fully remote roles face the highest stress burden.',
-      },
-      {
-        emphasis: 'Scan regional disparities.',
-        detail:
-          'The mental health condition chart highlights where anxiety, depression, or burnout surface most often, guiding targeted interventions.',
-      },
-      {
-        emphasis: 'Balance workload and rest.',
-        detail:
-          'The scatter plot helps you spot when long working hours coincide with poor sleep, especially for those experiencing high stress.',
-      },
-    ],
-  },
   datasetOverviewChart: {
     title: 'Stress levels by region',
     conditionTitle: 'Mental health conditions by region',
@@ -350,28 +290,6 @@ const en = {
       unknown: 'Unknown',
     },
   },
-  stressByLocation: {
-    title: 'Stress levels by work location',
-    description: 'Stacked counts of employees experiencing low, medium, or high stress by workplace arrangement.',
-    legend: stressLevels,
-    tooltip: ({ location, level, count, percent }) =>
-      `${location} — ${level}: ${formatCount(count)} people (${percentFormatter.format((percent ?? 0) / 100)})`,
-  },
-  mentalHealthByRegion: {
-    title: 'Mental health conditions by region',
-    description: 'Stacked bars show how often depression, anxiety, and other reported conditions appear in each region.',
-    legend: mentalHealthConditions,
-    tooltip: ({ region, condition, count, percent }) =>
-      `${region} — ${condition}: ${formatCount(count)} people (${percentFormatter.format((percent ?? 0) / 100)})`,
-  },
-  hoursVsSleep: {
-    title: 'Hours worked vs. sleep quality',
-    description:
-      'Each dot represents an employee, coloured by self-reported stress level. Light jitter prevents overplotting.',
-    legend: stressLevels,
-    tooltip: ({ employeeId, hoursWorked, sleepQualityLabel, stressLevelLabel }) =>
-      `${employeeId}\nHours per week: ${decimalFormatter.format(hoursWorked ?? 0)}\nSleep quality: ${sleepQualityLabel}\nStress level: ${stressLevelLabel}`,
-  },
   socialIsolationBar: {
     title: 'Social isolation by continent',
     description:
@@ -390,21 +308,6 @@ const en = {
     tooltip: ({ region, average, count }) =>
       `${region}\nAverage rating: ${decimalFormatter.format(average ?? 0)}\nResponses: ${integerFormatter.format(count ?? 0)}`,
   },
-  conditionActivityStress: {
-    title: 'Stress levels by mental health condition',
-    description:
-      'Stacked bars highlight how often each stress level is reported for every mental health condition. Filter the distribution by physical activity frequency to see how sport habits relate to pressure.',
-    filters: {
-      activity: 'Filter by physical activity',
-      allActivities: 'All activity levels',
-    },
-    axis: {
-      y: 'Employees',
-    },
-    empty: 'No responses are available for the selected activity level.',
-    tooltip: ({ condition, stressLabel, count, percent }) =>
-      `${condition} — ${stressLabel}\nPeople: ${formatCount(count)}\nShare: ${percentFormatter.format((percent ?? 0) / 100)}`,
-  },
   sleepStressMatrix: {
     title: 'Sleep quality vs. stress',
     description:
@@ -421,25 +324,11 @@ const en = {
       `${stressLabel} — ${sleepLabel}\nPeople: ${formatCount(count)}`,
   },
   satisfactionPie: {
-    title: 'Remote work satisfaction split',
-    description:
-      'Track how employees rate their remote work experience. Filter by sector or region to reveal contrasting sentiment.',
-    ariaLabel: 'Pie chart comparing satisfaction levels with remote work filtered by sector or region',
-    legendTitle: 'Satisfaction level',
     legend: {
       unsatisfied: 'Unsatisfied',
       neutral: 'Neutral',
       satisfied: 'Satisfied',
     },
-    filters: {
-      sector: 'Filter by sector',
-      region: 'Filter by region',
-      allSectors: 'All sectors',
-      allRegions: 'All regions',
-    },
-    empty: 'No responses are available for the selected filters.',
-    tooltip: ({ label, count, percentage }) =>
-      `${label}: ${formatCount(count)} employees (${percentFormatter.format((percentage ?? 0) / 100)})`,
   },
   scatter: {
     title: 'Hours, stress, and meeting cadence',
@@ -518,43 +407,6 @@ const en = {
        <div class="chart-tooltip__meta">Share: <strong>${percentFormatter.format(Math.min(share ?? 0, 1))}</strong></div>
        <div class="chart-tooltip__meta">Responses in location: <strong>${formatCount(total)}</strong></div>
        <div class="chart-tooltip__meta">Approx. role count: <strong>${formatCount(count)}</strong></div>`,
-  },
-  deepDive: {
-    workLife: {
-      heading: 'Work-life balance and support access',
-      intro:
-        'See how access to mental health resources relates to perceived work-life balance across different ages or experience levels.',
-    },
-    meeting: {
-      heading: 'Virtual meetings load',
-      intro:
-        'Visualise how weekly hours, stress, and meeting load intersect for each workplace. Use the colours to compare locations and the bubble size to understand how are the stress levels.',
-    },
-    socialIsolation: {
-      heading: 'Isolation intensity by continent',
-      intro:
-        'Compare the average social isolation rating across continents, and slice the view by gender or access to mental health support to reveal vulnerable groups.',
-    },
-    conditionStress: {
-      heading: 'Stress mix by condition and activity',
-      intro:
-        'Inspect how reported stress levels shift across anxiety, depression, burnout, or other conditions. Toggle the physical activity filter to identify routines that coincide with lower stress.',
-    },
-    sleepStress: {
-      heading: 'Rest patterns under stress',
-      intro:
-        'Use the heatmap to study how sleep quality changes at each stress level, and focus on a specific mental health condition to spot where rest deteriorates most.',
-    },
-    satisfaction: {
-      heading: 'Remote work satisfaction filters',
-      intro:
-        'Slice the sentiment data by sector or region to uncover where remote work feels more supportive or frustrating. Hover the pie chart to read exact counts and percentages.',
-    },
-    sector: {
-      heading: 'Sector mix by job role',
-      intro:
-        'Choose a sector to see which job roles dominate within each work setting. Filter by work location to inspect how remote, hybrid, and onsite teams differ inside that industry.',
-    },
   },
   loading: 'Loading survey responses…',
   error: 'We were unable to load the dataset. Please try again later.',
