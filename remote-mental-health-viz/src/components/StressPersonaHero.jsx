@@ -9,7 +9,7 @@ import './stress-model.css'
 
 const DEFAULTS = {
   hours: 40,
-  meetings: 6,
+  companySupport: 3,
   sleep: 2,
 }
 
@@ -54,7 +54,7 @@ const sanitizeDataset = (rows) =>
   rows.filter(
     (row) =>
       Number.isFinite(row.hoursWorked) &&
-      Number.isFinite(row.virtualMeetings) &&
+      Number.isFinite(row.companySupport) &&
       typeof row.sleepQuality === 'string'
   )
 
@@ -133,7 +133,7 @@ const StressModel = ({ label, percent, stateLabel, variant = 'remote', context }
 function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
   const genderOptions = copy?.genderOptions ?? []
   const [hours, setHours] = useState(DEFAULTS.hours)
-  const [meetings, setMeetings] = useState(DEFAULTS.meetings)
+  const [companySupport, setCompanySupport] = useState(DEFAULTS.companySupport)
   const [sleepFocus, setSleepFocus] = useState(DEFAULTS.sleep)
   const [genderFilters, setGenderFilters] = useState(() => genderOptions.map((option) => option.id))
 
@@ -159,8 +159,8 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
     const gaussian = (delta, scale) => Math.exp(-Math.pow(delta / scale, 2))
 
     const sliderInfluence =
-      ((hours - DEFAULTS.hours) / 20) * 25 +
-      ((meetings - DEFAULTS.meetings) / 8) * 18 -
+      ((hours - DEFAULTS.hours) / 20) * 25 -
+      ((companySupport - DEFAULTS.companySupport) / 3) * 18 -
       ((sleepFocus - DEFAULTS.sleep) / 2) * 22
 
     const computeScore = (predicate) => {
@@ -178,11 +178,11 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
           return
         }
 
-        const rowMeetings = Number.isFinite(row.virtualMeetings) ? row.virtualMeetings : DEFAULTS.meetings
+        const rowCompanySupport = Number.isFinite(row.companySupport) ? row.companySupport : DEFAULTS.companySupport
         const rowSleepScore = toSleepScore(row.sleepQuality)
         const weight =
           gaussian((row.hoursWorked ?? DEFAULTS.hours) - hours, 10) *
-          gaussian((rowMeetings ?? DEFAULTS.meetings) - meetings, 5) *
+          gaussian((rowCompanySupport ?? DEFAULTS.companySupport) - companySupport, 2) *
           gaussian(rowSleepScore - sleepFocus, 0.9)
 
         if (weight <= 0.0001) {
@@ -216,7 +216,7 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
       remote: computeScore(remotePredicate),
       onsite: computeScore(onsitePredicate),
     }
-  }, [sanitizedRows, genderFilters, genderOptions, hours, meetings, sleepFocus])
+  }, [sanitizedRows, genderFilters, genderOptions, hours, companySupport, sleepFocus])
 
   const updateGenderFilters = (genderId) => {
     setGenderFilters((current) => {
@@ -229,7 +229,7 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
 
   const handleReset = () => {
     setHours(DEFAULTS.hours)
-    setMeetings(DEFAULTS.meetings)
+    setCompanySupport(DEFAULTS.companySupport)
     setSleepFocus(DEFAULTS.sleep)
     setGenderFilters(genderOptions.map((option) => option.id))
   }
@@ -289,17 +289,17 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
             </div>
 
             <div className="control-group">
-              <label htmlFor="meetings-slider" className="control-label">
-                {copy?.panel?.meetings?.label} <strong>{meetings} {copy?.panel?.meetings?.unit}</strong>
+              <label htmlFor="company-support-slider" className="control-label">
+                {copy?.panel?.companySupport?.label} <strong>{companySupport} {copy?.panel?.companySupport?.unit}</strong>
               </label>
               <input
-                id="meetings-slider"
+                id="company-support-slider"
                 type="range"
-                min="0"
-                max="14"
+                min="1"
+                max="5"
                 step="1"
-                value={meetings}
-                onChange={(event) => setMeetings(Number.parseInt(event.target.value, 10))}
+                value={6 - companySupport}
+                onChange={(event) => setCompanySupport(6 - Number.parseInt(event.target.value, 10))}
                 className="control-slider control-slider--onsite"
               />
             </div>
@@ -314,8 +314,8 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
                 min="1"
                 max="3"
                 step="1"
-                value={sleepFocus}
-                onChange={(event) => setSleepFocus(Number.parseInt(event.target.value, 10))}
+                value={4 - sleepFocus}
+                onChange={(event) => setSleepFocus(4 - Number.parseInt(event.target.value, 10))}
                 className="control-slider control-slider--sleep"
               />
             </div>

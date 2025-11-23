@@ -127,9 +127,9 @@ const en = {
         label: 'Hours per week',
         unit: 'hrs',
       },
-      meetings: {
-        label: 'Virtual meetings',
-        unit: 'per wk',
+      companySupport: {
+        label: 'Company support',
+        unit: '/5',
       },
       sleep: {
         label: 'Sleep quality',

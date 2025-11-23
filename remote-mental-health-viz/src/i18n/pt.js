@@ -127,9 +127,9 @@ const pt = {
         label: "Horas por semana",
         unit: "h/sem",
       },
-      meetings: {
-        label: "Reuniões virtuais",
-        unit: "semana",
+      companySupport: {
+        label: "Apoio da empresa",
+        unit: "/5",
       },
       sleep: {
         label: "Qualidade do sono",
