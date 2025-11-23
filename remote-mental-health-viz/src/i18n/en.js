@@ -169,13 +169,16 @@ const en = {
     ],
   },
   navigation: {
-    label: 'Primary content tabs',
-    subLabel: 'Sections inside the selected tab',
+    label: 'MIND@WORK',
+    toggle: {
+      open: 'Show navigation',
+      close: 'Hide navigation',
+    },
     tabs: [
       {
         id: 'persona-model',
         label: 'Persona models',
-        description: '',
+        description: 'SVG images that react to dataset filters, shifting facil expressions as the scenario changes.',
       },
       {
         id: 'workload-dashboard',
@@ -203,7 +206,6 @@ const en = {
     heading: 'Dataset documentation',
     intro:
       'The Impact of Remote Work on Mental Health dataset consolidates anonymised survey responses describing workload, lifestyle, and wellbeing signals across remote, hybrid, and onsite professionals.',
-    variablesHeading: 'Dataset variables',
     stats: [
       {
         id: 'records',
@@ -561,9 +563,33 @@ const en = {
   footer:
     'Project for the Information Visualization course, developed by João Varela and Carolina Prata.',
   dataLab: {
-    heading: 'Dataset variables',
+    heading: 'Dataset Documentation',
     intro:
       'Explore every quantitative and qualitative variable available in the dataset. Hover each variable name to preview the values it can take.',
+    datasetOverview: {
+      title: 'Survey snapshot',
+      paragraphs: [
+        "As remote work becomes the new norm, it's essential to understand its impact on employees' mental well-being. This dataset dives into how working remotely affects stress levels, work-life balance, and mental health conditions across various industries and regions.",
+        'With 5,000 records collected from employees worldwide, this dataset provides valuable insights into key areas like work location (remote, hybrid, onsite), stress levels, access to mental health resources, and job satisfaction. It’s designed to help researchers, HR professionals, and businesses assess the growing influence of remote work on productivity and well-being.',
+      ],
+      topics: [
+        {
+          title: 'Scope at a glance',
+          description:
+            'Responses span remote, hybrid, and onsite professionals across multiple industries and continents, keeping the focus on how context shapes wellbeing indicators.',
+        },
+        {
+          title: 'How data was compiled',
+          description:
+            'The CSV aggregates an anonymous global survey where employees reported stress, workload, access to support, and satisfaction levels via structured questions.',
+        },
+        {
+          title: 'Quality checks',
+          description:
+            'Entries missing key fields were discarded and repeated employee identifiers removed, leaving a consistent table ready for filtering and visual analysis.',
+        },
+      ],
+    },
     quantitativeHeading: 'Quantitative metrics',
     qualitativeHeading: 'Qualitative signals',
     quantitative: [
