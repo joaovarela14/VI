@@ -294,6 +294,7 @@ const en = {
     title: 'Social isolation by continent',
     description:
       'Average social isolation rating (1 = low, 5 = high) split by continent. Refine the data by gender and access to mental health resources.',
+    legendTitle: 'Work location',
     filters: {
       region: 'Filter by continent',
       gender: 'Filter by gender',
@@ -305,8 +306,8 @@ const en = {
     },
     axisLabel: 'Average isolation rating',
     empty: 'No social isolation responses match the selected filters.',
-    tooltip: ({ region, average, count }) =>
-      `${region}\nAverage rating: ${decimalFormatter.format(average ?? 0)}\nResponses: ${integerFormatter.format(count ?? 0)}`,
+    tooltip: ({ region, location, average, count }) =>
+      `${region} — ${location}\nAverage rating: ${decimalFormatter.format(average ?? 0)}\nResponses: ${integerFormatter.format(count ?? 0)}`,
   },
   sleepStressMatrix: {
     title: 'Sleep quality vs. stress',

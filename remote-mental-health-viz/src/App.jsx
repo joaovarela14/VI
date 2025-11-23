@@ -173,7 +173,7 @@ function App() {
           <section className="section section--wide">
             <div className="chart-grid">
               <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} showHeader={false} />
-              <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} showHeader={false} />
+              <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} common={copy.common} showHeader={false} />
             </div>
           </section>
         )

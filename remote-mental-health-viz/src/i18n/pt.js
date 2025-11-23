@@ -310,6 +310,7 @@ const pt = {
     title: "Isolamento social por continente",
     description:
       "Classificação média de isolamento social (1 = baixo, 5 = elevado) por continente. Refine por género e acesso a apoio psicológico.",
+    legendTitle: "Modalidade de trabalho",
     filters: {
       region: "Filtrar por continente",
       gender: "Filtrar por género",
@@ -321,8 +322,8 @@ const pt = {
     },
     axisLabel: "Classificação média de isolamento",
     empty: "Sem respostas de isolamento social para estes filtros.",
-    tooltip: ({ region, average, count }) =>
-      `${region}\nClassificação média: ${decimalFormatter.format(
+    tooltip: ({ region, location, average, count }) =>
+      `${region} — ${location}\nClassificação média: ${decimalFormatter.format(
         average ?? 0
       )}\nRespostas: ${integerFormatter.format(count ?? 0)}`,
   },

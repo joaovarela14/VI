@@ -7,7 +7,9 @@ const ACCESS_OPTIONS = {
   no: 'no',
 }
 
-const SocialIsolationBarChart = ({ data, theme, copy, showHeader = true }) => {
+const WORK_LOCATIONS = ['Remote', 'Hybrid', 'Onsite']
+
+const SocialIsolationBarChart = ({ data, theme, copy, common, showHeader = true }) => {
   const svgRef = useRef(null)
   const [filters, setFilters] = useState({
     region: 'all',
@@ -46,7 +48,7 @@ const SocialIsolationBarChart = ({ data, theme, copy, showHeader = true }) => {
 
     const width = 640
     const height = 360
-    const margin = { top: 36, right: 32, bottom: 64, left: 64 }
+    const margin = { top: 72, right: 32, bottom: 64, left: 64 }
 
     svg.attr('viewBox', `0 0 ${width} ${height}`)
 
@@ -57,15 +59,25 @@ const SocialIsolationBarChart = ({ data, theme, copy, showHeader = true }) => {
     const aggregated = regionDomain
       .map((region) => {
         const rows = filteredDataset.filter((item) => item.region === region)
-        const values = rows.map((item) => item.socialIsolationRating).filter((value) => Number.isFinite(value))
-        const average = values.length ? d3.mean(values) : null
+        const locations = WORK_LOCATIONS.map((location) => {
+          const locationRows = rows.filter((item) => item.workLocation === location)
+          const values = locationRows.map((item) => item.socialIsolationRating).filter((value) => Number.isFinite(value))
+          const average = values.length ? d3.mean(values) : null
+          return {
+            region,
+            location,
+            average,
+            count: values.length,
+          }
+        })
+        const totalResponses = locations.reduce((sum, item) => sum + item.count, 0)
         return {
           region,
-          average,
-          count: values.length,
+          locations,
+          hasData: totalResponses > 0,
         }
       })
-      .filter((item) => item.count > 0)
+      .filter((item) => item.hasData)
 
     if (!aggregated.length) {
       svg
@@ -82,14 +94,17 @@ const SocialIsolationBarChart = ({ data, theme, copy, showHeader = true }) => {
       .scaleBand()
       .domain(aggregated.map((item) => item.region))
       .range([0, innerWidth])
-      .padding(0.35)
+      .paddingInner(0.25)
+      .paddingOuter(0.1)
+
+    const xSubScale = d3.scaleBand().domain(WORK_LOCATIONS).range([0, xScale.bandwidth()]).padding(0.15)
 
     const yScale = d3.scaleLinear().domain([0, 5]).range([innerHeight, 0])
 
     const colorScale = d3
-      .scaleLinear()
-      .domain([1, 3, 5])
-      .range(['#38bdf8', '#818cf8', '#f97316'])
+      .scaleOrdinal()
+      .domain(WORK_LOCATIONS)
+      .range(['#38bdf8', '#c084fc', '#f97316'])
 
     const chartGroup = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
 
@@ -119,43 +134,94 @@ const SocialIsolationBarChart = ({ data, theme, copy, showHeader = true }) => {
       .attr('font-weight', 500)
       .text(copy.axisLabel)
 
-    const bars = chartGroup
-      .selectAll('.bar')
+    const regionGroups = chartGroup
+      .selectAll('.region-group')
       .data(aggregated)
+      .join('g')
+      .attr('class', 'region-group')
+      .attr('transform', (item) => `translate(${xScale(item.region) ?? 0}, 0)`)
+
+    const bars = regionGroups
+      .selectAll('.bar')
+      .data((item) => item.locations)
       .join('rect')
       .attr('class', 'bar')
-      .attr('x', (item) => xScale(item.region) ?? 0)
-      .attr('y', (item) => yScale(item.average ?? 0))
-      .attr('width', xScale.bandwidth())
-      .attr('height', (item) => innerHeight - yScale(item.average ?? 0))
-      .attr('rx', 6)
-      .attr('fill', (item) => colorScale(item.average ?? 0))
+      .attr('x', (item) => xSubScale(item.location) ?? 0)
+      .attr('width', xSubScale.bandwidth())
+      .attr('y', (item) => (item.average != null ? yScale(item.average) : innerHeight))
+      .attr('height', (item) => (item.average != null ? innerHeight - yScale(item.average) : 0))
+      .attr('rx', 4)
+      .attr('fill', (item) => colorScale(item.location))
 
     const valueFormatter = d3.format('.1f')
+    const workLocationLabels = common?.workLocations ?? {}
 
     bars
+      .filter((item) => item.count > 0)
       .append('title')
       .text((item) =>
         copy.tooltip({
           region: item.region,
+          location: workLocationLabels[item.location] ?? item.location,
           average: item.average,
           count: item.count,
         })
       )
 
-    chartGroup
+    regionGroups
       .selectAll('.bar-label')
-      .data(aggregated)
+      .data((item) => item.locations.filter((location) => location.count > 0))
       .join('text')
       .attr('class', 'bar-label')
-      .attr('x', (item) => (xScale(item.region) ?? 0) + xScale.bandwidth() / 2)
+      .attr('x', (item) => (xSubScale(item.location) ?? 0) + xSubScale.bandwidth() / 2)
       .attr('y', (item) => Math.max(yScale(item.average ?? 0) - 6, 12))
       .attr('text-anchor', 'middle')
       .attr('fill', legendColor)
-      .attr('font-size', 12)
+      .attr('font-size', 11)
       .attr('font-weight', 600)
       .text((item) => valueFormatter(item.average ?? 0))
-  }, [copy, filteredDataset, filters.region, regionOptions, theme])
+
+    const legendTitle = copy.legendTitle ?? copy.legendHeading ?? ''
+    const legend = svg
+      .append('g')
+      .attr('class', 'legend legend--vertical')
+      .attr('transform', `translate(${width - margin.right - 140}, ${margin.top - 48})`)
+
+    if (legendTitle) {
+      legend
+        .append('text')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('fill', legendColor)
+        .attr('font-size', 13)
+        .attr('font-weight', 600)
+        .text(legendTitle)
+    }
+
+    const legendItems = legend
+      .selectAll('.legend-item')
+      .data(WORK_LOCATIONS)
+      .join('g')
+      .attr('class', 'legend-item')
+      .attr('transform', (_, index) => `translate(0, ${(index + 1) * 24})`)
+
+    legendItems
+      .append('circle')
+      .attr('r', 7)
+      .attr('cx', 7)
+      .attr('cy', 0)
+      .attr('fill', (location) => colorScale(location))
+      .attr('stroke', gridColor)
+      .attr('stroke-width', 1)
+
+    legendItems
+      .append('text')
+      .attr('x', 24)
+      .attr('y', 4)
+      .attr('fill', legendColor)
+      .attr('font-size', 12)
+      .text((location) => workLocationLabels[location] ?? location)
+  }, [common, copy, filteredDataset, filters.region, regionOptions, theme])
 
   const handleFilterChange = (name) => (event) => {
     const value = event.target.value
