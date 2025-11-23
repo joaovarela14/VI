@@ -170,10 +170,18 @@ function App() {
 
   const renderContent = () => {
     if (activeTab === 'documentation') {
+      const radarShowcase = copy.documentation?.radarShowcase
       return (
         <>
           <DocumentationPanel copy={copy.documentation} datasetCount={datasetCount} />
           <DataLabPanel copy={copy.dataLab} data={data} common={copy.common} />
+          <section className="section section--wide">
+            <h2>{radarShowcase?.heading ?? copy.industryRadar?.title}</h2>
+            {radarShowcase?.intro && <p className="section__intro">{radarShowcase.intro}</p>}
+            <div className="chart-grid chart-grid--single">
+              <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} showHeader={false} />
+            </div>
+          </section>
         </>
       )
     }
@@ -201,30 +209,6 @@ function App() {
             </section>
           </>
         )
-      case 'workload-balance':
-        return (
-          <section className="section section--wide">
-            <h2>{subTabInfo?.label ?? copy.workLifeBalanceLine?.title}</h2>
-            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
-            <div className="chart-grid chart-grid--single">
-              <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} showHeader={false} />
-            </div>
-          </section>
-        )
-      case 'workload-meetings': {
-        const meetingCopy = copy.deepDive?.meeting
-        const heading = subTabInfo?.label ?? meetingCopy?.heading
-        const intro = subTabInfo?.description ?? meetingCopy?.intro
-        return (
-          <section className="section section--wide">
-            {heading && <h2>{heading}</h2>}
-            {intro && <p className="section__intro">{intro}</p>}
-            <div className="chart-grid chart-grid--single">
-              <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} showHeader={false} />
-            </div>
-          </section>
-        )
-      }
       case 'wellbeing-stress':
         return (
           <section className="section section--wide">
@@ -233,17 +217,6 @@ function App() {
             <div className="chart-grid">
               <StressByLocationChart data={data} theme={theme} copy={copy.stressByLocation} common={copy.common} />
               <MentalHealthByRegionChart data={data} theme={theme} copy={copy.mentalHealthByRegion} common={copy.common} />
-            </div>
-          </section>
-        )
-      case 'wellbeing-habits':
-        return (
-          <section className="section section--wide">
-            <h2>{subTabInfo?.label}</h2>
-            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
-            <div className="chart-grid">
-              <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} showHeader={false} />
-              <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} showHeader={false} />
             </div>
           </section>
         )
@@ -257,6 +230,34 @@ function App() {
             </div>
           </section>
         )
+      case 'mental-health-overview':
+        return (
+          <section className="section section--wide">
+            <h2>{subTabInfo?.label ?? copy.workLifeBalanceLine?.title}</h2>
+            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
+            <div className="chart-grid">
+              <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} showHeader={false} />
+              <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} showHeader={false} />
+            </div>
+          </section>
+        )
+      case 'workspace-influence-overview': {
+        const meetingCopy = copy.deepDive?.meeting
+        const isolationCopy = copy.deepDive?.socialIsolation
+        const heading = subTabInfo?.label ?? meetingCopy?.heading
+        const intro =
+          subTabInfo?.description ?? meetingCopy?.intro ?? isolationCopy?.intro
+        return (
+          <section className="section section--wide">
+            {heading && <h2>{heading}</h2>}
+            {intro && <p className="section__intro">{intro}</p>}
+            <div className="chart-grid">
+              <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} showHeader={false} />
+              <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} showHeader={false} />
+            </div>
+          </section>
+        )
+      }
       case 'roles-activity':
         return (
           <section className="section section--wide">

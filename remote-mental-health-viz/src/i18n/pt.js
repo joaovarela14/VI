@@ -182,22 +182,24 @@ const pt = {
             label: "Painel de carga",
             description: "KPIs agregados e o scatter de horas versus sono.",
           },
+        ],
+      },
+      {
+        id: "workspace-influence",
+        label: "Work Space Influence",
+        description: "Mistura o gráfico de bolhas com o painel de isolamento social por grupo.",
+        subTabs: [
           {
-            id: "workload-balance",
-            label: "Equilíbrio por apoio",
-            description: "Compara ratings de equilíbrio conforme a existência de recursos.",
-          },
-          {
-            id: "workload-meetings",
-            label: "Reuniões vs. stress",
-            description: "Liga horas, reuniões, stress e localização num único scatter.",
+            id: "workspace-influence-overview",
+            label: "Work Space Influence",
+            description: "Consulta o gráfico de bolhas ao lado das comparações de isolamento social.",
           },
         ],
       },
       {
         id: "wellbeing",
         label: "Bem-estar",
-        description: "Indicadores de stress, condições, isolamento e qualidade do sono.",
+        description: "Indicadores de stress, condições e sentimento.",
         subTabs: [
           {
             id: "wellbeing-stress",
@@ -205,14 +207,21 @@ const pt = {
             description: "Mapa por localização e prevalência regional de saúde mental.",
           },
           {
-            id: "wellbeing-habits",
-            label: "Isolamento e sono",
-            description: "Compara médias de isolamento e a matriz sono versus stress.",
-          },
-          {
             id: "wellbeing-sentiment",
             label: "Satisfação e apoio",
             description: "Mistura de satisfação filtrada por sector e região.",
+          },
+        ],
+      },
+      {
+        id: "mental-health",
+        label: "Saúde mental",
+        description: "Acesso a apoio psicológico e mapa de calor de stress versus sono.",
+        subTabs: [
+          {
+            id: "mental-health-overview",
+            label: "Saúde mental",
+            description: "Cruza o gráfico de apoio psicológico com o mapa de temperatura stress/sono.",
           },
         ],
       },
@@ -264,6 +273,11 @@ const pt = {
         value: "CSV UTF-8, separado por vírgulas",
       },
     ],
+    radarShowcase: {
+      heading: "Spider chart: funções por modelo de trabalho",
+      intro:
+        "O radar industrial destaca quais as funções que lideram em contextos remoto, híbrido ou presencial. Passa o rato pelo spider chart para ler proporções exatas antes de mergulhar nas notas qualitativas.",
+    },
     sections: [],
   },
   overview: {

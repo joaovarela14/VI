@@ -182,22 +182,24 @@ const en = {
             label: 'Workload dashboard',
             description: 'Overview KPIs plus the hours vs. sleep scatter.',
           },
+        ],
+      },
+      {
+        id: 'workspace-influence',
+        label: 'Work Space Influence',
+        description: 'Workplace mix insights that combine bubble trends with isolation splits.',
+        subTabs: [
           {
-            id: 'workload-balance',
-            label: 'Balance by support',
-            description: 'Track work-life ratings split by access to mental health resources.',
-          },
-          {
-            id: 'workload-meetings',
-            label: 'Meetings vs. stress',
-            description: 'Link hours, meeting load, stress, and locations in one scatter.',
+            id: 'workspace-influence-overview',
+            label: 'Work Space Influence',
+            description: 'Analyze the workplace bubble chart next to the social isolation comparison.',
           },
         ],
       },
       {
         id: 'wellbeing',
         label: 'Wellbeing signals',
-        description: 'Stress, conditions, isolation, and sleep quality indicators.',
+        description: 'Stress mix and sentiment indicators tied to wellbeing.',
         subTabs: [
           {
             id: 'wellbeing-stress',
@@ -205,14 +207,21 @@ const en = {
             description: 'Location stress mix plus mental health prevalence by region.',
           },
           {
-            id: 'wellbeing-habits',
-            label: 'Isolation & sleep',
-            description: 'Compare isolation averages and sleep quality vs. stress.',
-          },
-          {
             id: 'wellbeing-sentiment',
             label: 'Satisfaction & support',
             description: 'Slice satisfaction sentiment by sector and region filters.',
+          },
+        ],
+      },
+      {
+        id: 'mental-health',
+        label: 'Mental health',
+        description: 'Support access trends and the sleep vs. stress temperature map.',
+        subTabs: [
+          {
+            id: 'mental-health-overview',
+            label: 'Mental health',
+            description: 'Connect mental health support access with the heatmap of stress vs. sleep.',
           },
         ],
       },
@@ -264,6 +273,11 @@ const en = {
         value: 'UTF-8 CSV, comma separated',
       },
     ],
+    radarShowcase: {
+      heading: 'Spider chart: role mix by workplace',
+      intro:
+        'Use the industry radar to see which job roles lead within each work location. Hover the spider chart to read exact proportions before diving into the qualitative notes below.',
+    },
     sections: [],
   },
   overview: {
