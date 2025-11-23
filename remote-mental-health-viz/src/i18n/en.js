@@ -52,13 +52,13 @@ const mentalHealthConditions = {
 }
 
 const satisfactionMap = {
-  unsatisfied: 'unsatisfied',
+  unsatisfied: 'Unsatisfied',
   dissatisfied: 'unsatisfied',
   'very unsatisfied': 'unsatisfied',
-  satisfied: 'satisfied',
+  satisfied: 'Satisfied',
   'very satisfied': 'satisfied',
   'extremely satisfied': 'satisfied',
-  neutral: 'neutral',
+  neutral: 'Neutral',
   indifferent: 'neutral',
   'neither satisfied nor dissatisfied': 'neutral',
 }
@@ -313,6 +313,7 @@ const en = {
       stress: 'Stress level',
       condition: 'Mental health condition',
     },
+    filtersLabel: 'Filters',
     tooltip: ({ region, categoryLabel, count, percentage }) =>
       `${region} — ${categoryLabel}: ${formatCount(count)} employees (${percentFormatter.format(Math.min(Math.max(percentage ?? 0, 0), 1))})`,
     formatters: {
@@ -320,6 +321,7 @@ const en = {
       decimal: (value) => decimalFormatter.format(value ?? 0),
       percent: (value) => percentFormatter.format(Math.min(Math.max(value ?? 0, 0), 1)),
     },
+    yAxisLabel: 'Number of employees',
     details: {
       overviewTitle: 'Filtered dataset',
       overviewSubtitle: 'Stats for everyone included by the active filters.',

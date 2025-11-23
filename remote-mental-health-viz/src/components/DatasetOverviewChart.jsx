@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 
 const stressLevels = ['Low', 'Medium', 'High']
 const productivityOrder = ['Increase', 'No Change', 'Decrease']
-const satisfactionOrder = ['satisfied', 'neutral', 'unsatisfied']
+const satisfactionOrder = ['Satisfied', 'Neutral', 'Unsatisfied']
 const activityOrder = ['Daily', 'Weekly', 'None']
 const ALL = '__all__'
 
@@ -163,7 +163,7 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
       : null
     const width = 640
     const height = 360
-    const margin = { top: 48, right: 120, bottom: 72, left: 64 }
+    const margin = { top: 48, right: 160, bottom: 72, left: 56 }
 
     svg.selectAll('*').remove()
     svg.attr('viewBox', `0 0 ${width} ${height}`)
@@ -224,7 +224,7 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
       .call((g) => g.selectAll('path').attr('stroke', gridColor))
       .call((g) => g.selectAll('line').attr('stroke', gridColor))
 
-    chartGroup
+    const yAxisGroup = chartGroup
       .append('g')
       .call(
         d3
@@ -240,6 +240,17 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
       )
       .call((g) => g.selectAll('path').attr('stroke', gridColor))
       .call((g) => g.selectAll('line').attr('stroke', gridColor))
+
+    yAxisGroup
+      .append('text')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -innerHeight / 2)
+      .attr('y', -margin.left + 12)
+      .attr('fill', axisColor)
+      .attr('font-size', 12)
+      .attr('font-weight', 600)
+      .attr('text-anchor', 'middle')
+      .text(copy?.yAxisLabel ?? 'Number of employees')
 
     const groups = chartGroup
       .selectAll('.dataset-layer')
@@ -467,6 +478,7 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
           </div>
           {copy.instructions && <p className="dataset-overview__hint dataset-overview__hint--inline">{copy.instructions}</p>}
           <div className="dataset-overview__controls dataset-overview__controls--filters">
+            <span className="dataset-overview__filters-label">{copy.filtersLabel}</span>
             <div className="chart-header__filters dataset-overview__filters" role="group" aria-label={copy.filters.ariaLabel}>
               <label className="visually-hidden" htmlFor="dataset-overview-industry">
                 {copy.filters.industry}

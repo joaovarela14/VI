@@ -987,6 +987,14 @@ main {
   margin-top: 0.5rem;
 }
 
+.dataset-overview__filters-label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-subtle);
+  font-weight: 600;
+}
+
 .dataset-overview__modes {
   display: inline-flex;
   align-items: center;

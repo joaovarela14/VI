@@ -321,6 +321,7 @@ const pt = {
       stress: "Nível de stress",
       condition: "Condição de saúde mental",
     },
+    filtersLabel: "Filtros",
     tooltip: ({ region, categoryLabel, count, percentage }) =>
       `${region} — ${categoryLabel}: ${formatCount(
         count
@@ -333,6 +334,7 @@ const pt = {
       percent: (value) =>
         percentFormatter.format(Math.min(Math.max(value ?? 0, 0), 1)),
     },
+    yAxisLabel: "Número de colaboradores",
     details: {
       overviewTitle: "Conjunto filtrado",
       overviewSubtitle: "Métricas para todas as pessoas nos filtros activos.",
