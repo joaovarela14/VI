@@ -107,7 +107,7 @@ const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
 
     const width = 640
     const height = 420
-    const margin = { top: 40, right: 160, bottom: 40, left: 80 }
+    const margin = { top: 40, right: 200, bottom: 40, left: 80 }
 
     const svg = d3.select(svgRef.current)
     svg.selectAll('*').remove()
@@ -137,10 +137,11 @@ const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
       gridContainer
         .append('text')
         .attr('x', 0)
-        .attr('y', -radiusValue - 6)
+        .attr('y', -radiusValue - 8)
         .attr('text-anchor', 'middle')
         .attr('fill', axisColor)
-        .attr('font-size', 11)
+        .attr('font-size', 13)
+        .attr('font-weight', 500)
         .text(copy.ringLabel ? copy.ringLabel(value) : value)
     })
 
@@ -160,12 +161,13 @@ const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
 
       svg
         .append('text')
-        .attr('x', centerX + Math.cos(angle) * (radialScale(scaleMax) + 16))
-        .attr('y', centerY + Math.sin(angle) * (radialScale(scaleMax) + 16))
+        .attr('x', centerX + Math.cos(angle) * (radialScale(scaleMax) + 20))
+        .attr('y', centerY + Math.sin(angle) * (radialScale(scaleMax) + 20))
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'middle')
         .attr('fill', axisColor)
-        .attr('font-size', 12)
+        .attr('font-size', 14)
+        .attr('font-weight', 600)
         .text(role)
     })
 
@@ -260,31 +262,32 @@ const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
       .attr('x', 0)
       .attr('y', 0)
       .attr('fill', legendColor)
-      .attr('font-size', 13)
-      .attr('font-weight', 600)
+      .attr('font-size', 18)
+      .attr('font-weight', 700)
       .text(copy.legendTitle)
 
     const legendItem = legend
       .selectAll('g')
       .data(activeLocations)
       .join('g')
-      .attr('transform', (_, i) => `translate(0, ${(i + 1) * 22})`)
+      .attr('transform', (_, i) => `translate(0, ${(i + 1) * 35})`)
 
     legendItem
       .append('rect')
-      .attr('width', 14)
-      .attr('height', 14)
-      .attr('rx', 3)
+      .attr('width', 20)
+      .attr('height', 20)
+      .attr('rx', 4)
       .attr('fill', (d) => colorScale(d))
       .attr('stroke', gridColor)
-      .attr('stroke-width', 1)
+      .attr('stroke-width', 1.5)
 
     legendItem
       .append('text')
-      .attr('x', 22)
-      .attr('y', 11)
+      .attr('x', 28)
+      .attr('y', 15)
       .attr('fill', legendColor)
-      .attr('font-size', 12)
+      .attr('font-size', 16)
+      .attr('font-weight', 600)
       .text((d) => common?.workLocations?.[d] ?? d)
     return () => {
       hideTooltip()
