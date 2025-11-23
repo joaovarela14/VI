@@ -1,4 +1,10 @@
 import { useMemo, useState } from 'react'
+import remoteCalmAsset from '../assets/persona-remote-calm.svg'
+import remoteBalancedAsset from '../assets/persona-remote-balanced.svg'
+import remoteStrainedAsset from '../assets/persona-remote-strained.svg'
+import onsiteCalmAsset from '../assets/persona-onsite-calm.svg'
+import onsiteBalancedAsset from '../assets/persona-onsite-balanced.svg'
+import onsiteStrainedAsset from '../assets/persona-onsite-strained.svg'
 import './stress-model.css'
 
 const DEFAULTS = {
@@ -54,28 +60,45 @@ const sanitizeDataset = (rows) =>
 
 const getModelPalette = (percent) => {
   const value = clampPercent(percent) / 100
-  const hue = 145 - value * 120
-  const saturation = 55 + value * 30
-  const lightness = 58 - value * 18
-  const glowLightness = 70 - value * 40
+  const baseHue = 205 - value * 28
+  const chroma = 32 + value * 18
+  const accentHue = 18 + value * 18
+  const washLightness = 86 - value * 16
+
   return {
-    primary: `hsl(${hue} ${saturation}% ${lightness}%)`,
-    glow: `hsla(${hue} ${saturation}% ${glowLightness}%, 0.45)`,
+    primary: `hsl(${baseHue} ${chroma}% ${58 - value * 10}%)`,
+    glow: `hsla(${baseHue} ${chroma + 12}% ${78 - value * 12}%, 0.48)`,
+    accent: `hsl(${accentHue} 60% ${74 - value * 18}%)`,
+    wash: `hsl(${(baseHue + accentHue) / 2} 42% ${washLightness}%)`,
   }
+}
+
+const personaAssets = {
+  remote: {
+    calm: remoteCalmAsset,
+    balanced: remoteBalancedAsset,
+    strained: remoteStrainedAsset,
+  },
+  onsite: {
+    calm: onsiteCalmAsset,
+    balanced: onsiteBalancedAsset,
+    strained: onsiteStrainedAsset,
+  },
 }
 
 const StressModel = ({ label, percent, stateLabel, variant = 'remote', context }) => {
   const stateKey = toStateKey(percent)
   const palette = getModelPalette(percent)
   const inlineStyle = {
-    '--model-color': palette.primary,
-    '--model-glow': palette.glow,
-    '--model-lean': { calm: '0deg', balanced: '3deg', strained: '7deg' }[stateKey],
-    '--model-head': { calm: '0deg', balanced: '-4deg', strained: '10deg' }[stateKey],
-    '--model-bob': { calm: '0px', balanced: '6px', strained: '10px' }[stateKey],
+    '--mood-primary': palette.primary,
+    '--mood-glow': palette.glow,
+    '--mood-accent': palette.accent,
+    '--scene-wash': palette.wash,
   }
 
   const isRemote = variant === 'remote'
+  const personaSrc = personaAssets[variant]?.[stateKey] ?? personaAssets[variant]?.balanced
+  const personaAlt = isRemote ? 'Remote professional illustration' : 'On-site professional illustration'
 
   return (
     <div className={`stress-model stress-model--${variant} stress-model--${stateKey}`} style={inlineStyle}>
@@ -91,68 +114,9 @@ const StressModel = ({ label, percent, stateLabel, variant = 'remote', context }
       )}
 
       <div className="stress-model__scene">
-        <div className="stress-model__backdrop" aria-hidden="true">
-          {isRemote ? (
-            <>
-              <div className="scene-window" />
-              <div className="scene-plant" />
-              <div className="scene-shelf">
-                <div className="scene-book" />
-                <div className="scene-book" />
-                <div className="scene-mug" />
-              </div>
-              <div className="scene-floor" />
-              <div className="scene-rug" />
-              <div className="scene-desk scene-desk--remote">
-                <div className="scene-desk-top" />
-                <div className="scene-laptop">
-                  <div className="scene-laptop-screen" />
-                </div>
-                <div className="scene-tablet" />
-              </div>
-              <div className="scene-chair scene-chair--remote" />
-              <div className="scene-cat" />
-            </>
-          ) : (
-            <>
-              <div className="scene-desk-lamp" />
-              <div className="scene-skyline">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="scene-desk scene-desk--onsite">
-                <div className="scene-monitor">
-                  <div className="scene-monitor-screen" />
-                  <div className="scene-monitor-stand" />
-                </div>
-                <div className="scene-phone" />
-                <div className="scene-cup" />
-              </div>
-              <div className="scene-chair scene-chair--onsite" />
-              <div className="scene-calendar" />
-            </>
-          )}
+        <div className="stress-model__asset-wrapper">
+          <img src={personaSrc} loading="lazy" alt={personaAlt} className="stress-model__asset" />
         </div>
-
-        <div className="stress-model__figure" aria-hidden="true">
-          <div className="stress-model__torso">
-            <div className="stress-model__head">
-              <span className="stress-model__eye stress-model__eye--left" />
-              <span className="stress-model__eye stress-model__eye--right" />
-              <span className="stress-model__mouth" />
-              {stateKey === 'strained' && <div className="stress-sweat" />}
-            </div>
-            <div className="stress-model__arm stress-model__arm--left" />
-            <div className="stress-model__arm stress-model__arm--right" />
-          </div>
-          <div className="stress-model__legs">
-            <span className="stress-model__leg stress-model__leg--left" />
-            <span className="stress-model__leg stress-model__leg--right" />
-          </div>
-        </div>
-
-        <div className="stress-model__shadow" aria-hidden="true" />
       </div>
 
       <div className="stress-model__bar">
