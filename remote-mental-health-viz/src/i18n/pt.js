@@ -610,9 +610,9 @@ const pt = {
     },
   },
   dataLab: {
-    heading: "Mapa das variáveis",
+    heading: "Documentação do conjunto de dados",
     intro:
-      "Enquanto preparamos os modelos 3D interativos, explore todas as variáveis quantitativas e qualitativas disponíveis. Esta lista ajuda a planear que sinais irá ligar aos futuros protótipos.",
+      "Este dataset recolhe respostas anónimas sobre carga de trabalho, estilo de vida e indicadores de bem-estar para profissionais remotos, híbridos e presenciais. A seguir, encontra uma visão geral do inquérito, seguida de uma descrição detalhada das variáveis quantitativas e qualitativas incluídas.",
     datasetOverview: {
       title: "Retrato do inquérito",
       paragraphs: [
