@@ -98,7 +98,7 @@ const en = {
   },
   stressLab: {
     eyebrow: 'Interactive stress lab',
-    title: 'Remote vs. onsite body language',
+    title: 'Remote vs Onsite',
     description:
       'Use hours worked, meeting load, sleep quality, and the gender mix to morph the personas. The avatars react to the filtered dataset, shifting posture and stress colors as the scenario changes.',
     modelsLabel: '3D personas comparing remote and onsite contexts',
@@ -121,7 +121,7 @@ const en = {
     },
     panel: {
       title: 'Adjust the sample',
-      subtitle: 'The sliders pick respondents with matching habits. Watch how remote vs. onsite stress changes as you tweak the profile.',
+      subtitle: 'Interact with the stress persona lab to explore remote vs onsite stress moods.',
       reset: 'Reset inputs',
       hours: {
         label: 'Hours per week',
@@ -163,7 +163,7 @@ const en = {
       },
       {
         id: 'unspecified',
-        label: 'Prefer not to say',
+        label: 'Not specified',
         matches: ['prefer not to say'],
       },
     ],
@@ -175,7 +175,7 @@ const en = {
       {
         id: 'persona-model',
         label: 'Persona models',
-        description: 'Interact with the stress persona lab to explore remote vs. onsite moods.',
+        description: '',
       },
       {
         id: 'workload-dashboard',
