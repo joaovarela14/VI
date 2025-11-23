@@ -140,9 +140,12 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
 
   const sanitizedRows = useMemo(() => sanitizeDataset(data), [data])
 
-  const filteredRows = useMemo(() => {
+  const locationScores = useMemo(() => {
     if (!sanitizedRows.length) {
-      return []
+      return {
+        remote: 0,
+        onsite: 0,
+      }
     }
 
     const matchSet = new Set()
@@ -154,67 +157,67 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
     })
     const shouldFilterGender = matchSet.size > 0
 
-    return sanitizedRows.filter((row) => {
-      if (Math.abs(row.hoursWorked - hours) > 5) {
-        return false
+    const gaussian = (delta, scale) => Math.exp(-Math.pow(delta / scale, 2))
+
+    const sliderInfluence =
+      ((hours - DEFAULTS.hours) / 20) * 25 +
+      ((meetings - DEFAULTS.meetings) / 8) * 18 -
+      ((sleepFocus - DEFAULTS.sleep) / 1) * 22
+
+    const computeScore = (predicate) => {
+      const rows = sanitizedRows.filter(predicate)
+      if (!rows.length) {
+        return 0
       }
 
-      if (Math.abs((row.virtualMeetings ?? meetings) - meetings) > 2.5) {
-        return false
-      }
+      let totalWeight = 0
+      let weightedStress = 0
 
-      const rowSleepScore = toSleepScore(row.sleepQuality)
-      if (Math.abs(rowSleepScore - sleepFocus) > 0.6) {
-        return false
-      }
-
-      if (shouldFilterGender) {
+      rows.forEach((row) => {
         const genderValue = String(row.gender ?? '').trim().toLowerCase()
-        if (!matchSet.has(genderValue)) {
-          return false
+        if (shouldFilterGender && !matchSet.has(genderValue)) {
+          return
         }
+
+        const rowMeetings = Number.isFinite(row.virtualMeetings) ? row.virtualMeetings : DEFAULTS.meetings
+        const rowSleepScore = toSleepScore(row.sleepQuality)
+        const weight =
+          gaussian((row.hoursWorked ?? DEFAULTS.hours) - hours, 10) *
+          gaussian((rowMeetings ?? DEFAULTS.meetings) - meetings, 5) *
+          gaussian(rowSleepScore - sleepFocus, 0.9)
+
+        if (weight <= 0.0001) {
+          return
+        }
+
+        totalWeight += weight
+        const numericStress = STRESS_NUMERIC[row.stressLevel?.toLowerCase()] ?? STRESS_NUMERIC.medium
+        weightedStress += weight * numericStress
+      })
+
+      let basePercent
+      if (totalWeight > 0) {
+        basePercent = (weightedStress / totalWeight) * 100
+      } else {
+        const fallbackAvg =
+          rows.reduce(
+            (sum, row) => sum + (STRESS_NUMERIC[row.stressLevel?.toLowerCase()] ?? STRESS_NUMERIC.medium),
+            0
+          ) / rows.length
+        basePercent = fallbackAvg * 100
       }
 
-      return true
-    })
-  }, [sanitizedRows, genderFilters, genderOptions, hours, meetings, sleepFocus])
-
-  const baseRows = filteredRows.length ? filteredRows : sanitizedRows
-
-  const locationScores = useMemo(() => {
-    if (!baseRows.length) {
-      return {
-        remote: 0,
-        onsite: 0,
-      }
+      return clampPercent(basePercent + sliderInfluence)
     }
 
     const remotePredicate = (row) => String(row.workLocation ?? '').toLowerCase() !== 'onsite'
     const onsitePredicate = (row) => String(row.workLocation ?? '').toLowerCase() === 'onsite'
 
-    let remoteRows = baseRows.filter(remotePredicate)
-    if (!remoteRows.length) {
-      remoteRows = sanitizedRows.filter(remotePredicate)
-    }
-
-    let onsiteRows = baseRows.filter(onsitePredicate)
-    if (!onsiteRows.length) {
-      onsiteRows = sanitizedRows.filter(onsitePredicate)
-    }
-
-    const calcAverage = (rows) => {
-      if (!rows.length) {
-        return 0
-      }
-      const total = rows.reduce((sum, row) => sum + (STRESS_NUMERIC[row.stressLevel?.toLowerCase()] ?? STRESS_NUMERIC.medium), 0)
-      return Math.round((total / rows.length) * 100)
-    }
-
     return {
-      remote: calcAverage(remoteRows),
-      onsite: calcAverage(onsiteRows),
+      remote: computeScore(remotePredicate),
+      onsite: computeScore(onsitePredicate),
     }
-  }, [baseRows, sanitizedRows])
+  }, [sanitizedRows, genderFilters, genderOptions, hours, meetings, sleepFocus])
 
   const updateGenderFilters = (genderId) => {
     setGenderFilters((current) => {
@@ -309,8 +312,8 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
               <input
                 id="sleep-slider"
                 type="range"
-                min="1"
-                max="3"
+                min="3"
+                max="1"
                 step="1"
                 value={sleepFocus}
                 onChange={(event) => setSleepFocus(Number.parseInt(event.target.value, 10))}
@@ -319,9 +322,7 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
             </div>
           </div>
 
-          <fieldset className="comparison-genders">
-            <legend>{copy?.panel?.gender?.label}</legend>
-            <p className="comparison-genders__hint">{copy?.panel?.gender?.hint}</p>
+          <div className="comparison-genders comparison-genders--minimal">
             <div className="comparison-genders__grid">
               {genderOptions.map((option) => (
                 <label key={option.id} className="comparison-checkbox">
@@ -334,7 +335,7 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
                 </label>
               ))}
             </div>
-          </fieldset>
+          </div>
 
 
           <button type="button" className="comparison-reset" onClick={handleReset}>

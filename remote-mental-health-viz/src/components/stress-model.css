@@ -313,25 +313,12 @@ body.theme-light .stress-lab__comparison {
 }
 
 .comparison-genders {
-  border: 1px dashed rgba(148, 163, 184, 0.4);
-  border-radius: 18px;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
+  padding: 0.5rem 0 0;
+  border: none;
 }
 
-.comparison-genders legend {
-  padding: 0 0.5rem;
-  font-size: 0.78rem;
-  letter-spacing: 0.16em;
-  color: var(--text-subtle);
-}
-
-.comparison-genders__hint {
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--text-muted);
+.comparison-genders--minimal {
+  border: none;
 }
 
 .comparison-genders__grid {
