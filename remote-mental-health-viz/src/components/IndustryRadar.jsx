@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import * as d3 from 'd3'
 
 const workLocations = ['Remote', 'Hybrid', 'Onsite']
+const workLocationColors = ['#38bdf8', '#22c55e', '#f97316']
 
 const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
   const containerRef = useRef(null)
@@ -14,6 +15,7 @@ const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
 
   const [selectedIndustry, setSelectedIndustry] = useState(() => industryOptions[0] ?? '')
   const [locationFilter, setLocationFilter] = useState('All')
+  const colorScale = useMemo(() => d3.scaleOrdinal(workLocations, workLocationColors), [])
 
   useEffect(() => {
     if (industryOptions.length && !industryOptions.includes(selectedIndustry)) {
@@ -103,7 +105,6 @@ const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
     const styles = getComputedStyle(document.body)
     const axisColor = styles.getPropertyValue('--chart-axis-color').trim() || '#94a3b8'
     const gridColor = styles.getPropertyValue('--chart-grid-stroke').trim() || '#334155'
-    const legendColor = styles.getPropertyValue('--chart-legend-text').trim() || '#cbd5f5'
 
     const width = 640
     const height = 420
@@ -161,8 +162,8 @@ const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
 
       svg
         .append('text')
-        .attr('x', centerX + Math.cos(angle) * (radialScale(scaleMax) + 20))
-        .attr('y', centerY + Math.sin(angle) * (radialScale(scaleMax) + 20))
+        .attr('x', centerX + Math.cos(angle) * (radialScale(scaleMax) + 32))
+        .attr('y', centerY + Math.sin(angle) * (radialScale(scaleMax) + 32))
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'middle')
         .attr('fill', axisColor)
@@ -170,8 +171,6 @@ const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
         .attr('font-weight', 600)
         .text(role)
     })
-
-    const colorScale = d3.scaleOrdinal(workLocations, ['#38bdf8', '#22c55e', '#f97316'])
 
     const radarLine = d3
       .lineRadial()
@@ -252,47 +251,10 @@ const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
       .on('mousemove', showTooltip)
       .on('mouseleave', hideTooltip)
 
-    const legend = svg
-      .append('g')
-      .attr('class', 'legend')
-      .attr('transform', `translate(${width - margin.right + 20}, ${margin.top})`)
-
-    legend
-      .append('text')
-      .attr('x', 0)
-      .attr('y', 0)
-      .attr('fill', legendColor)
-      .attr('font-size', 18)
-      .attr('font-weight', 700)
-      .text(copy.legendTitle)
-
-    const legendItem = legend
-      .selectAll('g')
-      .data(activeLocations)
-      .join('g')
-      .attr('transform', (_, i) => `translate(0, ${(i + 1) * 35})`)
-
-    legendItem
-      .append('rect')
-      .attr('width', 20)
-      .attr('height', 20)
-      .attr('rx', 4)
-      .attr('fill', (d) => colorScale(d))
-      .attr('stroke', gridColor)
-      .attr('stroke-width', 1.5)
-
-    legendItem
-      .append('text')
-      .attr('x', 28)
-      .attr('y', 15)
-      .attr('fill', legendColor)
-      .attr('font-size', 16)
-      .attr('font-weight', 600)
-      .text((d) => common?.workLocations?.[d] ?? d)
     return () => {
       hideTooltip()
     }
-  }, [activeLocations, common, copy, grouped, hasData, roleAxes, selectedIndustry, theme])
+  }, [activeLocations, colorScale, common, copy, grouped, hasData, roleAxes, selectedIndustry, theme])
 
   const noData = !selectedIndustry || !roleAxes.length || !hasData
 
@@ -306,36 +268,52 @@ const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
               <p>{copy.description}</p>
             </div>
           )}
-          <div className="industry-radar__filters">
-            <label>
-              <span className="visually-hidden">{copy.sectorLabel}</span>
-              <select
-                className="chart-select"
-                value={selectedIndustry}
-                onChange={(event) => setSelectedIndustry(event.target.value)}
-              >
-                {industryOptions.map((industry) => (
-                  <option key={industry} value={industry}>
-                    {industry}
-                  </option>
+          <div className="industry-radar__actions">
+            <div className="industry-radar__legend" aria-label={copy.legendTitle}>
+              <p className="industry-radar__legend-title">{copy.legendTitle}</p>
+              <div className="industry-radar__legend-items">
+                {activeLocations.map((location) => (
+                  <div key={location} className="industry-radar__legend-item">
+                    <span
+                      className="industry-radar__legend-swatch"
+                      style={{ backgroundColor: colorScale(location) }}
+                    />
+                    <span>{common?.workLocations?.[location] ?? location}</span>
+                  </div>
                 ))}
-              </select>
-            </label>
-            <label>
-              <span className="visually-hidden">{copy.locationLabel}</span>
-              <select
-                className="chart-select"
-                value={locationFilter}
-                onChange={(event) => setLocationFilter(event.target.value)}
-              >
-                <option value="All">{copy.optionAllLocations}</option>
-                {workLocations.map((location) => (
-                  <option key={location} value={location}>
-                    {common?.workLocations?.[location] ?? location}
-                  </option>
-                ))}
-              </select>
-            </label>
+              </div>
+            </div>
+            <div className="industry-radar__filters">
+              <label>
+                <span className="visually-hidden">{copy.sectorLabel}</span>
+                <select
+                  className="chart-select"
+                  value={selectedIndustry}
+                  onChange={(event) => setSelectedIndustry(event.target.value)}
+                >
+                  {industryOptions.map((industry) => (
+                    <option key={industry} value={industry}>
+                      {industry}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                <span className="visually-hidden">{copy.locationLabel}</span>
+                <select
+                  className="chart-select"
+                  value={locationFilter}
+                  onChange={(event) => setLocationFilter(event.target.value)}
+                >
+                  <option value="All">{copy.optionAllLocations}</option>
+                  {workLocations.map((location) => (
+                    <option key={location} value={location}>
+                      {common?.workLocations?.[location] ?? location}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
           </div>
         </div>
       </div>

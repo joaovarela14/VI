@@ -775,6 +775,7 @@ main {
 .chart-card--tall {
   min-height: 360px;
   height: clamp(360px, 55vh, 520px);
+  position: relative;
 }
 
 .chart-card--medium {
@@ -1079,12 +1080,79 @@ main {
   justify-content: space-between;
 }
 
+.industry-radar__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.industry-radar__legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--card-background);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.industry-radar__legend-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--chart-legend-text);
+}
+
+.industry-radar__legend-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  justify-content: flex-start;
+}
+
+.industry-radar__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.industry-radar__legend-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid var(--chart-grid-stroke);
+  flex-shrink: 0;
+}
+
 .industry-radar__filters {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   align-items: center;
   justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .industry-radar__actions {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .industry-radar__legend {
+    text-align: left;
+  }
+
+  .industry-radar__legend-items {
+    justify-content: flex-start;
+  }
 }
 
 .page-footer {
