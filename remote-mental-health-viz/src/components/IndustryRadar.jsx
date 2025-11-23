@@ -284,8 +284,8 @@ const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
               </div>
             </div>
             <div className="industry-radar__filters">
-              <label>
-                <span className="visually-hidden">{copy.sectorLabel}</span>
+              <label className="industry-radar__filter-group">
+                <span className="industry-radar__filter-label">{copy.sectorLabel}</span>
                 <select
                   className="chart-select"
                   value={selectedIndustry}
@@ -298,8 +298,8 @@ const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
                   ))}
                 </select>
               </label>
-              <label>
-                <span className="visually-hidden">{copy.locationLabel}</span>
+              <label className="industry-radar__filter-group">
+                <span className="industry-radar__filter-label">{copy.locationLabel}</span>
                 <select
                   className="chart-select"
                   value={locationFilter}
