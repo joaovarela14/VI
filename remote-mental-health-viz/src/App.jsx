@@ -155,17 +155,43 @@ function App() {
         )
       case 'documentation': {
         const radarShowcase = copy.documentation?.radarShowcase
+        const documentationStats = copy.documentation?.stats ?? []
+        const formatDocumentationStat = (stat) => {
+          if (typeof stat.value === 'function') {
+            return stat.value(datasetCount)
+          }
+          return stat.value
+        }
         return (
           <>
-            <DocumentationPanel copy={copy.documentation} datasetCount={datasetCount} />
-            <DataLabPanel copy={copy.dataLab} data={data} common={copy.common} />
-            <section className="section section--wide">
-              <h2>{radarShowcase?.heading ?? copy.industryRadar?.title}</h2>
-              {radarShowcase?.intro && <p className="section__intro">{radarShowcase.intro}</p>}
-              <div className="chart-grid chart-grid--single">
-                <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} showHeader={false} />
+            <section className="section section--wide documentation-showcase">
+              <div className="documentation-showcase__meta">
+                {copy.documentation?.heading && <p className="documentation-showcase__heading">{copy.documentation.heading}</p>}
+                {copy.documentation?.intro && <p className="documentation-showcase__intro">{copy.documentation.intro}</p>}
+                {documentationStats.length > 0 && (
+                  <div className="documentation-showcase__stats">
+                    {documentationStats.map((stat) => (
+                      <div key={stat.id} className="documentation-showcase__stat-card">
+                        <p className="documentation-showcase__stat-label">{stat.label}</p>
+                        <p className="documentation-showcase__stat-value">{formatDocumentationStat(stat)}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="documentation-showcase__chart">
+                <div className="documentation-showcase__chart-header">
+                  <h2>{radarShowcase?.heading ?? copy.industryRadar?.title}</h2>
+                  {radarShowcase?.intro && <p className="section__intro">{radarShowcase.intro}</p>}
+                </div>
+                <div className="documentation-showcase__chart-canvas">
+                  <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} showHeader={false} />
+                </div>
               </div>
             </section>
+            <DocumentationPanel copy={copy.documentation} datasetCount={datasetCount} />
+            <DataLabPanel copy={copy.dataLab} data={data} common={copy.common} />
           </>
         )
       }

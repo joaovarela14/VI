@@ -409,6 +409,102 @@ main {
   line-height: 1.6;
 }
 
+.documentation-showcase {
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.documentation-showcase__meta {
+  background: var(--surface-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 24px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 20px 36px -32px rgba(15, 23, 42, 0.6);
+}
+
+.documentation-showcase__heading {
+  margin: 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--badge-text);
+}
+
+.documentation-showcase__intro {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.documentation-showcase__stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.documentation-showcase__stat-card {
+  border-radius: 18px;
+  border: 1px solid var(--border-soft);
+  padding: 1rem 1.25rem;
+  background: var(--surface-card-strong);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.documentation-showcase__stat-label {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.documentation-showcase__stat-value {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.documentation-showcase__chart {
+  background: var(--surface-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 28px;
+  padding: 2rem;
+  box-shadow: 0 24px 40px -30px rgba(15, 23, 42, 0.65);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.documentation-showcase__chart-header h2 {
+  margin-bottom: 0.35rem;
+}
+
+.documentation-showcase__chart-canvas {
+  width: 100%;
+}
+
+.documentation-showcase__chart-canvas svg {
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 960px) {
+  .documentation-showcase {
+    grid-template-columns: 1fr;
+  }
+
+  .documentation-showcase__meta {
+    flex-direction: column;
+  }
+}
+
 .metrics-row {
   display: grid;
   grid-template-columns: repeat(5, minmax(220px, 1fr));
