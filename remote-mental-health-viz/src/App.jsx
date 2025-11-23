@@ -99,7 +99,9 @@ function App() {
 
   const datasetCount = data.length > 0 ? data.length : null
   const themeButtonLabel = theme === 'dark' ? copy.hero.buttons.theme.light : copy.hero.buttons.theme.dark
-  const languageButtonLabel = language === 'en' ? copy.hero.buttons.language.toPortuguese : copy.hero.buttons.language.toEnglish
+  const languageButtonLabel =
+    language === 'en' ? copy.hero.buttons.language.toPortuguese : copy.hero.buttons.language.toEnglish
+  const languageToggleIcon = language === 'en' ? '🇵🇹' : '🇺🇸'
   const controlsLabel = `${copy.hero.buttons.theme.aria} / ${copy.hero.buttons.language.aria}`
 
   const toggleTheme = () => {
@@ -263,7 +265,7 @@ function App() {
                     aria-label={copy.hero.buttons.language.aria}
                   >
                     <span className="theme-toggle__icon" aria-hidden="true">
-                      🌐
+                      {languageToggleIcon}
                     </span>
                     <span className="theme-toggle__label">{languageButtonLabel}</span>
                   </button>
