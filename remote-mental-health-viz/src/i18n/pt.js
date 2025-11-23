@@ -602,7 +602,7 @@ const pt = {
     ],
   },
   loading: "A carregar respostas do inquérito…",
-  error: "Não foi possível carregar os dados. Tente novamente mais tarde.",
+  error: "Não foi possível carregar os dados. Tente novamente mais tarde. ",
   footer:
     "Projeto desenvolvido por João Varela e Carolina Prata para a unidade curricular de Visualização de Informação.",
 };
