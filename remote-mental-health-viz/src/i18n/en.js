@@ -294,9 +294,9 @@ const en = {
     title: 'Stress levels by region',
     conditionTitle: 'Mental health conditions by region',
     description:
-      'Start with the broad picture of how stress levels stack up in each region. Use the dropdowns to filter the dataset and click a region to surface the contextual stats on the side.',
+      'Start with the broad picture of how stress levels stack up in each region. ',
     ariaLabel: 'Interactive stacked bar chart showing stress distribution by region with filters',
-    instructions: 'Use the filters to focus the dataset and click a bar to inspect that region in the details panel.',
+    instructions: 'Use the dropdowns to filter the dataset and click a bar to inspect that region in the details panel.',
     empty: 'No employees match the selected filters.',
     legend: stressLevels,
     filters: {

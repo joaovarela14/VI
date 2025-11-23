@@ -163,7 +163,7 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
       : null
     const width = 640
     const height = 360
-    const margin = { top: 48, right: 24, bottom: 72, left: 72 }
+    const margin = { top: 48, right: 120, bottom: 72, left: 64 }
 
     svg.selectAll('*').remove()
     svg.attr('viewBox', `0 0 ${width} ${height}`)
@@ -297,14 +297,23 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
 
     const legend = svg
       .append('g')
-      .attr('class', 'legend')
-      .attr('transform', `translate(${margin.left}, ${margin.top - 24})`)
+      .attr('class', 'legend legend--vertical')
+      .attr('transform', `translate(${width - margin.right}, ${margin.top})`)
+
+    legend
+      .append('text')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('fill', legendColor)
+      .attr('font-size', 12)
+      .attr('font-weight', 600)
+      .text(metricMode === 'stress' ? copy.modeOptions?.stress : copy.modeOptions?.condition)
 
     legend
       .selectAll('g')
       .data(activeCategories)
       .join('g')
-      .attr('transform', (_, index) => `translate(${index * 150}, 0)`)
+      .attr('transform', (_, index) => `translate(0, ${(index + 1) * 20})`)
       .call((legendGroup) => {
         legendGroup
           .append('rect')
@@ -455,6 +464,9 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
                 {copy.modeOptions?.condition}
               </button>
             </div>
+          </div>
+          {copy.instructions && <p className="dataset-overview__hint dataset-overview__hint--inline">{copy.instructions}</p>}
+          <div className="dataset-overview__controls dataset-overview__controls--filters">
             <div className="chart-header__filters dataset-overview__filters" role="group" aria-label={copy.filters.ariaLabel}>
               <label className="visually-hidden" htmlFor="dataset-overview-industry">
                 {copy.filters.industry}
@@ -509,7 +521,6 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
             </div>
           </div>
         </div>
-        {copy.instructions && <p className="dataset-overview__hint dataset-overview__hint--filters">{copy.instructions}</p>}
       </div>
 
       <div className="dataset-overview__content">

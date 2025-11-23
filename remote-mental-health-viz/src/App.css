@@ -608,6 +608,16 @@ main {
   fill: var(--chart-legend-text);
 }
 
+.legend--vertical g {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend--vertical g rect {
+  margin-right: 0.4rem;
+}
+
 .chart-tooltip {
   position: absolute;
   min-width: 180px;
@@ -973,6 +983,10 @@ main {
   gap: 1rem;
 }
 
+.dataset-overview__controls--filters {
+  margin-top: 0.5rem;
+}
+
 .dataset-overview__modes {
   display: inline-flex;
   align-items: center;
@@ -985,6 +999,12 @@ main {
 
 .dataset-overview__filters {
   margin-left: auto;
+}
+
+.dataset-overview__hint--inline {
+  flex-basis: 100%;
+  margin: 0.35rem 0 0;
+  color: var(--text-subtle);
 }
 
 .dataset-overview__mode-button {

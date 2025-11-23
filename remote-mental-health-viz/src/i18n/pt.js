@@ -300,11 +300,11 @@ const pt = {
     title: "Níveis de stress por região",
     conditionTitle: "Condições de saúde mental por região",
     description:
-      "Começa com o panorama geral de como os níveis de stress se distribuem em cada região. Usa os dropdowns para filtrar o dataset e clica numa barra para mostrar as estatísticas contextuais ao lado.",
+      "Começa com o panorama geral de como os níveis de stress se distribuem em cada região.",
     ariaLabel:
       "Gráfico de barras empilhadas com filtros onde se compara o stress por região",
     instructions:
-      "Aplica filtros para focar o dataset e clica numa barra para ver essa região no painel de detalhes.",
+      "Usa os dropdowns para filtrar o dataset e clica numa barra para mostrar as estatísticas contextuais ao lado.",
     empty: "Nenhum colaborador corresponde aos filtros seleccionados.",
     legend: stressLevels,
     filters: {
