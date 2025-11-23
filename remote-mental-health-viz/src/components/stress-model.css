@@ -65,33 +65,28 @@ body.theme-light .stress-lab::before {
 
 .stress-lab__models {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr) minmax(0, 1fr);
-  gap: clamp(1rem, 2vw, 2.25rem);
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px) minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 3rem);
+  align-items: start;
 }
 
 .stress-model {
-  padding: clamp(1.5rem, 2.6vw, 2.1rem);
-  border-radius: 32px;
-  background: linear-gradient(180deg, rgba(18, 25, 37, 0.92), rgba(8, 12, 20, 0.94));
-  border: 1px solid rgba(148, 163, 184, 0.25);
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
-  box-shadow: 0 35px 70px -48px rgba(2, 6, 23, 0.95);
+  gap: 1rem;
+  box-shadow: none;
   position: relative;
-}
-
-body.theme-light .stress-model {
-  background: rgba(255, 255, 255, 0.98);
-  border-color: rgba(148, 163, 184, 0.3);
-  box-shadow: 0 25px 60px -40px rgba(15, 23, 42, 0.2);
+  width: 100%;
 }
 
 .stress-model:hover {
-  transform: translateY(-3px);
-  border-color: var(--mood-accent, rgba(59, 130, 246, 0.4));
-  box-shadow: 0 40px 80px -48px var(--mood-glow, rgba(59, 130, 246, 0.35));
+  transform: none;
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .stress-model__tag {
@@ -111,51 +106,30 @@ body.theme-light .stress-model {
 
 .stress-model__scene {
   position: relative;
-  height: clamp(300px, 32vw, 360px);
-  border-radius: 26px;
-  overflow: hidden;
-  border: 1px solid rgba(15, 23, 42, 0.35);
-  background: radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.12), transparent 58%),
-    linear-gradient(145deg, rgba(13, 20, 34, 0.95), rgba(4, 7, 15, 0.9)),
-    var(--scene-wash, rgba(15, 23, 42, 0.92));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-body.theme-light .stress-model__scene {
-  border-color: rgba(148, 163, 184, 0.35);
-  background: radial-gradient(circle at 20% 15%, rgba(148, 163, 184, 0.35), transparent 60%),
-    linear-gradient(135deg, rgba(250, 250, 255, 0.95), rgba(237, 242, 247, 0.95));
-}
-
-.stress-model__scene::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 75% 15%, var(--mood-glow, rgba(59, 130, 246, 0.35)), transparent 70%);
-  mix-blend-mode: screen;
-  pointer-events: none;
+  width: 100%;
+  min-height: 400px;
+  border-radius: 0;
+  overflow: visible;
+  border: none;
+  background: transparent;
 }
 
 .stress-model__asset-wrapper {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .stress-model__asset {
-  position: absolute;
-  bottom: -8%;
-  left: 50%;
-  width: 118%;
+  position: relative;
+  width: min(100%, 1100px);
+  height: auto;
   max-width: none;
-  transform: translateX(-50%);
   pointer-events: none;
-  filter: drop-shadow(0 35px 50px rgba(2, 6, 23, 0.65));
-}
-
-.stress-model--onsite .stress-model__asset {
-  width: 124%;
-  bottom: -12%;
+  filter: drop-shadow(0 50px 90px rgba(2, 6, 23, 0.45));
 }
 
 
