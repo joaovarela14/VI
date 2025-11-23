@@ -77,12 +77,12 @@ const pt = {
       no: "Não",
     },
     allLocations: "Todas as localizações",
-    allIndustries: "Todas as áreas",
+    allIndustries: "Todos os sectores",
     satisfactionMap,
   },
   hero: {
-    eyebrow: "Explorador da saúde mental em trabalho remoto",
-    title: "Workspace modular de insights",
+    eyebrow: "Explorador da saúde mental no trabalho remoto",
+    title: "Espaço modular de insights",
     buttons: {
       theme: {
         light: "Mudar para modo claro",
@@ -100,14 +100,14 @@ const pt = {
     eyebrow: "Laboratório interativo de stress",
     title: "Remoto vs Presencial",
     description:
-      "Ajusta horas trabalhadas, reuniões virtuais, qualidade do sono e género para transformar as personas. As posturas mudam conforme o cenário filtra o dataset para remoto e presencial.",
-    modelsLabel: "Personas 3D para comparar remoto e presencial",
+      "Usa as horas trabalhadas, a carga de reuniões, a qualidade do sono e a distribuição por género para moldar as personas. Os avatares reagem ao dataset filtrado, mudando postura e cores de stress conforme o cenário.",
+    modelsLabel: "Personas 3D a comparar remoto e presencial",
     remoteLabel: "Remoto / híbrido",
     onsiteLabel: "Presencial",
     context: {
       remote: {
         icon: "🏡",
-        label: "Ambiente em casa",
+        label: "Base em casa",
       },
       onsite: {
         icon: "🏢",
@@ -120,10 +120,10 @@ const pt = {
       strained: "Sobrecarregado",
     },
     panel: {
-      title: "Personaliza a amostra",
+      title: "Ajusta a amostra",
       subtitle:
-        "Os sliders procuram perfis semelhantes. Observa como remoto e presencial se afastam quando alteras os hábitos da persona.",
-      reset: "Repor cenário",
+        "Interage com o laboratório para explorar os estados de stress remoto vs presencial.",
+      reset: "Repor parâmetros",
       hours: {
         label: "Horas por semana",
         unit: "h/sem",
@@ -136,15 +136,15 @@ const pt = {
         label: "Qualidade do sono",
         labels: {
           Poor: "Sem descanso",
-          Average: "Regular",
+          Average: "Equilibrado",
           Good: "Revigorado",
         },
       },
       gender: {
-        label: "Género (checkbox)",
-        hint: "Selecciona as identidades relevantes. Sem seleção significa incluir todas.",
+        label: "Foco de género",
+        hint: "Marca as caixas para destacar identidades específicas. Sem seleção inclui todas as pessoas.",
       },
-      differenceLabel: "Diferença remoto vs. presencial",
+      differenceLabel: "Gap remoto vs presencial",
     },
     genderOptions: [
       {
@@ -180,38 +180,37 @@ const pt = {
         id: "persona-model",
         label: "Modelo da persona",
         description:
-          "Explora apenas o laboratório da persona de stress para comparar ambientes.",
+          "Avatares SVG que reagem aos filtros do dataset, alterando expressões conforme o cenário.",
       },
       {
         id: "workload-dashboard",
         label: "Painel de carga",
-        description: "KPIs agregados e o scatter de horas versus sono.",
+        description: "KPIs principais e o gráfico de dispersão horas vs sono.",
       },
       {
         id: "workspace-influence",
         label: "Work Space Influence",
         description:
-          "Mistura o gráfico de bolhas com o painel de isolamento social por grupo.",
+          "Insights sobre a mistura de modalidades ao combinar bolhas e cortes de isolamento social.",
       },
       {
         id: "mental-health",
         label: "Saúde mental",
         description:
-          "Acesso a apoio psicológico e mapa de calor de stress versus sono.",
+          "Tendências de acesso a apoio e o mapa de calor sono vs stress.",
       },
       {
         id: "documentation",
         label: "Documentação",
         description:
-          "Notas do conjunto de dados, metodologia e mapa de variáveis.",
+          "Notas do dataset, metodologia e mapa de variáveis.",
       },
     ],
   },
   documentation: {
     heading: "Documentação do dataset",
     intro:
-      "O conjunto Impact of Remote Work on Mental Health reúne respostas anónimas sobre carga de trabalho, estilo de vida e indicadores de bem-estar para profissionais remotos, híbridos e presenciais.",
-    variablesHeading: "Variáveis do dataset",
+      "O dataset Impact of Remote Work on Mental Health agrega respostas anonimizadas que descrevem carga de trabalho, estilo de vida e sinais de bem-estar entre profissionais remotos, híbridos e presenciais.",
     stats: [
       {
         id: "records",
@@ -233,9 +232,9 @@ const pt = {
       },
     ],
     radarShowcase: {
-      heading: "Spider chart: funções por modelo de trabalho",
+      heading: "Gráfico radar: mistura de funções por modalidade",
       intro:
-        "O radar industrial destaca quais as funções que lideram em contextos remoto, híbrido ou presencial. Passa o rato pelo spider chart para ler proporções exatas antes de mergulhar nas notas qualitativas.",
+        "Usa o radar para perceber que funções lideram em cada local de trabalho. Passa o rato pelo gráfico para ler proporções exatas antes de mergulhar nas notas qualitativas.",
     },
     sections: [],
   },
@@ -350,12 +349,12 @@ const pt = {
     },
   },
   scatter: {
-    title: "Ritmo de reuniões, stress e carga horária",
+    title: "Horas, stress e ritmo de reuniões",
     description:
-      "A cor indica a modalidade de trabalho, o tamanho do círculo reflete o stress e o eixo vertical mostra o número de reuniões virtuais por semana.",
+      "A cor codifica a modalidade, o tamanho das bolhas reflete o stress e o eixo vertical mostra as reuniões virtuais por semana.",
     filterLabel: "Localização de trabalho",
-    industryFilterLabel: "Filtrar área de trabalho",
-    sampleFilterLabel: "Limite amostra",
+    industryFilterLabel: "Filtrar por área",
+    sampleFilterLabel: "Limite da amostra",
     legendHeading: "Modalidade de trabalho",
     sizeLegendHeading: "Nível de stress",
     xAxisLabel: "Horas trabalhadas por semana",
@@ -367,17 +366,17 @@ const pt = {
       Onsite: "Presencial",
     },
     industryFilterOptions: {
-      All: "Todas as áreas",
+      All: "Todos os sectores",
     },
     sampleFilterOptions: {
-      All: "Show all points",
+      All: "Todos os pontos",
       200: "200",
       500: "500",
       1000: "1000",
       2000: "2000",
     },
     sampleFilterUnavailable:
-      "Sem respostas suficientes para este tamanho de amostra",
+      "Não existem respostas suficientes para este tamanho de amostra",
     empty: "Sem respostas com informação de reuniões e stress para apresentar.",
     tooltip: ({
       employeeId,
@@ -408,13 +407,13 @@ const pt = {
     yAxisLabel: "Equilíbrio trabalho-vida médio",
     legendTitle: "Acesso a saúde mental",
     legend: {
-      yes: "Com apoio de saúde mental",
-      no: "Sem apoio de saúde mental",
+      yes: "Com acesso a apoio",
+      no: "Sem acesso a apoio",
     },
     empty:
-      "Não existem dados de equilíbrio trabalho-vida para apresentar nestas definições.",
+      "Não existem dados de equilíbrio trabalho-vida para apresentar com estas definições.",
     ariaLabel:
-      "Gráfico de linhas que mostra equilíbrio trabalho-vida médio por idade ou experiência dividido por acesso a saúde mental",
+      "Gráfico de linhas que mostra o equilíbrio trabalho-vida médio por idade ou experiência, dividido pelo acesso a apoio psicológico",
     tooltip: ({ accessLabel, xLabel, xValue, average, count }) =>
       `<div class="chart-tooltip__title">${accessLabel}</div>
        <div class="chart-tooltip__meta">${xLabel}: <strong>${integerFormatter.format(
@@ -452,9 +451,33 @@ const pt = {
        )}</strong></div>`,
   },
   dataLab: {
-    heading: "Variáveis do dataset",
+    heading: "Documentação do dataset",
     intro:
-      "Explora todas as variáveis quantitativas e qualitativas disponíveis. Passa o rato sobre cada nome para consultar os intervalos ou os valores reportados na amostra.",
+      "Explora todas as variáveis quantitativas e qualitativas disponíveis. Passa o rato sobre cada nome para consultar valores e intervalos presentes na amostra.",
+    datasetOverview: {
+      title: "Visão do inquérito",
+      paragraphs: [
+        "À medida que o trabalho remoto se torna a norma, é essencial compreender o impacto no bem-estar mental dos colaboradores. Este dataset mostra como o trabalho remoto afecta os níveis de stress, o equilíbrio trabalho-vida e as condições de saúde mental em múltiplos sectores e regiões.",
+        "Com 5 000 registos recolhidos em todo o mundo, o dataset oferece pistas sobre modalidade de trabalho (remoto, híbrido, presencial), níveis de stress, acesso a recursos de saúde mental e satisfação laboral. Foi concebido para apoiar investigadores, equipas de RH e empresas a avaliar a influência crescente do trabalho remoto na produtividade e no bem-estar.",
+      ],
+      topics: [
+        {
+          title: "Escopo em resumo",
+          description:
+            "As respostas abrangem profissionais remotos, híbridos e presenciais, em várias indústrias e continentes, mantendo o foco em como o contexto molda os indicadores de bem-estar.",
+        },
+        {
+          title: "Como os dados foram recolhidos",
+          description:
+            "O CSV compila um inquérito global e anónimo onde colaboradores reportaram stress, carga de trabalho, acesso a apoio e satisfação através de perguntas estruturadas.",
+        },
+        {
+          title: "Controlos de qualidade",
+          description:
+            "Entradas sem campos críticos foram removidas e identificadores repetidos foram eliminados, deixando uma tabela consistente pronta para filtros e análise visual.",
+        },
+      ],
+    },
     quantitativeHeading: "Variáveis quantitativas",
     qualitativeHeading: "Variáveis qualitativas",
     quantitative: [
