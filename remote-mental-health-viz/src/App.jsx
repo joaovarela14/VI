@@ -36,7 +36,6 @@ function App() {
   const [activeTab, setActiveTab] = useState('persona-model')
   const [theme, setTheme] = useState('light')
   const [language, setLanguage] = useState('en')
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
   const copy = translations[language]
   const navigationTabs = useMemo(() => copy.navigation?.tabs ?? [], [copy.navigation])
@@ -44,9 +43,6 @@ function App() {
   const heroTitle = activeTabConfig?.label ?? copy.hero.title
   const heroSubtitle = activeTabConfig?.description ?? ''
   const hasNavigation = navigationTabs.length > 0
-  const sidebarToggleLabel = isSidebarOpen
-    ? copy.navigation?.toggle?.close ?? 'Hide navigation'
-    : copy.navigation?.toggle?.open ?? 'Show navigation'
   const navigationId = 'primary-navigation'
 
   useEffect(() => {
@@ -148,18 +144,8 @@ function App() {
     setLanguage((current) => (current === 'en' ? 'pt' : 'en'))
   }
 
-  const toggleSidebar = () => {
-    if (!hasNavigation) {
-      return
-    }
-    setIsSidebarOpen((current) => !current)
-  }
-
   const handleTabChange = (tabId) => {
     setActiveTab(tabId)
-    if (typeof window !== 'undefined' && window.innerWidth <= 1024) {
-      setIsSidebarOpen(false)
-    }
   }
 
   const renderContent = () => {
@@ -255,10 +241,15 @@ function App() {
   return (
     <div className="page">
       <div className="app-shell">
-        {hasNavigation && isSidebarOpen && (
+        {hasNavigation && (
           <aside className="sidebar" aria-label={copy.navigation?.label}>
             <div className="sidebar__inner">
-              {copy.navigation?.label && <p className="sidebar__eyebrow">{copy.navigation.label}</p>}
+              {copy.navigation?.label && (
+                <div className="sidebar__brand">
+                  <img src="/logo.png" alt="" className="sidebar__brand-icon" />
+                  <p className="sidebar__eyebrow">{copy.navigation.label}</p>
+                </div>
+              )}
               {copy.navigation?.subLabel && <p className="sidebar__hint">{copy.navigation.subLabel}</p>}
               <nav id={navigationId} className="sidebar-nav" role="tablist" aria-label={copy.navigation?.label}>
                 {navigationTabs.map((tab) => (
@@ -288,20 +279,6 @@ function App() {
                   {heroSubtitle && <p className="hero__lead">{heroSubtitle}</p>}
                 </div>
                 <div className="hero__controls" role="group" aria-label={controlsLabel}>
-                  {hasNavigation && (
-                    <button
-                      type="button"
-                      className="theme-toggle sidebar-toggle"
-                      onClick={toggleSidebar}
-                      aria-pressed={isSidebarOpen}
-                      aria-controls={navigationId}
-                    >
-                      <span className="sidebar-toggle__icon" aria-hidden="true">
-                        {isSidebarOpen ? '⏴' : '⏵'}
-                      </span>
-                      <span className="theme-toggle__label">{sidebarToggleLabel}</span>
-                    </button>
-                  )}
                   <button
                     type="button"
                     className="theme-toggle"
