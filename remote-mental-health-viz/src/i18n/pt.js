@@ -169,8 +169,11 @@ const pt = {
     ],
   },
   navigation: {
-    label: "Separadores principais",
-    subLabel: "Subseções do separador ativo",
+    label: "MIND@WORK",
+    toggle: {
+      open: "Mostrar navegação",
+      close: "Esconder navegação",
+    },
     tabs: [
       {
         id: "persona-model",

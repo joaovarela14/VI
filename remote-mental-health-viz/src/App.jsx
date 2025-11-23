@@ -36,10 +36,18 @@ function App() {
   const [activeTab, setActiveTab] = useState('persona-model')
   const [theme, setTheme] = useState('light')
   const [language, setLanguage] = useState('en')
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
   const copy = translations[language]
   const navigationTabs = useMemo(() => copy.navigation?.tabs ?? [], [copy.navigation])
   const activeTabConfig = useMemo(() => navigationTabs.find((tab) => tab.id === activeTab), [navigationTabs, activeTab])
+  const heroTitle = activeTabConfig?.label ?? copy.hero.title
+  const heroSubtitle = activeTabConfig?.description ?? ''
+  const hasNavigation = navigationTabs.length > 0
+  const sidebarToggleLabel = isSidebarOpen
+    ? copy.navigation?.toggle?.close ?? 'Hide navigation'
+    : copy.navigation?.toggle?.open ?? 'Show navigation'
+  const navigationId = 'primary-navigation'
 
   useEffect(() => {
     const classList = document.body.classList
@@ -140,13 +148,26 @@ function App() {
     setLanguage((current) => (current === 'en' ? 'pt' : 'en'))
   }
 
+  const toggleSidebar = () => {
+    if (!hasNavigation) {
+      return
+    }
+    setIsSidebarOpen((current) => !current)
+  }
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId)
+    if (typeof window !== 'undefined' && window.innerWidth <= 1024) {
+      setIsSidebarOpen(false)
+    }
+  }
+
   const renderContent = () => {
     switch (activeTab) {
       case 'workload-dashboard':
         return (
           <>
             <section className="section section--wide">
-              <h2>{activeTabConfig?.label ?? copy.overview.heading}</h2>
               <div className="chart-grid chart-grid--single">
                 <DatasetOverviewChart data={data} theme={theme} copy={copy.datasetOverviewChart} common={copy.common} />
               </div>
@@ -198,12 +219,8 @@ function App() {
       case 'workspace-influence': {
         const meetingCopy = copy.deepDive?.meeting
         const isolationCopy = copy.deepDive?.socialIsolation
-        const heading = activeTabConfig?.label ?? meetingCopy?.heading
-        const intro = activeTabConfig?.description ?? meetingCopy?.intro ?? isolationCopy?.intro
         return (
           <section className="section section--wide">
-            {heading && <h2>{heading}</h2>}
-            {intro && <p className="section__intro">{intro}</p>}
             <div className="chart-grid">
               <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} showHeader={false} />
               <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} showHeader={false} />
@@ -212,13 +229,8 @@ function App() {
         )
       }
       case 'mental-health': {
-        const heading = activeTabConfig?.label ?? copy.workLifeBalanceLine?.title
-        const intro =
-          activeTabConfig?.description ?? copy.deepDive?.workLife?.intro ?? copy.deepDive?.sleepStress?.intro
         return (
           <section className="section section--wide">
-            {heading && <h2>{heading}</h2>}
-            {intro && <p className="section__intro">{intro}</p>}
             <div className="chart-grid">
               <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} showHeader={false} />
               <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} showHeader={false} />
@@ -227,10 +239,8 @@ function App() {
         )
       }
       case 'persona-model': {
-        const intro = activeTabConfig?.description
         return (
           <section className="section section--wide">
-            {intro && <p className="section__intro">{intro}</p>}
             <StressPersonaHero data={data} copy={copy.stressLab} theme={theme} />
           </section>
         )
@@ -244,68 +254,89 @@ function App() {
 
   return (
     <div className="page">
-      <header className="hero">
-        <div className="hero__content">
-          <div className="hero__top-bar">
-            <div>
-              {copy.hero.eyebrow && <p className="hero__eyebrow">{copy.hero.eyebrow}</p>}
-              {copy.hero.title && <h1>{copy.hero.title}</h1>}
-            </div>
-            <div className="hero__controls" role="group" aria-label={controlsLabel}>
-              <button
-                type="button"
-                className="theme-toggle"
-                onClick={toggleTheme}
-                aria-pressed={theme === 'dark'}
-                aria-label={copy.hero.buttons.theme.aria}
-              >
-                <span className="theme-toggle__icon" aria-hidden="true">
-                  {theme === 'dark' ? '🌙' : '☀️'}
-                </span>
-                <span className="theme-toggle__label">{themeButtonLabel}</span>
-              </button>
-              <button
-                type="button"
-                className="theme-toggle"
-                onClick={toggleLanguage}
-                aria-pressed={language === 'pt'}
-                aria-label={copy.hero.buttons.language.aria}
-              >
-                <span className="theme-toggle__icon" aria-hidden="true">
-                  🌐
-                </span>
-                <span className="theme-toggle__label">{languageButtonLabel}</span>
-              </button>
-            </div>
-          </div>
-
-          {navigationTabs.length > 0 && (
-            <div className="hero__navigation">
-              <nav className="hero__tabs hero__tabs--primary" role="tablist" aria-label={copy.navigation?.label}>
+      <div className="app-shell">
+        {hasNavigation && isSidebarOpen && (
+          <aside className="sidebar" aria-label={copy.navigation?.label}>
+            <div className="sidebar__inner">
+              {copy.navigation?.label && <p className="sidebar__eyebrow">{copy.navigation.label}</p>}
+              {copy.navigation?.subLabel && <p className="sidebar__hint">{copy.navigation.subLabel}</p>}
+              <nav id={navigationId} className="sidebar-nav" role="tablist" aria-label={copy.navigation?.label}>
                 {navigationTabs.map((tab) => (
                   <button
                     key={tab.id}
                     role="tab"
                     type="button"
-                    onClick={() => setActiveTab(tab.id)}
+                    onClick={() => handleTabChange(tab.id)}
                     aria-selected={activeTab === tab.id}
-                    className={`hero__tab hero__tab--primary ${activeTab === tab.id ? 'hero__tab--active' : ''}`}
+                    className={`sidebar-nav__tab ${activeTab === tab.id ? 'sidebar-nav__tab--active' : ''}`}
                   >
-                    <span className="hero__tab-label">{tab.label}</span>
-                    <span className="hero__tab-description">{tab.description}</span>
+                    <span className="sidebar-nav__label">{tab.label}</span>
                   </button>
                 ))}
               </nav>
             </div>
-          )}
+          </aside>
+        )}
+
+        <div className="app-shell__content">
+          <header className="hero">
+            <div className="hero__content">
+              <div className="hero__top-bar">
+                <div>
+                  {copy.hero.eyebrow && <p className="hero__eyebrow">{copy.hero.eyebrow}</p>}
+                  {heroTitle && <h1>{heroTitle}</h1>}
+                  {heroSubtitle && <p className="hero__lead">{heroSubtitle}</p>}
+                </div>
+                <div className="hero__controls" role="group" aria-label={controlsLabel}>
+                  {hasNavigation && (
+                    <button
+                      type="button"
+                      className="theme-toggle sidebar-toggle"
+                      onClick={toggleSidebar}
+                      aria-pressed={isSidebarOpen}
+                      aria-controls={navigationId}
+                    >
+                      <span className="sidebar-toggle__icon" aria-hidden="true">
+                        {isSidebarOpen ? '⏴' : '⏵'}
+                      </span>
+                      <span className="theme-toggle__label">{sidebarToggleLabel}</span>
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="theme-toggle"
+                    onClick={toggleTheme}
+                    aria-pressed={theme === 'dark'}
+                    aria-label={copy.hero.buttons.theme.aria}
+                  >
+                    <span className="theme-toggle__icon" aria-hidden="true">
+                      {theme === 'dark' ? '🌙' : '☀️'}
+                    </span>
+                    <span className="theme-toggle__label">{themeButtonLabel}</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="theme-toggle"
+                    onClick={toggleLanguage}
+                    aria-pressed={language === 'pt'}
+                    aria-label={copy.hero.buttons.language.aria}
+                  >
+                    <span className="theme-toggle__icon" aria-hidden="true">
+                      🌐
+                    </span>
+                    <span className="theme-toggle__label">{languageButtonLabel}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </header>
+          <main>{mainContent}</main>
+
+          <footer className="page-footer">
+            <p>{copy.footer}</p>
+          </footer>
         </div>
-      </header>
-
-      <main>{mainContent}</main>
-
-      <footer className="page-footer">
-        <p>{copy.footer}</p>
-      </footer>
+      </div>
 
       {loading && (
         <div className="loading-overlay" role="status" aria-live="polite">
