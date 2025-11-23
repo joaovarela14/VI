@@ -10,6 +10,7 @@ const ACCESS_OPTIONS = {
 const WORK_LOCATIONS = ['Remote', 'Hybrid', 'Onsite']
 
 const SocialIsolationBarChart = ({ data, theme, copy, common, showHeader = true }) => {
+  const containerRef = useRef(null)
   const svgRef = useRef(null)
   const [filters, setFilters] = useState({
     region: 'all',
@@ -38,6 +39,17 @@ const SocialIsolationBarChart = ({ data, theme, copy, common, showHeader = true 
   }, [data, filters.access, filters.gender])
 
   useEffect(() => {
+    const containerNode = containerRef.current
+    const tooltip = containerNode
+      ? d3
+          .select(containerNode)
+          .selectAll('.chart-tooltip')
+          .data([null])
+          .join('div')
+          .attr('class', 'chart-tooltip')
+          .style('opacity', 0)
+      : null
+
     const svg = d3.select(svgRef.current)
     svg.selectAll('*').remove()
 
@@ -80,6 +92,9 @@ const SocialIsolationBarChart = ({ data, theme, copy, common, showHeader = true 
       .filter((item) => item.hasData)
 
     if (!aggregated.length) {
+      if (tooltip) {
+        tooltip.style('opacity', 0)
+      }
       svg
         .append('text')
         .attr('x', width / 2)
@@ -88,6 +103,49 @@ const SocialIsolationBarChart = ({ data, theme, copy, common, showHeader = true 
         .attr('fill', axisColor)
         .text(copy.empty)
       return
+    }
+
+    if (!containerNode || !tooltip) {
+      return
+    }
+
+    const hideTooltip = () => {
+      tooltip.style('opacity', 0)
+    }
+
+    const workLocationLabels = common?.workLocations ?? {}
+
+    const showTooltip = (event, item) => {
+      const bounds = containerNode.getBoundingClientRect()
+      const tooltipContent =
+        copy
+          .tooltip({
+            region: item.region,
+            location: workLocationLabels[item.location] ?? item.location,
+            average: item.average,
+            count: item.count,
+          })
+          ?.replace(/\n/g, '<br />') ?? ''
+
+      tooltip.style('opacity', 1).html(tooltipContent)
+
+      const tooltipNode = tooltip.node()
+      const tooltipWidth = tooltipNode?.offsetWidth ?? 0
+      const tooltipHeight = tooltipNode?.offsetHeight ?? 0
+
+      let left = event.clientX - bounds.left + 16
+      let top = event.clientY - bounds.top + 16
+
+      if (left + tooltipWidth > bounds.width - 8) {
+        left = bounds.width - tooltipWidth - 8
+      }
+      if (top + tooltipHeight > bounds.height - 8) {
+        top = event.clientY - bounds.top - tooltipHeight - 16
+      }
+      if (left < 8) left = 8
+      if (top < 8) top = 8
+
+      tooltip.style('left', `${left}px`).style('top', `${top}px`)
     }
 
     const xScale = d3
@@ -154,19 +212,12 @@ const SocialIsolationBarChart = ({ data, theme, copy, common, showHeader = true 
       .attr('fill', (item) => colorScale(item.location))
 
     const valueFormatter = d3.format('.1f')
-    const workLocationLabels = common?.workLocations ?? {}
 
     bars
       .filter((item) => item.count > 0)
-      .append('title')
-      .text((item) =>
-        copy.tooltip({
-          region: item.region,
-          location: workLocationLabels[item.location] ?? item.location,
-          average: item.average,
-          count: item.count,
-        })
-      )
+      .on('mouseenter', showTooltip)
+      .on('mousemove', showTooltip)
+      .on('mouseleave', hideTooltip)
 
     regionGroups
       .selectAll('.bar-label')
@@ -232,7 +283,7 @@ const SocialIsolationBarChart = ({ data, theme, copy, common, showHeader = true 
   }
 
   return (
-    <div className="chart-card chart-card--wide chart-card--tall">
+    <div ref={containerRef} className="chart-card chart-card--wide chart-card--tall">
       <div className="chart-header">
         <div className="chart-header__top">
           {showHeader && (
