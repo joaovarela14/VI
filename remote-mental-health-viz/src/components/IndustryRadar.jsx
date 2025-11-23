@@ -35,7 +35,6 @@ const IndustryRadar = ({ data, theme, copy, common, showHeader = true }) => {
       (d) => d.jobRole
     )
       .sort((a, b) => d3.descending(a[1], b[1]))
-      .slice(0, 6)
       .map(([role]) => role)
 
     return counts
