@@ -121,7 +121,8 @@ const pt = {
     },
     panel: {
       title: "Personaliza a amostra",
-      subtitle: "Os sliders procuram perfis semelhantes. Observa como remoto e presencial se afastam quando alteras os hábitos da persona.",
+      subtitle:
+        "Os sliders procuram perfis semelhantes. Observa como remoto e presencial se afastam quando alteras os hábitos da persona.",
       reset: "Repor cenário",
       hours: {
         label: "Horas por semana",
@@ -178,7 +179,8 @@ const pt = {
       {
         id: "persona-model",
         label: "Modelo da persona",
-        description: "Explora apenas o laboratório da persona de stress para comparar ambientes.",
+        description:
+          "Explora apenas o laboratório da persona de stress para comparar ambientes.",
       },
       {
         id: "workload-dashboard",
@@ -188,17 +190,20 @@ const pt = {
       {
         id: "workspace-influence",
         label: "Work Space Influence",
-        description: "Mistura o gráfico de bolhas com o painel de isolamento social por grupo.",
+        description:
+          "Mistura o gráfico de bolhas com o painel de isolamento social por grupo.",
       },
       {
         id: "mental-health",
         label: "Saúde mental",
-        description: "Acesso a apoio psicológico e mapa de calor de stress versus sono.",
+        description:
+          "Acesso a apoio psicológico e mapa de calor de stress versus sono.",
       },
       {
         id: "documentation",
         label: "Documentação",
-        description: "Notas do conjunto de dados, metodologia e mapa de variáveis.",
+        description:
+          "Notas do conjunto de dados, metodologia e mapa de variáveis.",
       },
     ],
   },
@@ -343,14 +348,18 @@ const pt = {
       overviewTitle: "Conjunto filtrado",
       overviewSubtitle: "Métricas para todas as pessoas nos filtros activos.",
       regionTitle: (region) => `Visão de ${region}`,
-      regionSubtitle: "Métricas recalculadas apenas para a região seleccionada.",
+      regionSubtitle:
+        "Métricas recalculadas apenas para a região seleccionada.",
       employees: "Colaboradores",
       productivity: "Alteração na produtividade",
       satisfaction: "Satisfação com o trabalho remoto",
       physicalActivity: "Actividade física",
-      productivityUnavailable: "Sem respostas sobre produtividade para estes filtros.",
-      satisfactionUnavailable: "Sem respostas de satisfação para estes filtros.",
-      activityUnavailable: "Sem respostas de actividade física para estes filtros.",
+      productivityUnavailable:
+        "Sem respostas sobre produtividade para estes filtros.",
+      satisfactionUnavailable:
+        "Sem respostas de satisfação para estes filtros.",
+      activityUnavailable:
+        "Sem respostas de actividade física para estes filtros.",
       productivityLabels: {
         Increase: "Aumento",
         Decrease: "Queda",
@@ -406,10 +415,9 @@ const pt = {
     filters: {
       region: "Filtrar por continente",
       gender: "Filtrar por género",
-      access: "Filtrar por acesso a apoio",
+      access: "Filtrar acesso a apoio",
       allRegions: "Todos os continentes",
       allGenders: "Todos os géneros",
-      allAccess: "Todos os níveis de acesso",
       accessYes: "Com apoio",
       accessNo: "Sem apoio",
     },
@@ -480,9 +488,9 @@ const pt = {
     title: "Ritmo de reuniões, stress e carga horária",
     description:
       "A cor indica a modalidade de trabalho, o tamanho do círculo reflete o stress e o eixo vertical mostra o número de reuniões virtuais por semana.",
-    filterLabel: "Filtrar por localização de trabalho",
-    industryFilterLabel: "Filtrar por área de trabalho",
-    sampleFilterLabel: "Limitar amostra aleatória",
+    filterLabel: "Localização de trabalho",
+    industryFilterLabel: "Filtrar área de trabalho",
+    sampleFilterLabel: "Limite amostra",
     legendHeading: "Modalidade de trabalho",
     sizeLegendHeading: "Nível de stress",
     xAxisLabel: "Horas trabalhadas por semana",
@@ -497,14 +505,14 @@ const pt = {
       All: "Todas as áreas",
     },
     sampleFilterOptions: {
-      All: "Mostrar todos os pontos",
-      200: "Amostra aleatória (até 200)",
-      500: "Amostra aleatória (até 500)",
-      1000: "Amostra aleatória (até 1 000)",
-      2000: "Amostra aleatória (até 2 000)",
-      5000: "Amostra aleatória (até 5 000)",
+      All: "Show all points",
+      200: "200",
+      500: "500",
+      1000: "1000",
+      2000: "2000",
     },
-    sampleFilterUnavailable: "Sem respostas suficientes para este tamanho de amostra",
+    sampleFilterUnavailable:
+      "Sem respostas suficientes para este tamanho de amostra",
     empty: "Sem respostas com informação de reuniões e stress para apresentar.",
     tooltip: ({
       employeeId,
@@ -650,7 +658,8 @@ const pt = {
         id: "balance",
         name: "Work_Life_Balance_Rating",
         type: "Integer",
-        description: "Classificação autorrelatada de 1 (fraco) a 5 (excelente).",
+        description:
+          "Classificação autorrelatada de 1 (fraco) a 5 (excelente).",
       },
       {
         id: "isolation",

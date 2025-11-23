@@ -12,7 +12,7 @@ const SocialIsolationBarChart = ({ data, theme, copy, showHeader = true }) => {
   const [filters, setFilters] = useState({
     region: 'all',
     gender: 'all',
-    access: ACCESS_OPTIONS.all,
+    access: ACCESS_OPTIONS.yes,
   })
 
   const regionOptions = useMemo(() => {
@@ -30,9 +30,7 @@ const SocialIsolationBarChart = ({ data, theme, copy, showHeader = true }) => {
 
     return data.filter((item) => {
       const matchesGender = filters.gender === 'all' || item.gender === filters.gender
-      const matchesAccess =
-        filters.access === ACCESS_OPTIONS.all ||
-        (filters.access === ACCESS_OPTIONS.yes ? item.hasMentalHealthResources : !item.hasMentalHealthResources)
+      const matchesAccess = filters.access === ACCESS_OPTIONS.yes ? item.hasMentalHealthResources : !item.hasMentalHealthResources
       return matchesGender && matchesAccess
     })
   }, [data, filters.access, filters.gender])
@@ -203,7 +201,6 @@ const SocialIsolationBarChart = ({ data, theme, copy, showHeader = true }) => {
             <label className="chart-controls chart-filter-group">
               <span className="chart-filter-label">{copy.filters.access}</span>
               <select className="chart-select" value={filters.access} onChange={handleFilterChange('access')}>
-                <option value={ACCESS_OPTIONS.all}>{copy.filters.allAccess}</option>
                 <option value={ACCESS_OPTIONS.yes}>{copy.filters.accessYes}</option>
                 <option value={ACCESS_OPTIONS.no}>{copy.filters.accessNo}</option>
               </select>
