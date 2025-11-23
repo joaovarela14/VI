@@ -298,6 +298,7 @@ const pt = {
   },
   datasetOverviewChart: {
     title: "Níveis de stress por região",
+    conditionTitle: "Condições de saúde mental por região",
     description:
       "Começa com o panorama geral de como os níveis de stress se distribuem em cada região. Usa os dropdowns para filtrar o dataset e clica numa barra para mostrar as estatísticas contextuais ao lado.",
     ariaLabel:
@@ -315,8 +316,13 @@ const pt = {
       allRoles: "Todas as funções",
       allLocations: "Todas as localizações",
     },
-    tooltip: ({ region, stressLabel, count, percentage }) =>
-      `${region} — ${stressLabel}: ${formatCount(
+    modeLabel: "Métrica empilhada",
+    modeOptions: {
+      stress: "Nível de stress",
+      condition: "Condição de saúde mental",
+    },
+    tooltip: ({ region, categoryLabel, count, percentage }) =>
+      `${region} — ${categoryLabel}: ${formatCount(
         count
       )} pessoas (${percentFormatter.format(
         Math.min(Math.max(percentage ?? 0, 0), 1)
@@ -333,12 +339,22 @@ const pt = {
       regionTitle: (region) => `Visão de ${region}`,
       regionSubtitle: "Métricas recalculadas apenas para a região seleccionada.",
       employees: "Colaboradores",
-      avgIsolation: "Média de isolamento social",
-      avgHours: "Horas / semana",
-      sleepQuality: "Qualidade do sono",
-      resources: "Acesso a recursos de saúde mental",
-      noData: "Sem dados",
-      sleepUnavailable: "Não existem respostas sobre sono para esta região.",
+      productivity: "Alteração na produtividade",
+      satisfaction: "Satisfação com o trabalho remoto",
+      physicalActivity: "Actividade física",
+      productivityUnavailable: "Sem respostas sobre produtividade para estes filtros.",
+      satisfactionUnavailable: "Sem respostas de satisfação para estes filtros.",
+      activityUnavailable: "Sem respostas de actividade física para estes filtros.",
+      productivityLabels: {
+        Increase: "Aumento",
+        Decrease: "Queda",
+        "No Change": "Sem alteração",
+      },
+      activityLabels: {
+        Daily: "Diária",
+        Weekly: "Semanal",
+        None: "Sem actividade",
+      },
       unknown: "Desconhecido",
     },
   },

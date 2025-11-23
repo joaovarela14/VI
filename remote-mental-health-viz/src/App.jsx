@@ -147,18 +147,8 @@ function App() {
           <>
             <section className="section section--wide">
               <h2>{activeTabConfig?.label ?? copy.overview.heading}</h2>
-              {activeTabConfig?.description && <p className="section__intro">{activeTabConfig.description}</p>}
-              <OverviewMetrics metrics={copy.overview.metrics} stats={stats} />
               <div className="chart-grid chart-grid--single">
                 <DatasetOverviewChart data={data} theme={theme} copy={copy.datasetOverviewChart} common={copy.common} />
-              </div>
-            </section>
-
-            <section className="section section--wide">
-              <h2>{copy.hoursVsSleep.title}</h2>
-              <p className="section__intro">{copy.hoursVsSleep.description}</p>
-              <div className="chart-grid chart-grid--single">
-                <HoursVsSleepScatter data={data} theme={theme} copy={copy.hoursVsSleep} common={copy.common} />
               </div>
             </section>
           </>

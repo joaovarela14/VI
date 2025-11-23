@@ -292,6 +292,7 @@ const en = {
   },
   datasetOverviewChart: {
     title: 'Stress levels by region',
+    conditionTitle: 'Mental health conditions by region',
     description:
       'Start with the broad picture of how stress levels stack up in each region. Use the dropdowns to filter the dataset and click a region to surface the contextual stats on the side.',
     ariaLabel: 'Interactive stacked bar chart showing stress distribution by region with filters',
@@ -307,8 +308,13 @@ const en = {
       allRoles: 'All roles',
       allLocations: 'All locations',
     },
-    tooltip: ({ region, stressLabel, count, percentage }) =>
-      `${region} — ${stressLabel}: ${formatCount(count)} employees (${percentFormatter.format(Math.min(Math.max(percentage ?? 0, 0), 1))})`,
+    modeLabel: 'Stacked metric',
+    modeOptions: {
+      stress: 'Stress level',
+      condition: 'Mental health condition',
+    },
+    tooltip: ({ region, categoryLabel, count, percentage }) =>
+      `${region} — ${categoryLabel}: ${formatCount(count)} employees (${percentFormatter.format(Math.min(Math.max(percentage ?? 0, 0), 1))})`,
     formatters: {
       count: (value) => formatCount(value ?? 0),
       decimal: (value) => decimalFormatter.format(value ?? 0),
@@ -320,12 +326,22 @@ const en = {
       regionTitle: (region) => `${region} snapshot`,
       regionSubtitle: 'Metrics recalculated for the selected region.',
       employees: 'Employees',
-      avgIsolation: 'Avg. social isolation',
-      avgHours: 'Avg. hours / week',
-      sleepQuality: 'Sleep quality',
-      resources: 'Access to mental health resources',
-      noData: 'No data',
-      sleepUnavailable: 'No sleep quality responses are available for this region.',
+      productivity: 'Productivity change',
+      satisfaction: 'Remote work satisfaction',
+      physicalActivity: 'Physical activity',
+      productivityUnavailable: 'No productivity responses are available for the selected filters.',
+      satisfactionUnavailable: 'No satisfaction responses are available for the selected filters.',
+      activityUnavailable: 'No physical activity responses are available for the selected filters.',
+      productivityLabels: {
+        Increase: 'Increase',
+        Decrease: 'Decrease',
+        'No Change': 'No change',
+      },
+      activityLabels: {
+        Daily: 'Daily',
+        Weekly: 'Weekly',
+        None: 'No activity',
+      },
       unknown: 'Unknown',
     },
   },

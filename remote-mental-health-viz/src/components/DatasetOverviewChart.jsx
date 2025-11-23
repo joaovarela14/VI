@@ -2,7 +2,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import * as d3 from 'd3'
 
 const stressLevels = ['Low', 'Medium', 'High']
+const productivityOrder = ['Increase', 'No Change', 'Decrease']
+const satisfactionOrder = ['satisfied', 'neutral', 'unsatisfied']
+const activityOrder = ['Daily', 'Weekly', 'None']
 const ALL = '__all__'
+
+const getOrderIndex = (order, value) => {
+  const index = order.indexOf(value)
+  return index === -1 ? order.length : index
+}
 
 const DatasetOverviewChart = ({ data, theme, copy, common }) => {
   const svgRef = useRef(null)
@@ -12,9 +20,14 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
   const [roleFilter, setRoleFilter] = useState(ALL)
   const [locationFilter, setLocationFilter] = useState(ALL)
   const [selectedRegion, setSelectedRegion] = useState(null)
+  const [metricMode, setMetricMode] = useState('stress')
 
   const stressLabels = copy?.legend ?? common?.stressLevels ?? {}
-  const sleepLabels = common?.sleepQuality ?? {}
+  const satisfactionLegend = copy?.satisfactionPie?.legend ?? {}
+  const satisfactionMap = common?.satisfactionMap ?? {}
+  const activityLabels = copy?.details?.activityLabels ?? {}
+  const productivityLabels = copy?.details?.productivityLabels ?? {}
+  const conditionLabels = common?.conditions ?? {}
 
   const industryOptions = useMemo(
     () => Array.from(new Set(data.map((d) => d.industry))).filter(Boolean).sort((a, b) => a.localeCompare(b)),
@@ -28,6 +41,11 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
 
   const locationOptions = useMemo(
     () => Array.from(new Set(data.map((d) => d.workLocation))).filter(Boolean).sort((a, b) => a.localeCompare(b)),
+    [data]
+  )
+
+  const conditionOrder = useMemo(
+    () => Array.from(new Set(data.map((d) => d.mentalHealthCondition))).filter(Boolean).sort((a, b) => a.localeCompare(b)),
     [data]
   )
 
@@ -48,6 +66,12 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
       setLocationFilter(ALL)
     }
   }, [locationFilter, locationOptions])
+
+  useEffect(() => {
+    if (metricMode === 'condition' && conditionOrder.length === 0) {
+      setMetricMode('stress')
+    }
+  }, [conditionOrder, metricMode])
 
   const filteredData = useMemo(
     () =>
@@ -84,23 +108,28 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
     return groups
   }, [filteredData])
 
+  const activeCategories = metricMode === 'stress' ? stressLevels : conditionOrder
+  const metricKey = metricMode === 'stress' ? 'stressLevel' : 'mentalHealthCondition'
+  const metricLabels = metricMode === 'stress' ? stressLabels : conditionLabels
+
   const aggregated = useMemo(() => {
     return regionOrder.map((region) => {
       const rows = regionGroups.get(region) ?? []
 
-      const counts = rows.reduce(
-        (acc, row) => {
-          if (stressLevels.includes(row.stressLevel)) {
-            acc[row.stressLevel] += 1
-          }
+      const counts = activeCategories.reduce(
+        (acc, category) => {
+          acc[category] = 0
           return acc
         },
-        {
-          Low: 0,
-          Medium: 0,
-          High: 0,
-        }
+        {}
       )
+
+      rows.forEach((row) => {
+        const value = row[metricKey]
+        if (value != null && counts[value] != null) {
+          counts[value] += 1
+        }
+      })
 
       return {
         region,
@@ -108,7 +137,7 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
         ...counts,
       }
     })
-  }, [regionGroups, regionOrder])
+  }, [activeCategories, metricKey, regionGroups, regionOrder])
 
   useEffect(() => {
     if (selectedRegion && !aggregated.some((item) => item.region === selectedRegion)) {
@@ -164,10 +193,20 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
     const yMax = d3.max(aggregated, (d) => d.total) ?? 0
     const yScale = d3.scaleLinear().domain([0, yMax]).range([innerHeight, 0]).nice()
 
-    const stack = d3.stack().keys(stressLevels)
+    const stack = d3.stack().keys(activeCategories)
     const series = stack(aggregated)
 
-    const colorScale = d3.scaleOrdinal().domain(stressLevels).range(['#34d399', '#fbbf24', '#f87171'])
+    const colorRange =
+      metricMode === 'stress'
+        ? ['#34d399', '#fbbf24', '#f87171']
+        : activeCategories.map((_, index) => {
+            const palette = d3.schemeTableau10 ?? []
+            if (!palette.length) {
+              return `hsl(${(index * 47) % 360} 70% 55%)`
+            }
+            return palette[index % palette.length]
+          })
+    const colorScale = d3.scaleOrdinal().domain(activeCategories).range(colorRange)
     const chartGroup = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`)
 
     chartGroup
@@ -222,7 +261,7 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
       const percentage = total > 0 ? count / total : 0
       const content = copy.tooltip({
         region: d.data.region,
-        stressLabel: stressLabels[level] ?? level,
+        categoryLabel: metricLabels[level] ?? level,
         count,
         percentage,
       })
@@ -263,7 +302,7 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
 
     legend
       .selectAll('g')
-      .data(stressLevels)
+      .data(activeCategories)
       .join('g')
       .attr('transform', (_, index) => `translate(${index * 150}, 0)`)
       .call((legendGroup) => {
@@ -280,9 +319,9 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
           .attr('y', 10)
           .attr('fill', legendColor)
           .attr('font-size', 12)
-          .text((d) => stressLabels[d] ?? d)
+          .text((d) => metricLabels[d] ?? d)
       })
-  }, [aggregated, copy, handleRegionClick, selectedRegion, stressLabels, theme])
+  }, [activeCategories, aggregated, copy, handleRegionClick, metricLabels, metricMode, selectedRegion, theme])
 
   const selectedRows = useMemo(() => {
     if (selectedRegion && regionGroups.has(selectedRegion)) {
@@ -293,139 +332,184 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
 
   const totalSelected = selectedRows.length
 
-  const stressSummary = useMemo(
-    () =>
-      stressLevels.map((level) => {
-        const count = selectedRows.filter((row) => row.stressLevel === level).length
-        const percentage = totalSelected > 0 ? count / totalSelected : 0
-        return {
-          id: level,
-          label: stressLabels[level] ?? level,
-          count,
-          percentage,
-        }
-      }),
-    [selectedRows, stressLabels, totalSelected]
-  )
-
-  const isolationAverage = useMemo(() => {
-    const values = selectedRows.map((row) => row.socialIsolationRating).filter((value) => Number.isFinite(value))
-    if (!values.length) {
-      return null
-    }
-    return d3.mean(values) ?? null
-  }, [selectedRows])
-
-  const hoursAverage = useMemo(() => {
-    const values = selectedRows.map((row) => row.hoursWorked).filter((value) => Number.isFinite(value))
-    if (!values.length) {
-      return null
-    }
-    return d3.mean(values) ?? null
-  }, [selectedRows])
-
-  const resourceStats = useMemo(() => {
-    if (!totalSelected) {
-      return null
-    }
-    const withAccess = selectedRows.filter((row) => row.hasMentalHealthResources).length
-    return {
-      count: withAccess,
-      percentage: withAccess / totalSelected,
-    }
-  }, [selectedRows, totalSelected])
-
-  const sleepDistribution = useMemo(() => {
+  const productivityDistribution = useMemo(() => {
     if (!totalSelected) {
       return []
     }
-    const rows = selectedRows.filter((row) => row.sleepQuality)
+    const rows = selectedRows.filter((row) => row.productivityChange)
     const counts = d3.rollups(
       rows,
       (values) => values.length,
-      (row) => row.sleepQuality
+      (row) => row.productivityChange
     )
     return counts
-      .sort((a, b) => d3.descending(a[1], b[1]))
-      .map(([quality, count]) => ({
-        id: quality ?? 'unknown',
-        label: sleepLabels[quality] ?? quality ?? copy.details.unknown,
+      .sort((a, b) => {
+        const aIndex = getOrderIndex(productivityOrder, a[0])
+        const bIndex = getOrderIndex(productivityOrder, b[0])
+        if (aIndex !== bIndex) {
+          return aIndex - bIndex
+        }
+        return d3.descending(a[1], b[1])
+      })
+      .map(([value, count]) => ({
+        id: value ?? 'unknown',
+        label: productivityLabels[value] ?? value ?? copy.details.unknown,
         count,
         percentage: totalSelected > 0 ? count / totalSelected : 0,
       }))
-  }, [copy.details?.unknown, selectedRows, sleepLabels, totalSelected])
+  }, [copy.details?.unknown, productivityLabels, selectedRows, totalSelected])
+
+  const satisfactionDistribution = useMemo(() => {
+    if (!totalSelected) {
+      return []
+    }
+    const rows = selectedRows.filter((row) => row.satisfaction)
+    const counts = d3.rollups(
+      rows,
+      (values) => values.length,
+      (row) => {
+        const normalized = (row.satisfaction ?? '').toLowerCase()
+        return satisfactionMap[normalized] ?? row.satisfaction ?? copy.details.unknown
+      }
+    )
+    return counts
+      .sort((a, b) => {
+        const aValue = (a[0] ?? '').toLowerCase()
+        const bValue = (b[0] ?? '').toLowerCase()
+        const aIndex = getOrderIndex(satisfactionOrder, aValue)
+        const bIndex = getOrderIndex(satisfactionOrder, bValue)
+        if (aIndex !== bIndex) {
+          return aIndex - bIndex
+        }
+        return d3.descending(a[1], b[1])
+      })
+      .map(([value, count]) => ({
+        id: value ?? 'unknown',
+        label: satisfactionLegend[value] ?? value ?? copy.details.unknown,
+        count,
+        percentage: totalSelected > 0 ? count / totalSelected : 0,
+      }))
+  }, [copy.details?.unknown, satisfactionLegend, satisfactionMap, selectedRows, totalSelected])
+
+  const physicalActivityDistribution = useMemo(() => {
+    if (!totalSelected) {
+      return []
+    }
+    const rows = selectedRows.filter((row) => row.physicalActivity)
+    const counts = d3.rollups(
+      rows,
+      (values) => values.length,
+      (row) => row.physicalActivity
+    )
+    return counts
+      .sort((a, b) => {
+        const aIndex = getOrderIndex(activityOrder, a[0])
+        const bIndex = getOrderIndex(activityOrder, b[0])
+        if (aIndex !== bIndex) {
+          return aIndex - bIndex
+        }
+        return d3.descending(a[1], b[1])
+      })
+      .map(([value, count]) => ({
+        id: value ?? 'unknown',
+        label: activityLabels[value] ?? value ?? copy.details.unknown,
+        count,
+        percentage: totalSelected > 0 ? count / totalSelected : 0,
+      }))
+  }, [activityLabels, copy.details?.unknown, selectedRows, totalSelected])
 
   const detailsTitle = selectedRegion ? copy.details.regionTitle(selectedRegion) : copy.details.overviewTitle
   const detailsSubtitle = selectedRegion ? copy.details.regionSubtitle : copy.details.overviewSubtitle
 
   const formatCount = copy.formatters?.count ?? ((value) => value ?? 0)
-  const formatDecimal = copy.formatters?.decimal ?? ((value) => value ?? 0)
-  const formatPercent = copy.formatters?.percent ?? ((value) => value ?? 0)
 
-  const hasFilteredData = filteredData.length > 0
+  const hasFilteredData = filteredData.length > 0 && activeCategories.length > 0
+  const chartTitle = metricMode === 'condition' ? copy.conditionTitle ?? copy.title : copy.title
+  const conditionToggleDisabled = conditionOrder.length === 0
 
   return (
     <div className="chart-card chart-card--wide chart-card--tall dataset-overview-card" ref={containerRef}>
       <div className="chart-header">
         <div className="chart-header__top">
           <div>
-            <h3>{copy.title}</h3>
+            <h3>{chartTitle}</h3>
             <p>{copy.description}</p>
           </div>
-          <div className="chart-header__filters" role="group" aria-label={copy.filters.ariaLabel}>
-            <label className="visually-hidden" htmlFor="dataset-overview-industry">
-              {copy.filters.industry}
-            </label>
-            <select
-              id="dataset-overview-industry"
-              className="chart-select"
-              value={industryFilter}
-              onChange={(event) => setIndustryFilter(event.target.value)}
-            >
-              <option value={ALL}>{copy.filters.allIndustries}</option>
-              {industryOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
+          <div className="dataset-overview__controls">
+            <div className="dataset-overview__modes" role="group" aria-label={copy.modeLabel}>
+              <button
+                type="button"
+                className={`dataset-overview__mode-button ${metricMode === 'stress' ? 'is-active' : ''}`}
+                onClick={() => setMetricMode('stress')}
+                aria-pressed={metricMode === 'stress'}
+              >
+                {copy.modeOptions?.stress}
+              </button>
+              <button
+                type="button"
+                className={`dataset-overview__mode-button ${metricMode === 'condition' ? 'is-active' : ''}`}
+                onClick={() => setMetricMode('condition')}
+                aria-pressed={metricMode === 'condition'}
+                disabled={conditionToggleDisabled}
+              >
+                {copy.modeOptions?.condition}
+              </button>
+            </div>
+            <div className="chart-header__filters dataset-overview__filters" role="group" aria-label={copy.filters.ariaLabel}>
+              <label className="visually-hidden" htmlFor="dataset-overview-industry">
+                {copy.filters.industry}
+              </label>
+              <select
+                id="dataset-overview-industry"
+                className="chart-select"
+                value={industryFilter}
+                onChange={(event) => setIndustryFilter(event.target.value)}
+              >
+                <option value={ALL}>{copy.filters.allIndustries}</option>
+                {industryOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
 
-            <label className="visually-hidden" htmlFor="dataset-overview-role">
-              {copy.filters.role}
-            </label>
-            <select
-              id="dataset-overview-role"
-              className="chart-select"
-              value={roleFilter}
-              onChange={(event) => setRoleFilter(event.target.value)}
-            >
-              <option value={ALL}>{copy.filters.allRoles}</option>
-              {roleOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
+              <label className="visually-hidden" htmlFor="dataset-overview-role">
+                {copy.filters.role}
+              </label>
+              <select
+                id="dataset-overview-role"
+                className="chart-select"
+                value={roleFilter}
+                onChange={(event) => setRoleFilter(event.target.value)}
+              >
+                <option value={ALL}>{copy.filters.allRoles}</option>
+                {roleOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
 
-            <label className="visually-hidden" htmlFor="dataset-overview-location">
-              {copy.filters.location}
-            </label>
-            <select
-              id="dataset-overview-location"
-              className="chart-select"
-              value={locationFilter}
-              onChange={(event) => setLocationFilter(event.target.value)}
-            >
-              <option value={ALL}>{copy.filters.allLocations}</option>
-              {locationOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
+              <label className="visually-hidden" htmlFor="dataset-overview-location">
+                {copy.filters.location}
+              </label>
+              <select
+                id="dataset-overview-location"
+                className="chart-select"
+                value={locationFilter}
+                onChange={(event) => setLocationFilter(event.target.value)}
+              >
+                <option value={ALL}>{copy.filters.allLocations}</option>
+                {locationOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
-        {copy.instructions && <p className="dataset-overview__hint">{copy.instructions}</p>}
+        {copy.instructions && <p className="dataset-overview__hint dataset-overview__hint--filters">{copy.instructions}</p>}
       </div>
 
       <div className="dataset-overview__content">
@@ -438,33 +522,21 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
         </div>
         <div className="dataset-overview__details">
           <div className="dataset-details__header">
-            <h4>{detailsTitle}</h4>
-            <p>{detailsSubtitle}</p>
-          </div>
-          <div className="dataset-details__grid">
-            <div className="dataset-details__stat">
+            <div>
+              <h4>{detailsTitle}</h4>
+              <p>{detailsSubtitle}</p>
+            </div>
+            <div className="dataset-details__stat dataset-details__stat--inline">
               <p className="dataset-details__label">{copy.details.employees}</p>
               <p className="dataset-details__value">{formatCount(totalSelected)}</p>
-            </div>
-            <div className="dataset-details__stat">
-              <p className="dataset-details__label">{copy.details.avgIsolation}</p>
-              <p className="dataset-details__value">
-                {isolationAverage != null ? formatDecimal(isolationAverage) : copy.details.noData}
-              </p>
-            </div>
-            <div className="dataset-details__stat">
-              <p className="dataset-details__label">{copy.details.avgHours}</p>
-              <p className="dataset-details__value">
-                {hoursAverage != null ? formatDecimal(hoursAverage) : copy.details.noData}
-              </p>
             </div>
           </div>
 
           <div className="dataset-details__block">
-            <p className="dataset-details__label">{copy.details.sleepQuality}</p>
-            {sleepDistribution.length ? (
+            <p className="dataset-details__label">{copy.details.productivity}</p>
+            {productivityDistribution.length ? (
               <div className="dataset-details__bars">
-                {sleepDistribution.map((item) => (
+                {productivityDistribution.map((item) => (
                   <div key={item.id} className="dataset-details__bar-row">
                     <span>{item.label}</span>
                     <div className="dataset-details__bar">
@@ -475,15 +547,46 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
                 ))}
               </div>
             ) : (
-              <p className="dataset-details__placeholder">{copy.details.sleepUnavailable}</p>
+              <p className="dataset-details__placeholder">{copy.details.productivityUnavailable}</p>
             )}
           </div>
 
           <div className="dataset-details__block">
-            <p className="dataset-details__label">{copy.details.resources}</p>
-            <p className="dataset-details__value">
-              {resourceStats != null ? formatCount(resourceStats.count) : copy.details.noData}
-            </p>
+            <p className="dataset-details__label">{copy.details.satisfaction}</p>
+            {satisfactionDistribution.length ? (
+              <div className="dataset-details__bars">
+                {satisfactionDistribution.map((item) => (
+                  <div key={item.id} className="dataset-details__bar-row">
+                    <span>{item.label}</span>
+                    <div className="dataset-details__bar">
+                      <span style={{ width: `${Math.max(item.percentage * 100, 3)}%` }} />
+                    </div>
+                    <span className="dataset-details__bar-value">{formatCount(item.count)}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="dataset-details__placeholder">{copy.details.satisfactionUnavailable}</p>
+            )}
+          </div>
+
+          <div className="dataset-details__block">
+            <p className="dataset-details__label">{copy.details.physicalActivity}</p>
+            {physicalActivityDistribution.length ? (
+              <div className="dataset-details__bars">
+                {physicalActivityDistribution.map((item) => (
+                  <div key={item.id} className="dataset-details__bar-row">
+                    <span>{item.label}</span>
+                    <div className="dataset-details__bar">
+                      <span style={{ width: `${Math.max(item.percentage * 100, 3)}%` }} />
+                    </div>
+                    <span className="dataset-details__bar-value">{formatCount(item.count)}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="dataset-details__placeholder">{copy.details.activityUnavailable}</p>
+            )}
           </div>
         </div>
       </div>
