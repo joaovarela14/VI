@@ -114,15 +114,15 @@ const StressModel = ({ label, percent, stateLabel, variant = 'remote', context }
       )}
 
       <div className="stress-model__layout">
-        <div className="stress-model__scene">
-          <div className="stress-model__asset-wrapper">
-            <img src={personaSrc} loading="lazy" alt={personaAlt} className="stress-model__asset" />
-            <div className="stress-model__bar stress-model__bar--right">
-              <div className="stress-bar-container">
-                <div className={`stress-bar-fill stress-bar-fill--${stateKey}`} style={{ height: `${clampPercent(percent)}%` }} />
-              </div>
-              <span className="stress-bar-percentage">{formatPercent(percent)}</span>
-            </div>
+       <div className="stress-model__scene">
+         <div className="stress-model__asset-wrapper">
+           <img src={personaSrc} loading="lazy" alt={personaAlt} className="stress-model__asset" />
+            <div className={`stress-model__bar ${variant === 'onsite' ? 'stress-model__bar--left' : 'stress-model__bar--right'}`}>
+             <div className="stress-bar-container">
+               <div className={`stress-bar-fill stress-bar-fill--${stateKey}`} style={{ height: `${clampPercent(percent)}%` }} />
+             </div>
+             <span className="stress-bar-percentage">{formatPercent(percent)}</span>
+           </div>
           </div>
         </div>
       </div>
