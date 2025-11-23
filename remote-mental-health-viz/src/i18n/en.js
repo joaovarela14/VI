@@ -173,74 +173,24 @@ const en = {
     subLabel: 'Sections inside the selected tab',
     tabs: [
       {
-        id: 'workload',
-        label: 'Workload & balance',
-        description: 'Hours, meetings, and balance indicators driven by numeric drivers.',
-        subTabs: [
-          {
-            id: 'workload-metrics',
-            label: 'Workload dashboard',
-            description: 'Overview KPIs plus the hours vs. sleep scatter.',
-          },
-        ],
+        id: 'persona-model',
+        label: 'Persona models',
+        description: 'Interact with the stress persona lab to explore remote vs. onsite moods.',
+      },
+      {
+        id: 'workload-dashboard',
+        label: 'Workload dashboard',
+        description: 'Overview KPIs plus the hours vs. sleep scatter.',
       },
       {
         id: 'workspace-influence',
         label: 'Work Space Influence',
         description: 'Workplace mix insights that combine bubble trends with isolation splits.',
-        subTabs: [
-          {
-            id: 'workspace-influence-overview',
-            label: 'Work Space Influence',
-            description: 'Analyze the workplace bubble chart next to the social isolation comparison.',
-          },
-        ],
-      },
-      {
-        id: 'wellbeing',
-        label: 'Wellbeing signals',
-        description: 'Stress mix and sentiment indicators tied to wellbeing.',
-        subTabs: [
-          {
-            id: 'wellbeing-stress',
-            label: 'Stress & conditions',
-            description: 'Location stress mix plus mental health prevalence by region.',
-          },
-          {
-            id: 'wellbeing-sentiment',
-            label: 'Satisfaction & support',
-            description: 'Slice satisfaction sentiment by sector and region filters.',
-          },
-        ],
       },
       {
         id: 'mental-health',
         label: 'Mental health',
         description: 'Support access trends and the sleep vs. stress temperature map.',
-        subTabs: [
-          {
-            id: 'mental-health-overview',
-            label: 'Mental health',
-            description: 'Connect mental health support access with the heatmap of stress vs. sleep.',
-          },
-        ],
-      },
-      {
-        id: 'roles',
-        label: 'Roles & industries',
-        description: 'Role mix, physical activity, and remote environment context.',
-        subTabs: [
-          {
-            id: 'roles-activity',
-            label: 'Activity & stress mix',
-            description: 'Mental health conditions contrasted with physical activity levels.',
-          },
-          {
-            id: 'roles-industry',
-            label: 'Industry radar',
-            description: 'Top job roles by industry, split by remote set-up.',
-          },
-        ],
       },
       {
         id: 'documentation',
@@ -592,7 +542,7 @@ const en = {
   footer:
     'Project for the Information Visualization course, developed by João Varela and Carolina Prata.',
   dataLab: {
-    heading: 'Dataset Overview',
+    heading: 'Dataset Documentation',
     intro:
       'Explore every quantitative and qualitative variable available in the dataset. Hover each variable name to preview the values it can take.',
     datasetOverview: {

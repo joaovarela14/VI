@@ -173,74 +173,24 @@ const pt = {
     subLabel: "Subseções do separador ativo",
     tabs: [
       {
-        id: "workload",
-        label: "Carga e equilíbrio",
-        description: "Horas, reuniões e indicadores de equilíbrio guiados por variáveis numéricas.",
-        subTabs: [
-          {
-            id: "workload-metrics",
-            label: "Painel de carga",
-            description: "KPIs agregados e o scatter de horas versus sono.",
-          },
-        ],
+        id: "persona-model",
+        label: "Modelo da persona",
+        description: "Explora apenas o laboratório da persona de stress para comparar ambientes.",
+      },
+      {
+        id: "workload-dashboard",
+        label: "Painel de carga",
+        description: "KPIs agregados e o scatter de horas versus sono.",
       },
       {
         id: "workspace-influence",
         label: "Work Space Influence",
         description: "Mistura o gráfico de bolhas com o painel de isolamento social por grupo.",
-        subTabs: [
-          {
-            id: "workspace-influence-overview",
-            label: "Work Space Influence",
-            description: "Consulta o gráfico de bolhas ao lado das comparações de isolamento social.",
-          },
-        ],
-      },
-      {
-        id: "wellbeing",
-        label: "Bem-estar",
-        description: "Indicadores de stress, condições e sentimento.",
-        subTabs: [
-          {
-            id: "wellbeing-stress",
-            label: "Stress e condições",
-            description: "Mapa por localização e prevalência regional de saúde mental.",
-          },
-          {
-            id: "wellbeing-sentiment",
-            label: "Satisfação e apoio",
-            description: "Mistura de satisfação filtrada por sector e região.",
-          },
-        ],
       },
       {
         id: "mental-health",
         label: "Saúde mental",
         description: "Acesso a apoio psicológico e mapa de calor de stress versus sono.",
-        subTabs: [
-          {
-            id: "mental-health-overview",
-            label: "Saúde mental",
-            description: "Cruza o gráfico de apoio psicológico com o mapa de temperatura stress/sono.",
-          },
-        ],
-      },
-      {
-        id: "roles",
-        label: "Funções e sectores",
-        description: "Distribuição de funções, atividade física e contextos remotos.",
-        subTabs: [
-          {
-            id: "roles-activity",
-            label: "Atividade vs. stress",
-            description: "Condições mentais em contraste com o perfil de atividade física.",
-          },
-          {
-            id: "roles-industry",
-            label: "Radar industrial",
-            description: "Principais funções por indústria e modalidade de trabalho.",
-          },
-        ],
       },
       {
         id: "documentation",

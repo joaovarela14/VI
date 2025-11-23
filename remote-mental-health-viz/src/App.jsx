@@ -1,19 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import * as d3 from 'd3'
-import StressByLocationChart from './components/StressByLocationChart'
-import MentalHealthByRegionChart from './components/MentalHealthByRegionChart'
-import HoursVsSleepScatter from './components/HoursVsSleepScatter'
-import DatasetOverviewChart from './components/DatasetOverviewChart'
 import OverviewMetrics from './components/OverviewMetrics'
+import DatasetOverviewChart from './components/DatasetOverviewChart'
+import HoursVsSleepScatter from './components/HoursVsSleepScatter'
 import MultiDimensionScatter from './components/MultiDimensionScatter'
-import IndustryRadar from './components/IndustryRadar'
-import DataLabPanel from './components/DataLabPanel'
 import WorkLifeBalanceLineChart from './components/WorkLifeBalanceLineChart'
-import SatisfactionPieChart from './components/SatisfactionPieChart'
 import SocialIsolationBarChart from './components/SocialIsolationBarChart'
-import ConditionActivityStressChart from './components/ConditionActivityStressChart'
 import SleepStressMatrix from './components/SleepStressMatrix'
 import DocumentationPanel from './components/DocumentationPanel'
+import DataLabPanel from './components/DataLabPanel'
+import IndustryRadar from './components/IndustryRadar'
 import StressPersonaHero from './components/StressPersonaHero'
 import en from './i18n/en'
 import pt from './i18n/pt'
@@ -21,12 +17,12 @@ import './App.css'
 
 const dataUrl = new URL('../data/Impact_of_Remote_Work_on_Mental_Health.csv', import.meta.url)
 
-const positiveSatisfaction = new Set(['satisfied', 'very satisfied', 'extremely satisfied'])
-
 const translations = {
   en,
   pt,
 }
+
+const positiveSatisfaction = new Set(['satisfied', 'very satisfied', 'extremely satisfied'])
 
 const parseNumber = (value) => {
   const number = Number.parseFloat(value)
@@ -37,19 +33,13 @@ function App() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const [activeTab, setActiveTab] = useState('workload')
-  const [activeSubTab, setActiveSubTab] = useState('workload-metrics')
+  const [activeTab, setActiveTab] = useState('persona-model')
   const [theme, setTheme] = useState('light')
   const [language, setLanguage] = useState('en')
 
   const copy = translations[language]
   const navigationTabs = useMemo(() => copy.navigation?.tabs ?? [], [copy.navigation])
   const activeTabConfig = useMemo(() => navigationTabs.find((tab) => tab.id === activeTab), [navigationTabs, activeTab])
-  const activeSubTabs = activeTabConfig?.subTabs ?? []
-  const activeSubTabConfig = useMemo(
-    () => activeSubTabs.find((subTab) => subTab.id === activeSubTab),
-    [activeSubTabs, activeSubTab]
-  )
 
   useEffect(() => {
     const classList = document.body.classList
@@ -68,24 +58,6 @@ function App() {
       return navigationTabs[0].id
     })
   }, [navigationTabs])
-
-  useEffect(() => {
-    if (!activeTabConfig) {
-      setActiveSubTab(null)
-      return
-    }
-    const subTabs = activeTabConfig.subTabs ?? []
-    if (!subTabs.length) {
-      setActiveSubTab(null)
-      return
-    }
-    setActiveSubTab((current) => {
-      if (subTabs.some((subTab) => subTab.id === current)) {
-        return current
-      }
-      return subTabs[0].id
-    })
-  }, [activeTabConfig])
 
   useEffect(() => {
     const loadData = async () => {
@@ -169,31 +141,13 @@ function App() {
   }
 
   const renderContent = () => {
-    if (activeTab === 'documentation') {
-      const radarShowcase = copy.documentation?.radarShowcase
-      return (
-        <>
-          <DocumentationPanel copy={copy.documentation} datasetCount={datasetCount} />
-          <DataLabPanel copy={copy.dataLab} data={data} common={copy.common} />
-          <section className="section section--wide">
-            <h2>{radarShowcase?.heading ?? copy.industryRadar?.title}</h2>
-            {radarShowcase?.intro && <p className="section__intro">{radarShowcase.intro}</p>}
-            <div className="chart-grid chart-grid--single">
-              <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} showHeader={false} />
-            </div>
-          </section>
-        </>
-      )
-    }
-
-    const subTabInfo = activeSubTabConfig
-    switch (activeSubTab) {
-      case 'workload-metrics':
+    switch (activeTab) {
+      case 'workload-dashboard':
         return (
           <>
             <section className="section section--wide">
-              <h2>{subTabInfo?.label ?? copy.overview.heading}</h2>
-              {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
+              <h2>{activeTabConfig?.label ?? copy.overview.heading}</h2>
+              {activeTabConfig?.description && <p className="section__intro">{activeTabConfig.description}</p>}
               <OverviewMetrics metrics={copy.overview.metrics} stats={stats} />
               <div className="chart-grid chart-grid--single">
                 <DatasetOverviewChart data={data} theme={theme} copy={copy.datasetOverviewChart} common={copy.common} />
@@ -209,44 +163,27 @@ function App() {
             </section>
           </>
         )
-      case 'wellbeing-stress':
+      case 'documentation': {
+        const radarShowcase = copy.documentation?.radarShowcase
         return (
-          <section className="section section--wide">
-            <h2>{subTabInfo?.label}</h2>
-            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
-            <div className="chart-grid">
-              <StressByLocationChart data={data} theme={theme} copy={copy.stressByLocation} common={copy.common} />
-              <MentalHealthByRegionChart data={data} theme={theme} copy={copy.mentalHealthByRegion} common={copy.common} />
-            </div>
-          </section>
+          <>
+            <DocumentationPanel copy={copy.documentation} datasetCount={datasetCount} />
+            <DataLabPanel copy={copy.dataLab} data={data} common={copy.common} />
+            <section className="section section--wide">
+              <h2>{radarShowcase?.heading ?? copy.industryRadar?.title}</h2>
+              {radarShowcase?.intro && <p className="section__intro">{radarShowcase.intro}</p>}
+              <div className="chart-grid chart-grid--single">
+                <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} showHeader={false} />
+              </div>
+            </section>
+          </>
         )
-      case 'wellbeing-sentiment':
-        return (
-          <section className="section section--wide">
-            <h2>{subTabInfo?.label ?? copy.satisfactionPie?.title}</h2>
-            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
-            <div className="chart-grid chart-grid--single">
-              <SatisfactionPieChart data={data} theme={theme} copy={copy.satisfactionPie} common={copy.common} showHeader={false} />
-            </div>
-          </section>
-        )
-      case 'mental-health-overview':
-        return (
-          <section className="section section--wide">
-            <h2>{subTabInfo?.label ?? copy.workLifeBalanceLine?.title}</h2>
-            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
-            <div className="chart-grid">
-              <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} showHeader={false} />
-              <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} showHeader={false} />
-            </div>
-          </section>
-        )
-      case 'workspace-influence-overview': {
+      }
+      case 'workspace-influence': {
         const meetingCopy = copy.deepDive?.meeting
         const isolationCopy = copy.deepDive?.socialIsolation
-        const heading = subTabInfo?.label ?? meetingCopy?.heading
-        const intro =
-          subTabInfo?.description ?? meetingCopy?.intro ?? isolationCopy?.intro
+        const heading = activeTabConfig?.label ?? meetingCopy?.heading
+        const intro = activeTabConfig?.description ?? meetingCopy?.intro ?? isolationCopy?.intro
         return (
           <section className="section section--wide">
             {heading && <h2>{heading}</h2>}
@@ -258,26 +195,30 @@ function App() {
           </section>
         )
       }
-      case 'roles-activity':
+      case 'mental-health': {
+        const heading = activeTabConfig?.label ?? copy.workLifeBalanceLine?.title
+        const intro =
+          activeTabConfig?.description ?? copy.deepDive?.workLife?.intro ?? copy.deepDive?.sleepStress?.intro
         return (
           <section className="section section--wide">
-            <h2>{subTabInfo?.label}</h2>
-            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
-            <div className="chart-grid chart-grid--single">
-              <ConditionActivityStressChart data={data} theme={theme} copy={copy.conditionActivityStress} common={copy.common} showHeader={false} />
+            {heading && <h2>{heading}</h2>}
+            {intro && <p className="section__intro">{intro}</p>}
+            <div className="chart-grid">
+              <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} showHeader={false} />
+              <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} showHeader={false} />
             </div>
           </section>
         )
-      case 'roles-industry':
+      }
+      case 'persona-model': {
+        const intro = activeTabConfig?.description
         return (
           <section className="section section--wide">
-            <h2>{subTabInfo?.label ?? copy.industryRadar?.title}</h2>
-            {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
-            <div className="chart-grid chart-grid--single">
-              <IndustryRadar data={data} theme={theme} copy={copy.industryRadar} common={copy.common} showHeader={false} />
-            </div>
+            {intro && <p className="section__intro">{intro}</p>}
+            <StressPersonaHero data={data} copy={copy.stressLab} theme={theme} />
           </section>
         )
+      }
       default:
         return null
     }
@@ -322,8 +263,6 @@ function App() {
             </div>
           </div>
 
-          {copy.stressLab && <StressPersonaHero data={data} copy={copy.stressLab} theme={theme} />}
-
           {navigationTabs.length > 0 && (
             <div className="hero__navigation">
               <nav className="hero__tabs hero__tabs--primary" role="tablist" aria-label={copy.navigation?.label}>
@@ -341,28 +280,6 @@ function App() {
                   </button>
                 ))}
               </nav>
-
-              {activeSubTabs.length > 0 && (
-                <nav
-                  className="hero__tabs hero__tabs--secondary"
-                  role="tablist"
-                  aria-label={copy.navigation?.subLabel ?? (activeTabConfig ? `${activeTabConfig.label} sections` : undefined)}
-                >
-                  {activeSubTabs.map((subTab) => (
-                    <button
-                      key={subTab.id}
-                      role="tab"
-                      type="button"
-                      onClick={() => setActiveSubTab(subTab.id)}
-                      aria-selected={activeSubTab === subTab.id}
-                      className={`hero__tab hero__tab--secondary ${activeSubTab === subTab.id ? 'hero__tab--active' : ''}`}
-                    >
-                      <span className="hero__tab-label">{subTab.label}</span>
-                      <span className="hero__tab-description">{subTab.description}</span>
-                    </button>
-                  ))}
-                </nav>
-              )}
             </div>
           )}
         </div>
