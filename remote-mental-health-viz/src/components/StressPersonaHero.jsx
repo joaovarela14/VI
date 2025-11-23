@@ -161,7 +161,7 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
     const sliderInfluence =
       ((hours - DEFAULTS.hours) / 20) * 25 +
       ((meetings - DEFAULTS.meetings) / 8) * 18 -
-      ((sleepFocus - DEFAULTS.sleep) / 1) * 22
+      ((sleepFocus - DEFAULTS.sleep) / 2) * 22
 
     const computeScore = (predicate) => {
       const rows = sanitizedRows.filter(predicate)
@@ -311,8 +311,8 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
               <input
                 id="sleep-slider"
                 type="range"
-                min="3"
-                max="1"
+                min="1"
+                max="3"
                 step="1"
                 value={sleepFocus}
                 onChange={(event) => setSleepFocus(Number.parseInt(event.target.value, 10))}
