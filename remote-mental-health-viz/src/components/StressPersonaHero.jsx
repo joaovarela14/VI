@@ -282,9 +282,8 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
   return (
     <section className={`stress-lab stress-lab--${theme}`}>
       <div className="stress-lab__intro">
-        <p className="stress-lab__eyebrow">{copy?.eyebrow}</p>
         <h2>{copy?.title}</h2>
-        <p className="stress-lab__lead">{copy?.description}</p>
+
       </div>
 
       <div className="stress-lab__models" role="group" aria-label={copy?.modelsLabel}>
@@ -373,10 +372,6 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
             </div>
           </fieldset>
 
-          <div className="comparison-diff">
-            <span className="diff-label">{copy?.panel?.differenceLabel}</span>
-            <span className="diff-value">{differenceValue}</span>
-          </div>
 
           <button type="button" className="comparison-reset" onClick={handleReset}>
             {copy?.panel?.reset}
