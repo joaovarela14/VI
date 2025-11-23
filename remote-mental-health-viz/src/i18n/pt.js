@@ -332,6 +332,52 @@ const pt = {
       },
     ],
   },
+  datasetOverviewChart: {
+    title: "Níveis de stress por região",
+    description:
+      "Começa com o panorama geral de como os níveis de stress se distribuem em cada região. Usa os dropdowns para filtrar o dataset e clica numa barra para mostrar as estatísticas contextuais ao lado.",
+    ariaLabel:
+      "Gráfico de barras empilhadas com filtros onde se compara o stress por região",
+    instructions:
+      "Aplica filtros para focar o dataset e clica numa barra para ver essa região no painel de detalhes.",
+    empty: "Nenhum colaborador corresponde aos filtros seleccionados.",
+    legend: stressLevels,
+    filters: {
+      ariaLabel: "Filtros do dataset",
+      industry: "Filtrar por indústria",
+      role: "Filtrar por função",
+      location: "Filtrar por localização",
+      allIndustries: "Todas as indústrias",
+      allRoles: "Todas as funções",
+      allLocations: "Todas as localizações",
+    },
+    tooltip: ({ region, stressLabel, count, percentage }) =>
+      `${region} — ${stressLabel}: ${formatCount(
+        count
+      )} pessoas (${percentFormatter.format(
+        Math.min(Math.max(percentage ?? 0, 0), 1)
+      )})`,
+    formatters: {
+      count: (value) => formatCount(value ?? 0),
+      decimal: (value) => decimalFormatter.format(value ?? 0),
+      percent: (value) =>
+        percentFormatter.format(Math.min(Math.max(value ?? 0, 0), 1)),
+    },
+    details: {
+      overviewTitle: "Conjunto filtrado",
+      overviewSubtitle: "Métricas para todas as pessoas nos filtros activos.",
+      regionTitle: (region) => `Visão de ${region}`,
+      regionSubtitle: "Métricas recalculadas apenas para a região seleccionada.",
+      employees: "Colaboradores",
+      avgIsolation: "Média de isolamento social",
+      avgHours: "Horas / semana",
+      sleepQuality: "Qualidade do sono",
+      resources: "Acesso a recursos de saúde mental",
+      noData: "Sem dados",
+      sleepUnavailable: "Não existem respostas sobre sono para esta região.",
+      unknown: "Desconhecido",
+    },
+  },
   stressByLocation: {
     title: "Níveis de stress por modelo de trabalho",
     description:

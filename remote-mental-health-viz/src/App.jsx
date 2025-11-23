@@ -3,6 +3,7 @@ import * as d3 from 'd3'
 import StressByLocationChart from './components/StressByLocationChart'
 import MentalHealthByRegionChart from './components/MentalHealthByRegionChart'
 import HoursVsSleepScatter from './components/HoursVsSleepScatter'
+import DatasetOverviewChart from './components/DatasetOverviewChart'
 import OverviewMetrics from './components/OverviewMetrics'
 import MultiDimensionScatter from './components/MultiDimensionScatter'
 import IndustryRadar from './components/IndustryRadar'
@@ -186,6 +187,9 @@ function App() {
               <h2>{subTabInfo?.label ?? copy.overview.heading}</h2>
               {subTabInfo?.description && <p className="section__intro">{subTabInfo.description}</p>}
               <OverviewMetrics metrics={copy.overview.metrics} stats={stats} />
+              <div className="chart-grid chart-grid--single">
+                <DatasetOverviewChart data={data} theme={theme} copy={copy.datasetOverviewChart} common={copy.common} />
+              </div>
             </section>
 
             <section className="section section--wide">
