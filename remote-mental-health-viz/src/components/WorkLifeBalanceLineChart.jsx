@@ -290,8 +290,8 @@ const WorkLifeBalanceLineChart = ({ data, theme, copy, showHeader = true }) => {
               <p>{copy.description}</p>
             </div>
           )}
-          <label className="chart-controls">
-            <span className="visually-hidden">{copy.toggleLabel}</span>
+          <label className="chart-controls chart-filter-group">
+            <span className="chart-filter-label">{copy.toggleLabel}</span>
             <select className="chart-select" value={dimension} onChange={handleDimensionChange}>
               {Object.entries(copy.xOptions).map(([key, label]) => (
                 <option key={key} value={key}>

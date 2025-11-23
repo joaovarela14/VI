@@ -212,8 +212,8 @@ const SatisfactionPieChart = ({ data, theme, copy, common, showHeader = true }) 
             </div>
           )}
           <div ref={filterSelectRef} className="chart-header__filters">
-            <label className="chart-controls">
-              <span className="visually-hidden">{copy.filters.sector}</span>
+            <label className="chart-controls chart-filter-group">
+              <span className="chart-filter-label">{copy.filters.sector}</span>
               <select className="chart-select" name="sector" defaultValue="all">
                 <option value="all">{copy.filters.allSectors}</option>
                 {sectorOptions.map((sector) => (
@@ -223,8 +223,8 @@ const SatisfactionPieChart = ({ data, theme, copy, common, showHeader = true }) 
                 ))}
               </select>
             </label>
-            <label className="chart-controls">
-              <span className="visually-hidden">{copy.filters.region}</span>
+            <label className="chart-controls chart-filter-group">
+              <span className="chart-filter-label">{copy.filters.region}</span>
               <select className="chart-select" name="region" defaultValue="all">
                 <option value="all">{copy.filters.allRegions}</option>
                 {regionOptions.map((region) => (

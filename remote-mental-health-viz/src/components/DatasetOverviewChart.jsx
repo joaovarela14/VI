@@ -480,56 +480,56 @@ const DatasetOverviewChart = ({ data, theme, copy, common }) => {
           <div className="dataset-overview__controls dataset-overview__controls--filters">
             <span className="dataset-overview__filters-label">{copy.filtersLabel}</span>
             <div className="chart-header__filters dataset-overview__filters" role="group" aria-label={copy.filters.ariaLabel}>
-              <label className="visually-hidden" htmlFor="dataset-overview-industry">
-                {copy.filters.industry}
+              <label className="chart-filter-group" htmlFor="dataset-overview-industry">
+                <span className="chart-filter-label">{copy.filters.industry}</span>
+                <select
+                  id="dataset-overview-industry"
+                  className="chart-select"
+                  value={industryFilter}
+                  onChange={(event) => setIndustryFilter(event.target.value)}
+                >
+                  <option value={ALL}>{copy.filters.allIndustries}</option>
+                  {industryOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
               </label>
-              <select
-                id="dataset-overview-industry"
-                className="chart-select"
-                value={industryFilter}
-                onChange={(event) => setIndustryFilter(event.target.value)}
-              >
-                <option value={ALL}>{copy.filters.allIndustries}</option>
-                {industryOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
 
-              <label className="visually-hidden" htmlFor="dataset-overview-role">
-                {copy.filters.role}
+              <label className="chart-filter-group" htmlFor="dataset-overview-role">
+                <span className="chart-filter-label">{copy.filters.role}</span>
+                <select
+                  id="dataset-overview-role"
+                  className="chart-select"
+                  value={roleFilter}
+                  onChange={(event) => setRoleFilter(event.target.value)}
+                >
+                  <option value={ALL}>{copy.filters.allRoles}</option>
+                  {roleOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
               </label>
-              <select
-                id="dataset-overview-role"
-                className="chart-select"
-                value={roleFilter}
-                onChange={(event) => setRoleFilter(event.target.value)}
-              >
-                <option value={ALL}>{copy.filters.allRoles}</option>
-                {roleOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
 
-              <label className="visually-hidden" htmlFor="dataset-overview-location">
-                {copy.filters.location}
+              <label className="chart-filter-group" htmlFor="dataset-overview-location">
+                <span className="chart-filter-label">{copy.filters.location}</span>
+                <select
+                  id="dataset-overview-location"
+                  className="chart-select"
+                  value={locationFilter}
+                  onChange={(event) => setLocationFilter(event.target.value)}
+                >
+                  <option value={ALL}>{copy.filters.allLocations}</option>
+                  {locationOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
               </label>
-              <select
-                id="dataset-overview-location"
-                className="chart-select"
-                value={locationFilter}
-                onChange={(event) => setLocationFilter(event.target.value)}
-              >
-                <option value={ALL}>{copy.filters.allLocations}</option>
-                {locationOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
             </div>
           </div>
         </div>

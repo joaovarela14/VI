@@ -240,8 +240,8 @@ const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => 
             </div>
           )}
           <div className="chart-header__filters">
-            <label className="chart-controls">
-              <span className="visually-hidden">{copy.filters.condition}</span>
+            <label className="chart-controls chart-filter-group">
+              <span className="chart-filter-label">{copy.filters.condition}</span>
               <select className="chart-select" value={condition} onChange={(event) => setCondition(event.target.value)}>
                 <option value="all">{copy.filters.allConditions}</option>
                 {conditionOptions.map((option) => (

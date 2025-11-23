@@ -407,8 +407,8 @@ const MultiDimensionScatter = ({ data, theme, copy, common, showHeader = true })
             </div>
           )}
           <div className="chart-controls-stack">
-            <label className="chart-controls">
-              <span className="visually-hidden">{copy.filterLabel}</span>
+            <label className="chart-controls chart-filter-group">
+              <span className="chart-filter-label">{copy.filterLabel}</span>
               <select
                 className="chart-select"
                 value={selectedLocation}
@@ -424,8 +424,8 @@ const MultiDimensionScatter = ({ data, theme, copy, common, showHeader = true })
                 })}
               </select>
             </label>
-            <label className="chart-controls">
-              <span className="visually-hidden">{copy.industryFilterLabel}</span>
+            <label className="chart-controls chart-filter-group">
+              <span className="chart-filter-label">{copy.industryFilterLabel}</span>
               <select
                 className="chart-select"
                 value={selectedIndustry}
@@ -442,8 +442,8 @@ const MultiDimensionScatter = ({ data, theme, copy, common, showHeader = true })
                 })}
               </select>
             </label>
-            <label className="chart-controls">
-              <span className="visually-hidden">{copy.sampleFilterLabel}</span>
+            <label className="chart-controls chart-filter-group">
+              <span className="chart-filter-label">{copy.sampleFilterLabel}</span>
               <select className="chart-select" value={effectiveSampleLimit} onChange={handleSampleLimitChange}>
                 {availableSampleOptions.map((option) => {
                   const label = copy.sampleFilterOptions?.[option] ?? option

@@ -178,8 +178,8 @@ const SocialIsolationBarChart = ({ data, theme, copy, showHeader = true }) => {
             </div>
           )}
           <div className="chart-header__filters">
-            <label className="chart-controls">
-              <span className="visually-hidden">{copy.filters.region}</span>
+            <label className="chart-controls chart-filter-group">
+              <span className="chart-filter-label">{copy.filters.region}</span>
               <select className="chart-select" value={filters.region} onChange={handleFilterChange('region')}>
                 <option value="all">{copy.filters.allRegions}</option>
                 {regionOptions.map((region) => (
@@ -189,8 +189,8 @@ const SocialIsolationBarChart = ({ data, theme, copy, showHeader = true }) => {
                 ))}
               </select>
             </label>
-            <label className="chart-controls">
-              <span className="visually-hidden">{copy.filters.gender}</span>
+            <label className="chart-controls chart-filter-group">
+              <span className="chart-filter-label">{copy.filters.gender}</span>
               <select className="chart-select" value={filters.gender} onChange={handleFilterChange('gender')}>
                 <option value="all">{copy.filters.allGenders}</option>
                 {genderOptions.map((gender) => (
@@ -200,8 +200,8 @@ const SocialIsolationBarChart = ({ data, theme, copy, showHeader = true }) => {
                 ))}
               </select>
             </label>
-            <label className="chart-controls">
-              <span className="visually-hidden">{copy.filters.access}</span>
+            <label className="chart-controls chart-filter-group">
+              <span className="chart-filter-label">{copy.filters.access}</span>
               <select className="chart-select" value={filters.access} onChange={handleFilterChange('access')}>
                 <option value={ACCESS_OPTIONS.all}>{copy.filters.allAccess}</option>
                 <option value={ACCESS_OPTIONS.yes}>{copy.filters.accessYes}</option>

@@ -187,8 +187,8 @@ const ConditionActivityStressChart = ({ data, theme, copy, common }) => {
             <p>{copy.description}</p>
           </div>
           <div className="chart-header__filters">
-            <label className="chart-controls">
-              <span className="visually-hidden">{copy.filters.activity}</span>
+            <label className="chart-controls chart-filter-group">
+              <span className="chart-filter-label">{copy.filters.activity}</span>
               <select className="chart-select" value={activity} onChange={(event) => setActivity(event.target.value)}>
                 <option value="all">{copy.filters.allActivities}</option>
                 {activityOptions.map((option) => (

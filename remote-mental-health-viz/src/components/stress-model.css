@@ -255,9 +255,15 @@ body.theme-light .stress-lab__comparison {
 
 .control-label {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.35rem;
   color: var(--text-primary);
   font-size: 0.95rem;
+}
+
+.control-label strong {
+  font-size: 1.1rem;
+  color: var(--text-primary);
 }
 
 .control-slider {
