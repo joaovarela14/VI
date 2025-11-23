@@ -98,7 +98,7 @@ const pt = {
   },
   stressLab: {
     eyebrow: "Laboratório interativo de stress",
-    title: "Linguagem corporal remoto vs. presencial",
+    title: "Remoto vs Presencial",
     description:
       "Ajusta horas trabalhadas, reuniões virtuais, qualidade do sono e género para transformar as personas. As posturas mudam conforme o cenário filtra o dataset para remoto e presencial.",
     modelsLabel: "Personas 3D para comparar remoto e presencial",
@@ -163,7 +163,7 @@ const pt = {
       },
       {
         id: "unspecified",
-        label: "Prefere não dizer",
+        label: "Sem especificar",
         matches: ["prefer not to say"],
       },
     ],

@@ -3,9 +3,9 @@
   min-height: 640px;
   padding: clamp(1.5rem, 4vw, 3rem);
   border-radius: 36px;
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  background: linear-gradient(150deg, rgba(8, 13, 23, 0.95), rgba(9, 14, 26, 0.92));
-  box-shadow: 0 45px 90px -60px rgba(2, 6, 23, 0.9);
+  border: 1px solid var(--border-soft);
+  background: var(--surface-card);
+  box-shadow: 0 24px 48px -28px rgba(15, 23, 42, 0.45);
   display: flex;
   flex-direction: column;
   gap: clamp(1.5rem, 2vw, 2.5rem);
@@ -14,24 +14,7 @@
 }
 
 .stress-lab::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(circle at 28% 18%, rgba(148, 163, 184, 0.2), transparent 45%),
-    radial-gradient(circle at 82% 8%, rgba(59, 130, 246, 0.1), transparent 45%);
-  opacity: 0.45;
-  pointer-events: none;
-}
-
-body.theme-light .stress-lab {
-  border-color: rgba(148, 163, 184, 0.22);
-  background: linear-gradient(145deg, #f9f6ef 0%, #f1ece4 60%, #ebe3da 100%);
-  box-shadow: 0 35px 70px -46px rgba(15, 23, 42, 0.2);
-}
-
-body.theme-light .stress-lab::before {
-  background-image: radial-gradient(circle at 20% 15%, rgba(15, 23, 42, 0.05), transparent 45%),
-    radial-gradient(circle at 83% 0%, rgba(56, 189, 248, 0.08), transparent 45%);
+  content: none;
 }
 
 .stress-lab__intro {
@@ -339,23 +322,59 @@ body.theme-light .stress-lab__comparison {
 }
 
 .comparison-checkbox {
-  display: flex;
+  display: block;
+  cursor: pointer;
+}
+
+.comparison-checkbox__chip {
+  display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.55rem 0.9rem;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.6rem 1rem;
   border-radius: 999px;
   border: 1px solid var(--border-soft);
-  background: rgba(15, 23, 42, 0.35);
+  background: rgba(15, 23, 42, 0.3);
   color: var(--text-primary);
   font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
-body.theme-light .comparison-checkbox {
-  background: rgba(255, 255, 255, 0.92);
+body.theme-light .comparison-checkbox__chip {
+  background: rgba(255, 255, 255, 0.96);
 }
 
-.comparison-checkbox input {
-  accent-color: #2563eb;
+.comparison-checkbox__input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  flex-shrink: 0;
+  border-radius: 0.35rem;
+  border: 1px solid var(--border-soft);
+  background-color: var(--surface-card);
+  accent-color: #3b82f6;
+  box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.35);
+}
+
+.comparison-checkbox__text {
+  flex: 1;
+}
+
+.comparison-checkbox--active .comparison-checkbox__chip {
+  background: linear-gradient(135deg, rgba(3, 105, 161, 0.2), rgba(14, 165, 233, 0.35));
+  border-color: rgba(14, 165, 233, 0.7);
+  color: #f0f9ff;
+  box-shadow: 0 12px 20px -18px rgba(14, 165, 233, 0.8);
+  transform: translateY(-1px);
+}
+
+body.theme-light .comparison-checkbox--active .comparison-checkbox__chip {
+  color: #0f172a;
+}
+
+.comparison-checkbox:focus-within .comparison-checkbox__chip {
+  box-shadow: var(--focus-ring);
 }
 
 .comparison-diff {

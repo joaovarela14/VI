@@ -267,10 +267,6 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
             <p className="comparison-subtitle">{copy?.panel?.subtitle}</p>
           </div>
 
-          <div className="comparison-vs" aria-hidden="true">
-            VS
-          </div>
-
           <div className="comparison-controls">
             <div className="control-group">
               <label htmlFor="hours-slider" className="control-label">
@@ -322,17 +318,26 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
           </div>
 
           <div className="comparison-genders comparison-genders--minimal">
-            <div className="comparison-genders__grid">
-              {genderOptions.map((option) => (
-                <label key={option.id} className="comparison-checkbox">
-                  <input
-                    type="checkbox"
-                    checked={genderFilters.includes(option.id)}
-                    onChange={() => updateGenderFilters(option.id)}
-                  />
-                  <span>{option.label}</span>
-                </label>
-              ))}
+            <div className="comparison-genders__grid" role="group" aria-label={copy?.panel?.gender?.label}>
+              {genderOptions.map((option) => {
+                const isSelected = genderFilters.includes(option.id)
+                return (
+                  <label
+                    key={option.id}
+                    className={`comparison-checkbox${isSelected ? ' comparison-checkbox--active' : ''}`}
+                  >
+                    <span className="comparison-checkbox__chip">
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => updateGenderFilters(option.id)}
+                        className="comparison-checkbox__input"
+                      />
+                      <span className="comparison-checkbox__text">{option.label}</span>
+                    </span>
+                  </label>
+                )
+              })}
             </div>
           </div>
 
