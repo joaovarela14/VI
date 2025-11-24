@@ -253,7 +253,7 @@ function App() {
                     aria-label={copy.hero.buttons.theme.aria}
                   >
                     <span className="theme-toggle__icon" aria-hidden="true">
-                      {theme === 'dark' ? '🌙' : '☀️'}
+                      {theme === 'dark' ? '☀️' : '🌙'}
                     </span>
                     <span className="theme-toggle__label">{themeButtonLabel}</span>
                   </button>

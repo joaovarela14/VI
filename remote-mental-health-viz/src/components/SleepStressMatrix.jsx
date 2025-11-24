@@ -15,6 +15,28 @@ const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => 
     return values
   }, [data])
 
+  const legendData = useMemo(() => {
+    // Usa 600 para "all conditions", 200 para condições específicas
+    const maxValue = condition === 'all' ? 600 : 200
+    
+    const colorScale = d3.scaleSequential((t) => {
+      // Cores: verde -> amarelo -> laranja -> vermelho
+      const h = (1 - t) * 120 + t * 0 // De 120° (verde) para 0° (vermelho)
+      const s = 75 + t * 15 // Saturação aumenta de 75% para 90%
+      const l = 75 - t * 25 // Luminosidade diminui de 75% para 50%
+      return `hsl(${h}, ${s}%, ${l}%)`
+    }).domain([0, maxValue])
+    
+    // Create gradient stops from 0 to maxValue
+    const stops = Array.from({ length: 5 }, (_, index) => ({
+      offset: (index / 4) * 100,
+      color: colorScale((index / 4) * maxValue),
+      value: Math.round((index / 4) * maxValue),
+    }))
+
+    return { maxValue, stops }
+  }, [condition])
+
   useEffect(() => {
     if (typeof ResizeObserver === 'undefined') {
       return
@@ -96,8 +118,14 @@ const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => 
     const yScale = d3.scaleBand().domain(yDomain).range([margin.top, height - margin.bottom]).padding(0.15)
 
     const colorScale = d3
-      .scaleSequential((t) => d3.interpolateTurbo(t))
-      .domain([0, maxValue || 1])
+      .scaleSequential((t) => {
+        // Cores: verde -> amarelo -> laranja -> vermelho
+        const h = (1 - t) * 120 + t * 0 // De 120° (verde) para 0° (vermelho)
+        const s = 75 + t * 15 // Saturação aumenta de 75% para 90%
+        const l = 75 - t * 25 // Luminosidade diminui de 75% para 50%
+        return `hsl(${h}, ${s}%, ${l}%)`
+      })
+      .domain([0, condition === 'all' ? 600 : 200])
 
     const sleepLabels = common?.sleepQuality ?? {}
     const stressLabels = common?.stressLevels ?? {}
@@ -106,7 +134,7 @@ const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => 
       .append('g')
       .attr('transform', `translate(0, ${height - margin.bottom})`)
       .call(d3.axisBottom(xScale).tickFormat((value) => sleepLabels[value] ?? value))
-      .call((g) => g.selectAll('text').attr('fill', axisColor).attr('font-size', 12))
+      .call((g) => g.selectAll('text').attr('fill', axisColor).attr('font-size', 16))
       .call((g) => g.selectAll('path').attr('stroke', gridColor))
       .call((g) => g.selectAll('line').attr('stroke', gridColor))
 
@@ -114,7 +142,7 @@ const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => 
       .append('g')
       .attr('transform', `translate(${margin.left}, 0)`)
       .call(d3.axisLeft(yScale).tickFormat((value) => stressLabels[value] ?? value))
-      .call((g) => g.selectAll('text').attr('fill', axisColor).attr('font-size', 12))
+      .call((g) => g.selectAll('text').attr('fill', axisColor).attr('font-size', 16))
       .call((g) => g.selectAll('path').attr('stroke', gridColor))
       .call((g) => g.selectAll('line').attr('stroke', gridColor))
 
@@ -124,7 +152,7 @@ const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => 
       .attr('y', height - 16)
       .attr('text-anchor', 'middle')
       .attr('fill', axisColor)
-      .attr('font-size', 12)
+      .attr('font-size', 16)
       .attr('font-weight', 600)
       .text(copy.xAxisLabel ?? 'Sleep quality')
 
@@ -135,7 +163,7 @@ const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => 
       .attr('y', 20)
       .attr('text-anchor', 'middle')
       .attr('fill', axisColor)
-      .attr('font-size', 12)
+      .attr('font-size', 16)
       .attr('font-weight', 600)
       .text(copy.yAxisLabel ?? 'Stress level')
 
@@ -168,65 +196,12 @@ const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => 
       .data(matrix)
       .join('text')
       .attr('x', (entry) => (xScale(entry.sleepLevel) ?? 0) + xScale.bandwidth() / 2)
-      .attr('y', (entry) => (yScale(entry.stressLevel) ?? 0) + yScale.bandwidth() / 2 + 4)
+      .attr('y', (entry) => (yScale(entry.stressLevel) ?? 0) + yScale.bandwidth() / 2 + 6)
       .attr('text-anchor', 'middle')
       .attr('fill', '#0f172a')
-      .attr('font-size', 12)
+      .attr('font-size', 16)
       .attr('font-weight', 600)
       .text((entry) => (entry.count > 0 ? entry.count : ''))
-
-    const legendWidth = 160
-    const legendHeight = 12
-    const legendX = width - margin.right - legendWidth
-    const legendY = Math.max(4, margin.top - 24)
-
-    const legendScale = d3
-      .scaleLinear()
-      .domain(colorScale.domain())
-      .range([0, legendWidth])
-
-    const legendAxis = d3.axisBottom(legendScale).ticks(4).tickFormat((value) => Math.round(value))
-
-    const defs = svg.append('defs')
-    const gradientId = 'sleep-stress-gradient'
-    const gradient = defs.append('linearGradient').attr('id', gradientId)
-    gradient
-      .selectAll('stop')
-      .data(
-        Array.from({ length: 5 }, (_, index) => ({
-          offset: `${(index / 4) * 100}%`,
-          color: colorScale((index / 4) * maxValue),
-        }))
-      )
-      .join('stop')
-      .attr('offset', (d) => d.offset)
-      .attr('stop-color', (d) => d.color)
-
-    svg
-      .append('rect')
-      .attr('x', legendX)
-      .attr('y', legendY)
-      .attr('width', legendWidth)
-      .attr('height', legendHeight)
-      .attr('fill', `url(#${gradientId})`)
-      .attr('rx', 4)
-
-    svg
-      .append('g')
-      .attr('transform', `translate(${legendX}, ${legendY + legendHeight})`)
-      .call(legendAxis)
-      .call((g) => g.selectAll('text').attr('fill', axisColor).attr('font-size', 10))
-      .call((g) => g.selectAll('path').attr('stroke', gridColor))
-      .call((g) => g.selectAll('line').attr('stroke', gridColor))
-
-    svg
-      .append('text')
-      .attr('x', legendX + legendWidth / 2)
-      .attr('y', legendY - 4)
-      .attr('text-anchor', 'middle')
-      .attr('fill', legendColor)
-      .attr('font-size', 10)
-      .text(copy.axisLabel ?? '')
   }, [cardWidth, condition, common, copy, data, theme])
 
   return (
@@ -254,6 +229,23 @@ const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => 
           </div>
         </div>
       </div>
+      {legendData.maxValue > 0 && (
+        <div className="sleep-stress-matrix__legend">
+          <h4 className="sleep-stress-matrix__legend-title">{copy.axisLabel || 'Frequency'}</h4>
+          <div className="sleep-stress-matrix__legend-gradient">
+            <div 
+              className="sleep-stress-matrix__gradient-bar"
+              style={{
+                background: `linear-gradient(to right, ${legendData.stops.map(s => s.color).join(', ')})`
+              }}
+            />
+            <div className="sleep-stress-matrix__gradient-labels">
+              <span>0</span>
+              <span>{legendData.maxValue}</span>
+            </div>
+          </div>
+        </div>
+      )}
       <svg ref={svgRef} role="img" aria-label={copy.title} />
     </div>
   )
