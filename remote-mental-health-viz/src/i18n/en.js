@@ -177,17 +177,17 @@ const en = {
     tabs: [
       {
         id: 'persona-model',
-        label: 'Persona models',
+        label: 'Interactive models',
         description: 'SVG images that react to dataset filters, shifting facil expressions as the scenario changes.',
       },
       {
         id: 'workload-dashboard',
-        label: 'Workload dashboard',
-        description: 'Overview KPIs plus the hours vs. sleep scatter.',
+        label: 'Overview dashboard',
+        description: 'Global stress distribution and mental-health indicators.',
       },
       {
         id: 'workspace-influence',
-        label: 'Work Space Influence',
+        label: 'Work Space',
         description: 'Workplace mix insights that combine bubble trends with isolation splits.',
       },
       {
