@@ -227,7 +227,7 @@ const SocialIsolationBarChart = ({ data, theme, copy, common, showHeader = true 
       .attr('x', (item) => (xSubScale(item.location) ?? 0) + xSubScale.bandwidth() / 2)
       .attr('y', (item) => Math.max(yScale(item.average ?? 0) - 6, 12))
       .attr('text-anchor', 'middle')
-      .attr('fill', legendColor)
+      .attr('fill', axisColor)
       .attr('font-size', 11)
       .attr('font-weight', 600)
       .text((item) => valueFormatter(item.average ?? 0))
