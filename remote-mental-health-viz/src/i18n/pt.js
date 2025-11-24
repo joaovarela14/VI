@@ -186,6 +186,7 @@ const pt = {
         id: "workload-dashboard",
         label: "Visão geral",
         description: "Distribuição global do stress e indicadores de saúde mental.",
+        note: "Alterne entre visualizações de nível de stress e condição de saúde mental.",
       },
       {
         id: "workspace-influence",

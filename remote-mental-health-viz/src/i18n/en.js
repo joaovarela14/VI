@@ -184,6 +184,7 @@ const en = {
         id: 'workload-dashboard',
         label: 'Overview dashboard',
         description: 'Global stress distribution and mental-health indicators.',
+        note: 'Toggle between stress level and mental health condition views.',
       },
       {
         id: 'workspace-influence',
