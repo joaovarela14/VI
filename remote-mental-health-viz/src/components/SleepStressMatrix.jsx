@@ -16,21 +16,18 @@ const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => 
   }, [data])
 
   const legendData = useMemo(() => {
-    const filtered = data.filter((item) => condition === 'all' || (item.mentalHealthCondition ?? 'Other') === condition)
+    // Usa 600 para "all conditions", 200 para condições específicas
+    const maxValue = condition === 'all' ? 600 : 200
     
-    const matrix = STRESS_LEVELS.flatMap((stressLevel) =>
-      SLEEP_LEVELS.map((sleepLevel) => {
-        const count = filtered.filter(
-          (item) => item.stressLevel === stressLevel && item.sleepQuality === sleepLevel
-        ).length
-        return { count }
-      })
-    )
-
-    const maxValue = d3.max(matrix, (entry) => entry.count) ?? 0
-    const colorScale = d3.scaleSequential(d3.interpolateYlOrRd).domain([0, maxValue])
+    const colorScale = d3.scaleSequential((t) => {
+      // Cores: verde -> amarelo -> laranja -> vermelho
+      const h = (1 - t) * 120 + t * 0 // De 120° (verde) para 0° (vermelho)
+      const s = 75 + t * 15 // Saturação aumenta de 75% para 90%
+      const l = 75 - t * 25 // Luminosidade diminui de 75% para 50%
+      return `hsl(${h}, ${s}%, ${l}%)`
+    }).domain([0, maxValue])
     
-    // Create gradient stops
+    // Create gradient stops from 0 to maxValue
     const stops = Array.from({ length: 5 }, (_, index) => ({
       offset: (index / 4) * 100,
       color: colorScale((index / 4) * maxValue),
@@ -38,7 +35,7 @@ const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => 
     }))
 
     return { maxValue, stops }
-  }, [data, condition])
+  }, [condition])
 
   useEffect(() => {
     if (typeof ResizeObserver === 'undefined') {
@@ -121,8 +118,14 @@ const SleepStressMatrix = ({ data, theme, copy, common, showHeader = true }) => 
     const yScale = d3.scaleBand().domain(yDomain).range([margin.top, height - margin.bottom]).padding(0.15)
 
     const colorScale = d3
-      .scaleSequential((t) => d3.interpolateTurbo(t))
-      .domain([0, maxValue || 1])
+      .scaleSequential((t) => {
+        // Cores: verde -> amarelo -> laranja -> vermelho
+        const h = (1 - t) * 120 + t * 0 // De 120° (verde) para 0° (vermelho)
+        const s = 75 + t * 15 // Saturação aumenta de 75% para 90%
+        const l = 75 - t * 25 // Luminosidade diminui de 75% para 50%
+        return `hsl(${h}, ${s}%, ${l}%)`
+      })
+      .domain([0, condition === 'all' ? 600 : 200])
 
     const sleepLabels = common?.sleepQuality ?? {}
     const stressLabels = common?.stressLevels ?? {}
