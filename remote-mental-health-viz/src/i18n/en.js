@@ -187,7 +187,7 @@ const en = {
       },
       {
         id: 'workspace-influence',
-        label: 'Work Space',
+        label: 'Workspace',
         description: 'Workplace mix insights that combine bubble trends with isolation splits.',
       },
       {
