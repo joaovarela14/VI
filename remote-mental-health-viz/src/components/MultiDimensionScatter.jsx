@@ -404,6 +404,7 @@ const MultiDimensionScatter = ({ data, theme, copy, common, showHeader = true })
             <div>
               <h3>{copy.title}</h3>
               <p>{copy.description}</p>
+              {copy.hint && <p className="chart-hint">{copy.hint}</p>}
             </div>
           )}
           <div className="chart-controls-stack">

@@ -251,6 +251,7 @@ const WorkLifeBalanceLineChart = ({ data, theme, copy, showHeader = true }) => {
             <div>
               <h3>{copy.title}</h3>
               <p>{copy.description}</p>
+              {copy.hint && <p className="chart-hint">{copy.hint}</p>}
             </div>
           )}
           <label className="chart-controls chart-filter-group">

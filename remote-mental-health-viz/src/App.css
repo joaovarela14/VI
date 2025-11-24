@@ -168,6 +168,15 @@
   color: var(--text-muted);
 }
 
+.hero__note {
+  margin: 0.5rem 0 0 0;
+  max-width: 1180px;
+  line-height: 1.5;
+  font-size: 0.85rem;
+  color: var(--text-subtle);
+  font-style: italic;
+}
+
 .hero__meta {
   display: flex;
   flex-wrap: wrap;
@@ -816,6 +825,14 @@ main {
   color: var(--text-muted);
   line-height: 1.5;
   font-size: 0.95rem;
+}
+
+.chart-hint {
+  margin: 0.5rem 0 0 0 !important;
+  color: var(--text-subtle) !important;
+  font-size: 0.8rem !important;
+  font-style: italic;
+  opacity: 0.85;
 }
 
 .chart-card svg {

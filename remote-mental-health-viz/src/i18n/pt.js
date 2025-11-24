@@ -192,12 +192,14 @@ const pt = {
         label: "Local de trabalho",
         description:
           "Insights sobre a mistura de modalidades ao combinar bolhas e cortes de isolamento social.",
+        note: "Passe o rato sobre as bolhas e barras para informação detalhada e classificações.",
       },
       {
         id: "mental-health",
         label: "Saúde mental",
         description:
           "Tendências de acesso a apoio e o mapa de calor sono vs stress.",
+        note: "Passe o rato sobre os gráficos para métricas detalhadas e número de respostas.",
       },
       {
         id: "documentation",
@@ -307,9 +309,10 @@ const pt = {
     },
   },
   socialIsolationBar: {
-    title: "Isolamento social por continente",
+    title: 'Isolamento social por continente',
     description:
-      "Classificação média de isolamento social (1 = baixo, 5 = elevado) por continente. Refine por género e acesso a apoio psicológico.",
+      'Classificação média de isolamento social (1 = baixo, 5 = elevado) por continente. Refine por género e acesso a apoio psicológico.',
+    hint: 'Passe o rato sobre as barras para classificações detalhadas',
     legendTitle: "Modalidade de trabalho",
     filters: {
       region: "Filtrar por continente",
@@ -328,9 +331,10 @@ const pt = {
       )}\nRespostas: ${integerFormatter.format(count ?? 0)}`,
   },
   sleepStressMatrix: {
-    title: "Qualidade do sono vs. stress",
+    title: 'Qualidade do sono vs. stress',
     description:
-      "O mapa de calor revela como a qualidade do sono varia consoante o nível de stress. Foque uma condição de saúde mental específica para identificar padrões distintos de descanso.",
+      'O mapa de calor revela como a qualidade do sono varia consoante o nível de stress. Foque uma condição de saúde mental específica para identificar padrões distintos de descanso.',
+    hint: 'Passe o rato sobre as células para ver número de respostas',
     filters: {
       condition: "Filtrar por condição de saúde mental",
       allConditions: "Todas as condições",
@@ -350,9 +354,10 @@ const pt = {
     },
   },
   scatter: {
-    title: "Horas, local de trabalho e reuniões influenciam stress",
+    title: 'Horas, local de trabalho e reuniões influenciam stress',
     description:
-      "A cor codifica a modalidade, o tamanho das bolhas reflete o stress e o eixo vertical mostra as reuniões virtuais por semana.",
+      'A cor codifica a modalidade, o tamanho das bolhas reflete o stress e o eixo vertical mostra as reuniões virtuais por semana.',
+    hint: 'Passe o rato sobre as bolhas para informação detalhada',
     filterLabel: "Localização de trabalho",
     industryFilterLabel: "Filtrar por área",
     sampleFilterLabel: "Limite da amostra",
@@ -397,9 +402,11 @@ const pt = {
        )}</strong></div>`,
   },
   workLifeBalanceLine: {
-    title: "Equilíbrio trabalho-vida por experiência / idade",
+    title: 'Equilíbrio trabalho-vida por experiência / idade',
     description:
-      "Compare a classificação média de equilíbrio trabalho-vida entre pessoas com e sem acesso a recursos de saúde mental. Altere o eixo X para observar a tendência por idade ou anos de experiência.",
+      'Compare a classificação média de equilíbrio trabalho-vida entre pessoas com e sem acesso a recursos de saúde mental. Altere o eixo X para observar a tendência por idade ou anos de experiência.',
+    hint: 'Passe o rato sobre os pontos da linha para métricas completas',
+    hint: 'Passe o rato sobre os pontos da linha para métricas completas',
     toggleLabel: "Selecionar eixo horizontal",
     xOptions: {
       age: "Idade",

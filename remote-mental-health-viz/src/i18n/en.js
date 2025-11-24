@@ -189,11 +189,13 @@ const en = {
         id: 'workspace-influence',
         label: 'Workspace',
         description: 'Workplace mix insights that combine bubble trends with isolation splits.',
+        note: 'Hover over bubbles and bars for detailed information and ratings.',
       },
       {
         id: 'mental-health',
         label: 'Mental health',
         description: 'Support access trends and the sleep vs. stress temperature map.',
+        note: 'Hover over charts for detailed metrics and respondent counts.',
       },
       {
         id: 'documentation',
@@ -294,6 +296,7 @@ const en = {
     title: 'Social isolation by continent',
     description:
       'Average social isolation rating (1 = low, 5 = high) split by continent. Refine the data by gender and access to mental health resources.',
+    hint: 'Hover over bars for detailed ratings',
     legendTitle: 'Work location',
     filters: {
       region: 'Filter by continent',
@@ -313,6 +316,7 @@ const en = {
     title: 'Sleep quality vs. stress',
     description:
       'A heatmap reveals how sleep quality changes with stress levels. Focus on a specific mental health condition to uncover distinctive rest patterns.',
+    hint: 'Hover over cells to see respondent counts',
     filters: {
       condition: 'Filter by mental health condition',
       allConditions: 'All conditions',
@@ -335,6 +339,7 @@ const en = {
     title: 'Hours, work location and meetings influence on stress',
     description:
       'Colour encodes workplace arrangement, bubble size reflects stress levels, and the vertical axis shows virtual meetings per week.',
+    hint: 'Hover over bubbles for detailed information',
     filterLabel: 'Work location',
     industryFilterLabel: 'Filter by work area',
     sampleFilterLabel: 'Sample limit',
@@ -373,6 +378,7 @@ const en = {
     title: 'Work-life balance by experience / age',
     description:
       'Compare average work-life balance ratings between people with and without access to mental health resources. Switch the X axis to view the trend by age or years of experience.',
+    hint: 'Hover over line points for complete metrics',
     toggleLabel: 'Select horizontal axis',
     xOptions: {
       age: 'Age',

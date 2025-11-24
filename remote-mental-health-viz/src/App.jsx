@@ -38,6 +38,7 @@ function App() {
   const activeTabConfig = useMemo(() => navigationTabs.find((tab) => tab.id === activeTab), [navigationTabs, activeTab])
   const heroTitle = activeTabConfig?.label ?? copy.hero.title
   const heroSubtitle = activeTabConfig?.description ?? ''
+  const heroNote = activeTabConfig?.note ?? ''
   const hasNavigation = navigationTabs.length > 0
   const navigationId = 'primary-navigation'
 
@@ -255,6 +256,7 @@ function App() {
                   {copy.hero.eyebrow && <p className="hero__eyebrow">{copy.hero.eyebrow}</p>}
                   {heroTitle && <h1>{heroTitle}</h1>}
                   {heroSubtitle && <p className="hero__lead">{heroSubtitle}</p>}
+                  {heroNote && <p className="hero__note">{heroNote}</p>}
                 </div>
                 <div className="hero__controls" role="group" aria-label={controlsLabel}>
                   <button
