@@ -350,7 +350,7 @@ const pt = {
     },
   },
   scatter: {
-    title: "Horas, stress e ritmo de reuniões",
+    title: "Horas, local de trabalho e reuniões influenciam stress",
     description:
       "A cor codifica a modalidade, o tamanho das bolhas reflete o stress e o eixo vertical mostra as reuniões virtuais por semana.",
     filterLabel: "Localização de trabalho",
@@ -397,7 +397,7 @@ const pt = {
        )}</strong></div>`,
   },
   workLifeBalanceLine: {
-    title: "Equilíbrio trabalho-vida por experiência",
+    title: "Equilíbrio trabalho-vida por experiência / idade",
     description:
       "Compare a classificação média de equilíbrio trabalho-vida entre pessoas com e sem acesso a recursos de saúde mental. Altere o eixo X para observar a tendência por idade ou anos de experiência.",
     toggleLabel: "Selecionar eixo horizontal",

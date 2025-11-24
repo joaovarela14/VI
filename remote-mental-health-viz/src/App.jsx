@@ -174,8 +174,14 @@ function App() {
         return (
           <section className="section section--wide">
             <div className="chart-grid">
-              <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} showHeader={false} />
-              <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} common={copy.common} showHeader={false} />
+              <div className="chart-wrapper">
+                <h4 className="chart-mini-title"><span className="chart-type">Bubble Chart</span> {copy.scatter?.title}</h4>
+                <MultiDimensionScatter data={data} theme={theme} copy={copy.scatter} common={copy.common} showHeader={false} />
+              </div>
+              <div className="chart-wrapper">
+                <h4 className="chart-mini-title"><span className="chart-type">Bar Chart</span> {copy.socialIsolationBar?.title}</h4>
+                <SocialIsolationBarChart data={data} theme={theme} copy={copy.socialIsolationBar} common={copy.common} showHeader={false} />
+              </div>
             </div>
           </section>
         )
@@ -184,8 +190,14 @@ function App() {
         return (
           <section className="section section--wide">
             <div className="chart-grid">
-              <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} showHeader={false} />
-              <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} showHeader={false} />
+              <div className="chart-wrapper">
+                <h4 className="chart-mini-title"><span className="chart-type">Line Chart</span> {copy.workLifeBalanceLine?.title}</h4>
+                <WorkLifeBalanceLineChart data={data} theme={theme} copy={copy.workLifeBalanceLine} showHeader={false} />
+              </div>
+              <div className="chart-wrapper">
+                <h4 className="chart-mini-title"><span className="chart-type">Heatmap</span> {copy.sleepStressMatrix?.title}</h4>
+                <SleepStressMatrix data={data} theme={theme} copy={copy.sleepStressMatrix} common={copy.common} showHeader={false} />
+              </div>
             </div>
           </section>
         )

@@ -698,6 +698,36 @@ main {
   gap: 2rem;
 }
 
+.chart-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chart-mini-title {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-left: 0.5rem;
+}
+
+.chart-type {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  background: var(--chart-surface);
+  border: 1px solid var(--chart-border);
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-right: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+}
+
 .chart-grid--single {
   grid-template-columns: minmax(320px, 1fr);
   grid-auto-rows: 1fr;

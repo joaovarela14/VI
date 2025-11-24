@@ -332,7 +332,7 @@ const en = {
     },
   },
   scatter: {
-    title: 'Hours, stress, and meeting cadence',
+    title: 'Hours, work location and meetings influence on stress',
     description:
       'Colour encodes workplace arrangement, bubble size reflects stress levels, and the vertical axis shows virtual meetings per week.',
     filterLabel: 'Work location',
@@ -370,7 +370,7 @@ const en = {
        )}</strong></div>`,
   },
   workLifeBalanceLine: {
-    title: 'Work-life balance by experience',
+    title: 'Work-life balance by experience / age',
     description:
       'Compare average work-life balance ratings between people with and without access to mental health resources. Switch the X axis to view the trend by age or years of experience.',
     toggleLabel: 'Select horizontal axis',
