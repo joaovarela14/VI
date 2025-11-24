@@ -122,7 +122,7 @@ const pt = {
     panel: {
       title: "Ajusta a amostra",
       subtitle:
-        "Interage com o laboratório para explorar os estados de stress remoto vs presencial.",
+        "Interage com o laboratório de stress para explorar os estados remoto vs presencial.",
       reset: "Repor parâmetros",
       hours: {
         label: "Horas por semana",
@@ -178,18 +178,18 @@ const pt = {
     tabs: [
       {
         id: "persona-model",
-        label: "Modelo da persona",
+        label: "Modelos interativos",
         description:
           "Avatares SVG que reagem aos filtros do dataset, alterando expressões conforme o cenário.",
       },
       {
         id: "workload-dashboard",
-        label: "Painel de carga",
-        description: "KPIs principais e o gráfico de dispersão horas vs sono.",
+        label: "Visão geral",
+        description: "Acompanha os KPIs principais lado a lado com o gráfico horas vs sono.",
       },
       {
         id: "workspace-influence",
-        label: "Work Space Influence",
+        label: "Local de trabalho",
         description:
           "Insights sobre a mistura de modalidades ao combinar bolhas e cortes de isolamento social.",
       },
