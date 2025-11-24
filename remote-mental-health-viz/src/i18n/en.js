@@ -183,7 +183,7 @@ const en = {
       {
         id: 'workload-dashboard',
         label: 'Overview dashboard',
-        description: 'T the hours vs. sleep scatterplot.',
+        description: 'Global stress distribution and mental-health indicators.',
       },
       {
         id: 'workspace-influence',

@@ -185,7 +185,7 @@ const pt = {
       {
         id: "workload-dashboard",
         label: "Visão geral",
-        description: "Acompanha os KPIs principais lado a lado com o gráfico horas vs sono.",
+        description: "Distribuição global do stress e indicadores de saúde mental.",
       },
       {
         id: "workspace-influence",
