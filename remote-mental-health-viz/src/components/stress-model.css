@@ -253,6 +253,43 @@ body.theme-light .stress-lab__comparison {
   gap: 0.45rem;
 }
 
+.slider-wrapper {
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.slider-ticks {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  right: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.slider-tick {
+  position: absolute;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.slider-tick-mark {
+  width: 2px;
+  height: 12px;
+  background: var(--text-muted);
+  opacity: 0.5;
+}
+
+.slider-tick-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 0.2rem;
+}
+
 .control-label {
   display: flex;
   flex-direction: column;
@@ -272,6 +309,22 @@ body.theme-light .stress-lab__comparison {
   border-radius: 999px;
   background: rgba(148, 163, 184, 0.35);
   appearance: none;
+}
+
+.control-slider:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.control-slider:disabled::-webkit-slider-thumb {
+  cursor: not-allowed;
+  background: #94a3b8;
+  box-shadow: 0 0 0 6px rgba(148, 163, 184, 0.15);
+}
+
+.control-slider:disabled::-moz-range-thumb {
+  cursor: not-allowed;
+  background: #94a3b8;
 }
 
 .control-slider::-webkit-slider-thumb {

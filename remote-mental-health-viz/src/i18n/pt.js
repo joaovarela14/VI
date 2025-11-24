@@ -135,9 +135,9 @@ const pt = {
       sleep: {
         label: "Qualidade do sono",
         labels: {
-          Poor: "Sem descanso",
-          Average: "Equilibrado",
-          Good: "Revigorado",
+          Poor: "Mau",
+          Average: "Razoável",
+          Good: "Bom",
         },
       },
       gender: {
@@ -444,10 +444,7 @@ const pt = {
        <div class="chart-tooltip__meta">Proporção: <strong>${percentFormatter.format(
          Math.min(share ?? 0, 1)
        )}</strong></div>
-       <div class="chart-tooltip__meta">Respostas na modalidade: <strong>${formatCount(
-         total
-       )}</strong></div>
-       <div class="chart-tooltip__meta">Funções estimadas: <strong>${formatCount(
+       <div class="chart-tooltip__meta">Número de funções: <strong>${formatCount(
          count
        )}</strong></div>`,
   },

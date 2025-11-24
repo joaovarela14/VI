@@ -102,16 +102,7 @@ const StressModel = ({ label, percent, stateLabel, variant = 'remote', context }
 
   return (
     <div className={`stress-model stress-model--${variant} stress-model--${stateKey}`} style={inlineStyle}>
-      {context?.label && (
-        <p className="stress-model__tag">
-          {context?.icon && (
-            <span className="stress-model__tag-icon" aria-hidden="true">
-              {context.icon}
-            </span>
-          )}
-          <span>{context.label}</span>
-        </p>
-      )}
+
 
       <div className="stress-model__layout">
        <div className="stress-model__scene">
@@ -272,48 +263,79 @@ function StressPersonaHero({ data = [], copy = {}, theme = 'light' }) {
               <label htmlFor="hours-slider" className="control-label">
                 {copy?.panel?.hours?.label} <strong>{hours} {copy?.panel?.hours?.unit}</strong>
               </label>
-              <input
-                id="hours-slider"
-                type="range"
-                min="25"
-                max="60"
-                step="1"
-                value={hours}
-                onChange={(event) => setHours(Number.parseInt(event.target.value, 10))}
-                className="control-slider control-slider--remote"
-              />
+              <div className="slider-wrapper">
+                <input
+                  id="hours-slider"
+                  type="range"
+                  min="25"
+                  max="60"
+                  step="1"
+                  value={hours}
+                  onChange={(event) => setHours(Number.parseInt(event.target.value, 10))}
+                  disabled={genderFilters.length === 0}
+                  className="control-slider control-slider--remote"
+                />
+                <div className="slider-ticks">
+                  {[25, 30, 35, 40, 45, 50, 55, 60].map((tick) => (
+                    <div key={tick} className="slider-tick" style={{ left: `${((tick - 25) / (60 - 25)) * 100}%` }}>
+                      <span className="slider-tick-mark"></span>
+                      <span className="slider-tick-label">{tick}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
             <div className="control-group">
               <label htmlFor="company-support-slider" className="control-label">
                 {copy?.panel?.companySupport?.label} <strong>{companySupport} {copy?.panel?.companySupport?.unit}</strong>
               </label>
-              <input
-                id="company-support-slider"
-                type="range"
-                min="1"
-                max="5"
-                step="1"
-                value={6 - companySupport}
-                onChange={(event) => setCompanySupport(6 - Number.parseInt(event.target.value, 10))}
-                className="control-slider control-slider--onsite"
-              />
+              <div className="slider-wrapper">
+                <input
+                  id="company-support-slider"
+                  type="range"
+                  min="1"
+                  max="5"
+                  value={companySupport}
+                  onChange={(event) => setCompanySupport(Number.parseInt(event.target.value, 10))}
+                  disabled={genderFilters.length === 0}
+                  className="control-slider control-slider--onsite control-slider--snap"
+                />
+                <div className="slider-ticks">
+                  {[1, 2, 3, 4, 5].map((tick) => (
+                    <div key={tick} className="slider-tick" style={{ left: `${((tick - 1) / (5 - 1)) * 100}%` }}>
+                      <span className="slider-tick-mark"></span>
+                      <span className="slider-tick-label">{tick}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
             <div className="control-group">
               <label htmlFor="sleep-slider" className="control-label">
                 {copy?.panel?.sleep?.label} <strong>{sleepLabel}</strong>
               </label>
-              <input
-                id="sleep-slider"
-                type="range"
-                min="1"
-                max="3"
-                step="1"
-                value={4 - sleepFocus}
-                onChange={(event) => setSleepFocus(4 - Number.parseInt(event.target.value, 10))}
-                className="control-slider control-slider--sleep"
-              />
+              <div className="slider-wrapper">
+                <input
+                  id="sleep-slider"
+                  type="range"
+                  min="1"
+                  max="3"
+                  value={sleepFocus}
+                  onChange={(event) => setSleepFocus(Number.parseInt(event.target.value, 10))}
+                  disabled={genderFilters.length === 0}
+                  className="control-slider control-slider--sleep control-slider--snap"
+                />
+                <div className="slider-ticks">
+                  {['Poor', 'Average', 'Good'].map((label, index) => (
+                    <div key={index + 1} className="slider-tick" style={{ left: `${(index / 2) * 100}%` }}>
+                      <span className="slider-tick-mark"></span>
+                      <span className="slider-tick-label">{label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 

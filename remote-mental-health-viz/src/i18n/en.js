@@ -134,9 +134,9 @@ const en = {
       sleep: {
         label: 'Sleep quality',
         labels: {
-          Poor: 'Restless',
-          Average: 'Balanced',
-          Good: 'Rested',
+          Poor: 'Poor',
+          Average: 'Average',
+          Good: 'Good',
         },
       },
       gender: {
@@ -406,8 +406,7 @@ const en = {
       `<div class="chart-tooltip__title">${role}</div>
        <div class="chart-tooltip__meta">${locationLabel}</div>
        <div class="chart-tooltip__meta">Share: <strong>${percentFormatter.format(Math.min(share ?? 0, 1))}</strong></div>
-       <div class="chart-tooltip__meta">Responses in location: <strong>${formatCount(total)}</strong></div>
-       <div class="chart-tooltip__meta">Approx. role count: <strong>${formatCount(count)}</strong></div>`,
+       <div class="chart-tooltip__meta">Role count: <strong>${formatCount(count)}</strong></div>`,
   },
   loading: 'Loading survey responses…',
   error: 'We were unable to load the dataset. Please try again later.',
