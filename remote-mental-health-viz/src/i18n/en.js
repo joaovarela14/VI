@@ -91,7 +91,7 @@ const en = {
       },
       language: {
         toEnglish: 'Switch to English',
-        toPortuguese: 'Switch to Portuguese',
+        toPortuguese: 'Mudar para Português',
         aria: 'Change language',
       },
     },

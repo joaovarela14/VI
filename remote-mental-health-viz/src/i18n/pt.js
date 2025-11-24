@@ -90,7 +90,7 @@ const pt = {
         aria: "Alternar entre modo claro e escuro",
       },
       language: {
-        toEnglish: "Mudar para Inglês",
+        toEnglish: "Switch to English",
         toPortuguese: "Mudar para Português",
         aria: "Alterar idioma",
       },
