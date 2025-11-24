@@ -116,7 +116,7 @@ const WorkLifeBalanceLineChart = ({ data, theme, copy, showHeader = true }) => {
 
     const width = 640
     const height = 360
-    const margin = { top: 48, right: 200, bottom: 56, left: 64 }
+    const margin = { top: 48, right: 48, bottom: 56, left: 64 }
 
     const svg = d3.select(svgRef.current)
     svg.selectAll('*').remove()
@@ -160,7 +160,7 @@ const WorkLifeBalanceLineChart = ({ data, theme, copy, showHeader = true }) => {
       .call((g) =>
         g
           .selectAll('text')
-          .attr('font-size', 12)
+          .attr('font-size', 16)
           .attr('fill', axisColor)
       )
       .call((g) => g.selectAll('path').attr('stroke', gridColor))
@@ -172,7 +172,7 @@ const WorkLifeBalanceLineChart = ({ data, theme, copy, showHeader = true }) => {
       .call((g) =>
         g
           .selectAll('text')
-          .attr('font-size', 12)
+          .attr('font-size', 16)
           .attr('fill', axisColor)
       )
       .call((g) => g.selectAll('path').attr('stroke', gridColor))
@@ -184,7 +184,7 @@ const WorkLifeBalanceLineChart = ({ data, theme, copy, showHeader = true }) => {
       .attr('y', innerHeight + 40)
       .attr('text-anchor', 'middle')
       .attr('fill', axisColor)
-      .attr('font-size', 12)
+      .attr('font-size', 16)
       .text(copy.xOptions[dimension])
 
     const yLabel = chartGroup
@@ -194,7 +194,7 @@ const WorkLifeBalanceLineChart = ({ data, theme, copy, showHeader = true }) => {
       .attr('y', -48)
       .attr('text-anchor', 'middle')
       .attr('fill', axisColor)
-      .attr('font-size', 12)
+      .attr('font-size', 16)
       .text(copy.yAxisLabel)
 
     const lineGenerator = d3
@@ -232,43 +232,6 @@ const WorkLifeBalanceLineChart = ({ data, theme, copy, showHeader = true }) => {
       .on('mousemove', (event, datum) => showTooltip(event, datum, datum.accessKey))
       .on('mouseleave', hideTooltip)
 
-    const legend = svg
-      .append('g')
-      .attr('class', 'legend')
-      .attr('transform', `translate(${width - margin.right + 20}, ${margin.top})`)
-
-    legend
-      .append('text')
-      .attr('x', 0)
-      .attr('y', 0)
-      .attr('fill', legendColor)
-      .attr('font-size', 13)
-      .attr('font-weight', 600)
-      .text(copy.legendTitle)
-
-    const legendItems = legend
-      .selectAll('g')
-      .data(ACCESS_KEYS)
-      .join('g')
-      .attr('transform', (_, index) => `translate(0, ${(index + 1) * 24})`)
-
-    legendItems
-      .append('line')
-      .attr('x1', 0)
-      .attr('y1', 6)
-      .attr('x2', 24)
-      .attr('y2', 6)
-      .attr('stroke-width', 3)
-      .attr('stroke', (key) => ACCESS_COLORS[key] ?? '#60a5fa')
-
-    legendItems
-      .append('text')
-      .attr('x', 32)
-      .attr('y', 9)
-      .attr('fill', legendColor)
-      .attr('font-size', 12)
-      .text((key) => copy.legend[key] ?? key)
-
     return () => {
       hideTooltip()
     }
@@ -305,7 +268,23 @@ const WorkLifeBalanceLineChart = ({ data, theme, copy, showHeader = true }) => {
       {!hasData ? (
         <p className="chart-empty">{copy.empty}</p>
       ) : (
-        <svg ref={svgRef} role="img" aria-label={copy.ariaLabel} />
+        <>
+          <div className="work-life-balance__legend">
+            <h4 className="work-life-balance__legend-title">{copy.legendTitle}</h4>
+            <div className="work-life-balance__legend-items">
+              {ACCESS_KEYS.map((key) => (
+                <div key={key} className="work-life-balance__legend-item">
+                  <div
+                    className="work-life-balance__legend-line"
+                    style={{ backgroundColor: ACCESS_COLORS[key] }}
+                  />
+                  <span>{copy.legend[key] ?? key}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <svg ref={svgRef} role="img" aria-label={copy.ariaLabel} />
+        </>
       )}
     </div>
   )
