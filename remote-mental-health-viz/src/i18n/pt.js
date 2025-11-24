@@ -232,7 +232,7 @@ const pt = {
       },
     ],
     radarShowcase: {
-      heading: "Gráfico radar: mistura de funções por modalidade",
+      heading: "Spider chart: distribuição de funções por modalidade",
       intro:
         "Usa o radar para perceber que funções lideram em cada local de trabalho. Passa o rato pelo gráfico para ler proporções exatas antes de mergulhar nas notas qualitativas.",
     },
