@@ -33,6 +33,9 @@ def main():
     # (output type is vtkPolyData) which other filters may process.
     
     coneSource = vtkConeSource()
+    coneSource.SetHeight(2)
+    coneSource.SetRadius(1)
+    coneSource.SetResolution(100)
     
     # We create an instance of vtkPolyDataMapper to map the polygonal data
     # into graphics primitives. We connect the output of the cone source 
@@ -55,6 +58,7 @@ def main():
     # responsible for drawing the actors it has.  We also set the background
     # color here.
     ren = vtkRenderer()
+    ren.SetBackground(1,1,1)
     ren.AddActor( coneActor )
     
     # Finally we create the render window which will show up on the screen.
@@ -63,12 +67,13 @@ def main():
     
     renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
+    renWin.SetSize(300,300)
 
     renWin.SetWindowName('Cone')
 
     
     # Now we loop over 360 degrees and render the cone each time.
-    for i in range(0,360):
+    for i in range(0,1360):
         # render the image
         renWin.Render()
         # rotate the active camera by one degree
