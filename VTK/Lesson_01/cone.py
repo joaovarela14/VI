@@ -16,9 +16,9 @@ from vtkmodules.all import *
 def main():
 
     coneSource = vtkConeSource()
-    coneSource.SetHeight(2)          # altura do cone
-    coneSource.SetRadius(1)          # raio do cone
-    coneSource.SetResolution(100)    # resolução do cone
+    coneSource.SetHeight(2)
+    coneSource.SetRadius(1)
+    coneSource.SetResolution(100)
     
     coneMapper = vtkPolyDataMapper()
     coneMapper.SetInputConnection(coneSource.GetOutputPort())
@@ -29,10 +29,10 @@ def main():
 
     # Esfera
 
-    sphereSource = vtkSphereSource()     # fonte da esfera
-    sphereSource.SetRadius(2)            # raio = 2
-    sphereSource.SetPhiResolution(100)   # resolução vertical
-    sphereSource.SetThetaResolution(100) # resolução horizontal
+    sphereSource = vtkSphereSource()
+    sphereSource.SetRadius(2)
+    sphereSource.SetPhiResolution(100)
+    sphereSource.SetThetaResolution(100)
 
     sphereMapper = vtkPolyDataMapper()
     sphereMapper.SetInputConnection(sphereSource.GetOutputPort())
@@ -42,10 +42,10 @@ def main():
 
     # Cilindro
     
-    cylinderSource = vtkCylinderSource()  # fonte do cilindro
-    cylinderSource.SetRadius(2)           # raio = 2
-    cylinderSource.SetHeight(3)           # altura = 3
-    cylinderSource.SetResolution(100)     # resolução lateral
+    cylinderSource = vtkCylinderSource()
+    cylinderSource.SetRadius(2)
+    cylinderSource.SetHeight(3)
+    cylinderSource.SetResolution(100)
 
     cylinderMapper = vtkPolyDataMapper()
     cylinderMapper.SetInputConnection(cylinderSource.GetOutputPort())
@@ -63,7 +63,7 @@ def main():
 
     renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    renWin.SetSize(300,300)                  # tamanho original 300x300
+    renWin.SetSize(300,300)  # tamanho original 300x300
     renWin.SetWindowName('Lesson 1')
 
     for i in range(0,1360):
