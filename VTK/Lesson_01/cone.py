@@ -13,72 +13,62 @@
 # Import all VTK modules
 from vtkmodules.all import *
 
-# Import only needed modules
-# import vtkmodules.vtkInteractionStyle
-# import vtkmodules.vtkRenderingOpenGL2
-# from vtkmodules.vtkFiltersSources import vtkConeSource
-# from vtkmodules.vtkRenderingCore import (
-#     vtkActor,
-#     vtkPolyDataMapper,
-#     vtkRenderWindow,
-#     vtkRenderWindowInteractor,
-#     vtkRenderer
-# )
-
 def main():
 
-    # We Create an instance of vtkConeSource and set some of its
-    # properties. The instance of vtkConeSource "cone" is part of a
-    # visualization pipeline (it is a source process object); it produces data
-    # (output type is vtkPolyData) which other filters may process.
-    
     coneSource = vtkConeSource()
-    coneSource.SetHeight(2)
-    coneSource.SetRadius(1)
-    coneSource.SetResolution(100)
+    coneSource.SetHeight(2)          # altura do cone
+    coneSource.SetRadius(1)          # raio do cone
+    coneSource.SetResolution(100)    # resolução do cone
     
-    # We create an instance of vtkPolyDataMapper to map the polygonal data
-    # into graphics primitives. We connect the output of the cone source 
-    # to the input of this mapper.
-  
     coneMapper = vtkPolyDataMapper()
-    coneMapper.SetInputConnection( coneSource.GetOutputPort() )
-
-    # We create an actor to represent the cone. The actor orchestrates rendering
-    # of the mapper's graphics primitives. An actor also refers to properties
-    # via a vtkProperty instance, and includes an internal transformation
-    # matrix. We set this actor's mapper to be coneMapper which we created
-    # above.
+    coneMapper.SetInputConnection(coneSource.GetOutputPort())
   
     coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
 
-    # Create the Renderer and assign actors to it. A renderer is like a
-    # viewport. It is part or all of a window on the screen and it is
-    # responsible for drawing the actors it has.  We also set the background
-    # color here.
+
+    # Esfera
+
+    sphereSource = vtkSphereSource()     # fonte da esfera
+    sphereSource.SetRadius(2)            # raio = 2
+    sphereSource.SetPhiResolution(100)   # resolução vertical
+    sphereSource.SetThetaResolution(100) # resolução horizontal
+
+    sphereMapper = vtkPolyDataMapper()
+    sphereMapper.SetInputConnection(sphereSource.GetOutputPort())
+
+    sphereActor = vtkActor()
+    sphereActor.SetMapper(sphereMapper)
+
+    # Cilindro
+    
+    cylinderSource = vtkCylinderSource()  # fonte do cilindro
+    cylinderSource.SetRadius(2)           # raio = 2
+    cylinderSource.SetHeight(3)           # altura = 3
+    cylinderSource.SetResolution(100)     # resolução lateral
+
+    cylinderMapper = vtkPolyDataMapper()
+    cylinderMapper.SetInputConnection(cylinderSource.GetOutputPort())
+
+    cylinderActor = vtkActor()
+    cylinderActor.SetMapper(cylinderMapper)
+
+
     ren = vtkRenderer()
     ren.SetBackground(1,1,1)
-    ren.AddActor( coneActor )
+    # ren.AddActor(coneActor)
+    # ren.AddActor(sphereActor)
+    ren.AddActor(cylinderActor)
     
-    # Finally we create the render window which will show up on the screen.
-    # We put our renderer into the render window using AddRenderer. We also
-    # set the size to be 300 pixels by 300.
-    
+
     renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    renWin.SetSize(300,300)
+    renWin.SetSize(300,300)                  # tamanho original 300x300
+    renWin.SetWindowName('Lesson 1')
 
-    renWin.SetWindowName('Cone')
-
-    
-    # Now we loop over 360 degrees and render the cone each time.
     for i in range(0,1360):
-        # render the image
         renWin.Render()
-        # rotate the active camera by one degree
         ren.GetActiveCamera().Azimuth(1)
-
 
 if __name__ == '__main__':
     main()
