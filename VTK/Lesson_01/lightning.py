@@ -53,18 +53,6 @@ def main():
     cylinderActor = vtkActor()
     cylinderActor.SetMapper(cylinderMapper)
 
-
-    ren = vtkRenderer()
-    ren.SetBackground(1,1,1)
-    
-    #cam1 = vtkCamera()
-
-    cam1 = ren.GetActiveCamera()
-    cam1.SetPosition(10,10,0)
-    cam1.SetViewUp(0,1,1)
-    # Set orthographic projection
-    cam1.SetParallelProjection(True)
-    
     # Create a cube source
     cubeSource = vtkCubeSource()
     
@@ -73,18 +61,29 @@ def main():
     
     cubeActor = vtkActor()
     cubeActor.SetMapper(cubeMapper)
-    # cubeActor.GetProperty().SetRepresentationToWireframe()
+
+
+    ren = vtkRenderer()
+    ren.SetBackground(1,1,1)
+    
+    # Lighting: Add a red light at camera position
+    cam1 = ren.GetActiveCamera()
+    light = vtkLight()
+    light.SetColor(1,0,0)
+    light.SetFocalPoint(cam1.GetFocalPoint())
+    light.SetPosition(cam1.GetPosition())
+    ren.AddLight(light)
     
     # ren.AddActor(coneActor)
     # ren.AddActor(sphereActor)
-    #ren.AddActor(cylinderActor)
-    ren.AddActor(cubeActor)
+    ren.AddActor(cylinderActor)
+    #ren.AddActor(cubeActor)
     
 
     renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
     renWin.SetSize(300,300)  # tamanho original 300x300
-    renWin.SetWindowName('Lesson 1')
+    renWin.SetWindowName('Lighting Example')
 
     iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
