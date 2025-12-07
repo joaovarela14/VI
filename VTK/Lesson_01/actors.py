@@ -25,7 +25,6 @@ def main():
   
     coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
-    coneActor.SetPosition(-3, 0, 0)  # Esquerda
 
 
     # Esfera
@@ -40,7 +39,6 @@ def main():
 
     sphereActor = vtkActor()
     sphereActor.SetMapper(sphereMapper)
-    sphereActor.SetPosition(3, 0, 0)  # Direita
 
     # Cilindro
     
@@ -54,8 +52,19 @@ def main():
 
     cylinderActor = vtkActor()
     cylinderActor.SetMapper(cylinderMapper)
-    cylinderActor.SetPosition(0, 0, -3)  # Atrás
 
+
+    ren = vtkRenderer()
+    ren.SetBackground(1,1,1)
+    
+    #cam1 = vtkCamera()
+
+    cam1 = ren.GetActiveCamera()
+    cam1.SetPosition(10,10,0)
+    cam1.SetViewUp(0,1,1)
+    # Set orthographic projection
+    cam1.SetParallelProjection(True)
+    
     # Create a cube source
     cubeSource = vtkCubeSource()
     
@@ -64,51 +73,21 @@ def main():
     
     cubeActor = vtkActor()
     cubeActor.SetMapper(cubeMapper)
-    cubeActor.SetPosition(0, 0, 3)  # Frente
-
-
-    ren = vtkRenderer()
-    ren.SetBackground(1,1,1)
-    
-    # Multiple colored lights from different positions
-    # Red light from left
-    light1 = vtkLight()
-    light1.SetColor(1, 0, 0)
-    light1.SetPosition(-10, 5, 5)
-    light1.SetFocalPoint(0, 0, 0)
-    ren.AddLight(light1)
-    
-    # Green light from right
-    light2 = vtkLight()
-    light2.SetColor(0, 1, 0)
-    light2.SetPosition(10, 5, 5)
-    light2.SetFocalPoint(0, 0, 0)
-    ren.AddLight(light2)
-    
-    # Blue light from top
-    light3 = vtkLight()
-    light3.SetColor(0, 0, 1)
-    light3.SetPosition(0, 10, 0)
-    light3.SetFocalPoint(0, 0, 0)
-    ren.AddLight(light3)
-    
-    # Yellow light from front
-    light4 = vtkLight()
-    light4.SetColor(1, 1, 0)
-    light4.SetPosition(0, 0, 10)
-    light4.SetFocalPoint(0, 0, 0)
-    ren.AddLight(light4)
+    # cubeActor.GetProperty().SetRepresentationToWireframe()
     
     ren.AddActor(coneActor)
-    ren.AddActor(sphereActor)
-    ren.AddActor(cylinderActor)
-    ren.AddActor(cubeActor)
+    # ren.AddActor(sphereActor)
+    #ren.AddActor(cylinderActor)
+    #ren.AddActor(cubeActor)
     
+    
+    coneActor.GetProperty().SetColor(0.2, 0.63, 0.79)
+    coneActor.GetProperty().SetOpacity(1)
 
     renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
     renWin.SetSize(300,300)  # tamanho original 300x300
-    renWin.SetWindowName('Lighting Example')
+    renWin.SetWindowName('Lesson 1')
 
     iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)

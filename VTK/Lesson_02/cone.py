@@ -47,6 +47,26 @@ def main():
   
     coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
+    
+
+    coneActor.GetProperty().SetColor(0.2, 0.63, 0.79)
+    coneActor.GetProperty().SetDiffuse(0.7)
+    coneActor.GetProperty().SetSpecular(0.4)
+    coneActor.GetProperty().SetSpecularPower(20)
+    coneActor.GetProperty().SetOpacity(0.5)
+
+    property = vtkProperty()
+    property.SetColor(1.0, 0.3882, 0.2784)
+    property.SetDiffuse(0.7)
+    property.SetSpecular(0.4)
+    property.SetSpecularPower(20)
+    property.SetOpacity(0.5)
+    
+
+    coneActor2 = vtkActor()
+    coneActor2.SetMapper(coneMapper)
+    coneActor2.SetPosition(0, 2, 0)
+    coneActor2.SetProperty(property)
 
     # Create the Renderer and assign actors to it. A renderer is like a
     # viewport. It is part or all of a window on the screen and it is
@@ -54,7 +74,8 @@ def main():
     # color here.
     ren = vtkRenderer()
     ren.AddActor( coneActor )
-    ren.SetBackground(1.0, 0.55, 0.41)
+    ren.AddActor( coneActor2 )
+    ren.SetBackground(1.0, 1.0, 1)
     
     # Finally we create the render window which will show up on the screen.
     # We put our renderer into the render window using AddRenderer. We also
