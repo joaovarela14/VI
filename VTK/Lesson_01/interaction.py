@@ -27,7 +27,7 @@ def main():
     coneActor.SetMapper(coneMapper)
 
 
-    # Esfera
+    # Sphere
 
     sphereSource = vtkSphereSource()
     sphereSource.SetRadius(2)
@@ -40,7 +40,7 @@ def main():
     sphereActor = vtkActor()
     sphereActor.SetMapper(sphereMapper)
 
-    # Cilindro
+    # Cylinder
     
     cylinderSource = vtkCylinderSource()
     cylinderSource.SetRadius(2)
@@ -58,12 +58,12 @@ def main():
     ren.SetBackground(1,1,1)
     # ren.AddActor(coneActor)
     # ren.AddActor(sphereActor)
-    ren.AddActor(cylinderActor)
+    ren.AddActor(cylinderActor) # Other objects are commented to show only the cylinder
     
 
     renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    renWin.SetSize(300,300)  # tamanho original 300x300
+    renWin.SetSize(300,300)  # Window size
     renWin.SetWindowName('Lesson 1')
 
     # Adds a render window interactor to the example to
