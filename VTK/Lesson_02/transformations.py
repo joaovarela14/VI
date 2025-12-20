@@ -55,8 +55,7 @@ def main():
     renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
     renWin.SetSize(640, 480)
-    renWin.SetWindowName("Textures")
-
+    renWin.SetWindowName("Tranformations")
     # Adds a render window interactor to the cone example to
     # enable user interaction (e.g. to rotate the scene)
     iren = vtkRenderWindowInteractor()
