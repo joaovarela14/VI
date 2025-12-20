@@ -25,10 +25,10 @@ def main():
   
     coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
-    coneActor.SetPosition(-3, 0, 0)  # Esquerda
+    coneActor.SetPosition(-3, 0, 0)  # Left
 
 
-    # Esfera
+    # Sphere
 
     sphereSource = vtkSphereSource()
     sphereSource.SetRadius(2)
@@ -40,9 +40,9 @@ def main():
 
     sphereActor = vtkActor()
     sphereActor.SetMapper(sphereMapper)
-    sphereActor.SetPosition(3, 0, 0)  # Direita
+    sphereActor.SetPosition(3, 0, 0)  # Right
 
-    # Cilindro
+    # Cylinder
     
     cylinderSource = vtkCylinderSource()
     cylinderSource.SetRadius(2)
@@ -54,7 +54,7 @@ def main():
 
     cylinderActor = vtkActor()
     cylinderActor.SetMapper(cylinderMapper)
-    cylinderActor.SetPosition(0, 0, -3)  # Atrás
+    cylinderActor.SetPosition(0, 0, -3)  # Behind
 
     # Create a cube source
     cubeSource = vtkCubeSource()
@@ -64,7 +64,7 @@ def main():
     
     cubeActor = vtkActor()
     cubeActor.SetMapper(cubeMapper)
-    cubeActor.SetPosition(0, 0, 3)  # Frente
+    cubeActor.SetPosition(0, 0, 3)  # In front
 
 
     ren = vtkRenderer()
@@ -107,7 +107,7 @@ def main():
 
     renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    renWin.SetSize(300,300)  # tamanho original 300x300
+    renWin.SetSize(300,300)  # Window size
     renWin.SetWindowName('Lighting Example')
 
     iren = vtkRenderWindowInteractor()

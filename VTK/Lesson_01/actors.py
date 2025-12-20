@@ -27,7 +27,7 @@ def main():
     coneActor.SetMapper(coneMapper)
 
 
-    # Esfera
+    # Sphere
 
     sphereSource = vtkSphereSource()
     sphereSource.SetRadius(2)
@@ -40,7 +40,7 @@ def main():
     sphereActor = vtkActor()
     sphereActor.SetMapper(sphereMapper)
 
-    # Cilindro
+    # Cylinder
     
     cylinderSource = vtkCylinderSource()
     cylinderSource.SetRadius(2)
@@ -57,7 +57,7 @@ def main():
     ren = vtkRenderer()
     ren.SetBackground(1,1,1)
     
-    #cam1 = vtkCamera()
+    # cam1 = vtkCamera()
 
     cam1 = ren.GetActiveCamera()
     cam1.SetPosition(10,10,0)
@@ -77,8 +77,8 @@ def main():
     
     ren.AddActor(coneActor)
     # ren.AddActor(sphereActor)
-    #ren.AddActor(cylinderActor)
-    #ren.AddActor(cubeActor)
+    # ren.AddActor(cylinderActor)
+    # ren.AddActor(cubeActor)
     
     
     coneActor.GetProperty().SetColor(0.2, 0.63, 0.79)
@@ -86,7 +86,7 @@ def main():
 
     renWin = vtkRenderWindow()
     renWin.AddRenderer(ren)
-    renWin.SetSize(300,300)  # tamanho original 300x300
+    renWin.SetSize(300,300)  # Window size
     renWin.SetWindowName('Lesson 1')
 
     iren = vtkRenderWindowInteractor()

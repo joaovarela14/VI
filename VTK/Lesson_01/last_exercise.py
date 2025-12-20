@@ -66,7 +66,7 @@ def main():
     coneActor = vtkActor()
     coneActor.SetMapper(coneMapper)
 
-    # Esfera
+    # Sphere
     
     # sphereSource = vtkSphereSource()
     # sphereSource.SetRadius(2)
@@ -88,7 +88,7 @@ def main():
     ren.SetBackground(0, 0, 0)
     
 
-    # luzes do readme
+    # Lights
     create_light_with_sphere(ren, (1, 0, 0), (-5, 0, 0))  # Red light
     create_light_with_sphere(ren, (0, 1, 0), (0, 0, -5))  # Green light
     create_light_with_sphere(ren, (0, 0, 1), (5, 0, 0))   # Blue light
