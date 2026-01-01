@@ -1,18 +1,12 @@
-###############################################################################
-#       						Poligonal.py
-###############################################################################
-
-# Import all VTK modules
 from vtkmodules.all import *
 
 def main():
 
-    # tetra
-    coords = [[0,0,0], [1,0,0], [0.5,1,0], [0.5,0.5,1]]
-    aTetra = [0,1,2,3]
+    # Coordinates for the vertices
+    coords = [[0, 0, 0], [1, 0, 0], [0.5, 1, 0], [0.5, 0.5, 1]]
     
     #################################
-	# VTKUnstructuredGrid Definition
+    # VTKUnstructuredGrid Definition
     Ugrid = vtkUnstructuredGrid()
     points = vtkPoints()
     
@@ -20,33 +14,38 @@ def main():
     for i in range(len(coords)):
         points.InsertPoint(i,coords[i])
     
-    # Cell
-    Ugrid.InsertNextCell(VTK_TETRA,4,aTetra)
+    # Create cells as VTK_VERTEX
+    for i in range(len(coords)):  # Create one cell for each vertex
+        Ugrid.InsertNextCell(VTK_VERTEX, 1, [i])
     
+    # Assign points to the unstructured grid
     Ugrid.SetPoints(points)
     
     # Mapper and actor
-    UGriMapper = vtkDataSetMapper()
-    UGriMapper.SetInputData(Ugrid)
+    UGridMapper = vtkDataSetMapper()
+    UGridMapper.SetInputData(Ugrid)
 
-    UgridActor = vtkActor()
-    UgridActor.SetMapper(UGriMapper)
+    UGridActor = vtkActor()
+    UGridActor.SetMapper(UGridMapper)
 
-    # Creation of renderer, render window, and interactor.
+    # Modify actor properties
+    UGridActor.GetProperty().SetColor(0, 0, 0)  # Red color
+    UGridActor.GetProperty().SetPointSize(5)    # Set point size
+
+    # Creation of renderer, render window, and interactor
     ren1 = vtkRenderer()
     renWin = vtkRenderWindow()
     renWin.AddRenderer(ren1)
+    renWin.SetWindowName("UGrid Display")
 
     iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    ren1.AddActor(UgridActor)
+    ren1.AddActor(UGridActor)
     ren1.SetBackground(1.0, 0.55, 0.41) 
 
-	# render
+    # Render and start interaction
     renWin.Render()
-
-	# Start of interaction
     iren.Start()
 
 if __name__ == '__main__':
