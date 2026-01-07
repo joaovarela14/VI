@@ -20,7 +20,7 @@ It follows a **human-centred design** process, going from low-fidelity prototype
 
 ## How to run 
 ```bash
-cd remote-mental-health-viz
+cd Projeto
 npm i
 npm run dev
 ```
